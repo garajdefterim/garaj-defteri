@@ -18,11 +18,20 @@ type Vehicle = {
   son_bakim_tarihi: string | null;
 };
 
+type TarihDurumu = {
+  yazi: string;
+  arkaPlan: string;
+  renk: string;
+  kenarlik: string;
+};
+
 export default function DashboardPage() {
   const router = useRouter();
 
   const [araclar, setAraclar] = useState<Vehicle[]>([]);
   const [yukleniyor, setYukleniyor] = useState(true);
+  const [silinenAracId, setSilinenAracId] = useState<string | null>(null);
+  const [silinecekArac, setSilinecekArac] = useState<Vehicle | null>(null);
   const [hata, setHata] = useState("");
 
   useEffect(() => {
@@ -37,6 +46,7 @@ export default function DashboardPage() {
 
       if (userError || !user) {
         router.push("/giris");
+        router.refresh();
         return;
       }
 
@@ -90,20 +100,207 @@ export default function DashboardPage() {
     return `${new Intl.NumberFormat("tr-TR").format(kilometre)} km`;
   }
 
+  function kalanGunHesapla(tarih: string) {
+    const bugun = new Date();
+    bugun.setHours(0, 0, 0, 0);
+
+    const hedefTarih = new Date(`${tarih}T00:00:00`);
+    hedefTarih.setHours(0, 0, 0, 0);
+
+    const fark = hedefTarih.getTime() - bugun.getTime();
+
+    return Math.ceil(fark / (1000 * 60 * 60 * 24));
+  }
+
+  function tarihDurumuGetir(tarih: string | null): TarihDurumu {
+    if (!tarih) {
+      return {
+        yazi: "Tarih girilmedi",
+        arkaPlan: "#F1F5F9",
+        renk: "#64748B",
+        kenarlik: "#CBD5E1",
+      };
+    }
+
+    const kalanGun = kalanGunHesapla(tarih);
+
+    if (kalanGun < 0) {
+      return {
+        yazi: `${Math.abs(kalanGun)} gün gecikti`,
+        arkaPlan: "#FEF2F2",
+        renk: "#B91C1C",
+        kenarlik: "#FECACA",
+      };
+    }
+
+    if (kalanGun === 0) {
+      return {
+        yazi: "Bugün sona eriyor",
+        arkaPlan: "#FEF2F2",
+        renk: "#B91C1C",
+        kenarlik: "#FECACA",
+      };
+    }
+
+    if (kalanGun <= 7) {
+      return {
+        yazi: `${kalanGun} gün kaldı`,
+        arkaPlan: "#FEF2F2",
+        renk: "#B91C1C",
+        kenarlik: "#FECACA",
+      };
+    }
+
+    if (kalanGun <= 30) {
+      return {
+        yazi: `${kalanGun} gün kaldı`,
+        arkaPlan: "#FFF7ED",
+        renk: "#C2410C",
+        kenarlik: "#FED7AA",
+      };
+    }
+
+    return {
+      yazi: `${kalanGun} gün kaldı`,
+      arkaPlan: "#F0FDF4",
+      renk: "#166534",
+      kenarlik: "#BBF7D0",
+    };
+  }
+
   async function cikisYap() {
-    await supabase.auth.signOut();
+    setHata("");
+
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      setHata("Çıkış yapılırken bir hata oluştu.");
+      return;
+    }
+
     router.push("/giris");
     router.refresh();
+  }
+
+  async function aracSil() {
+    if (!silinecekArac) {
+      return;
+    }
+
+    setHata("");
+    setSilinenAracId(silinecekArac.id);
+
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        router.push("/giris");
+        router.refresh();
+        return;
+      }
+
+      const { error } = await supabase
+        .from("vehicles")
+        .delete()
+        .eq("id", silinecekArac.id)
+        .eq("user_id", user.id);
+
+      if (error) {
+        setHata(error.message);
+        return;
+      }
+
+      setAraclar((mevcutAraclar) =>
+        mevcutAraclar.filter((arac) => arac.id !== silinecekArac.id)
+      );
+
+      setSilinecekArac(null);
+    } catch {
+      setHata("Araç silinirken beklenmeyen bir hata oluştu.");
+    } finally {
+      setSilinenAracId(null);
+    }
+  }
+
+  function TarihSatiri({
+    baslik,
+    tarih,
+  }: {
+    baslik: string;
+    tarih: string | null;
+  }) {
+    const durum = tarihDurumuGetir(tarih);
+
+    return (
+      <div
+        style={{
+          padding: "13px",
+          borderRadius: "12px",
+          backgroundColor: "#F8FAFC",
+          border: "1px solid #E2E8F0",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "12px",
+            flexWrap: "wrap",
+          }}
+        >
+          <div>
+            <strong
+              style={{
+                display: "block",
+                marginBottom: "4px",
+                color: "#0F172A",
+              }}
+            >
+              {baslik}
+            </strong>
+
+            <span
+              style={{
+                color: "#64748B",
+                fontSize: "14px",
+              }}
+            >
+              {tarihFormatla(tarih)}
+            </span>
+          </div>
+
+          <span
+            style={{
+              display: "inline-block",
+              padding: "6px 10px",
+              borderRadius: "999px",
+              backgroundColor: durum.arkaPlan,
+              color: durum.renk,
+              border: `1px solid ${durum.kenarlik}`,
+              fontSize: "13px",
+              fontWeight: 800,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {durum.yazi}
+          </span>
+        </div>
+      </div>
+    );
   }
 
   return (
     <main
       style={{
         minHeight: "100vh",
-        backgroundColor: "#F8FAFC",
         padding: "40px 24px",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        backgroundColor: "#F8FAFC",
         color: "#0F172A",
+        fontFamily: "Arial, Helvetica, sans-serif",
       }}
     >
       <div
@@ -127,8 +324,8 @@ export default function DashboardPage() {
             <h1
               style={{
                 margin: 0,
-                fontSize: "38px",
                 color: "#0F172A",
+                fontSize: "38px",
               }}
             >
               🚗 Garaj Defteri
@@ -185,41 +382,43 @@ export default function DashboardPage() {
           </div>
         </header>
 
-        {yukleniyor && (
-          <section
-            style={{
-              padding: "30px",
-              backgroundColor: "#FFFFFF",
-              border: "1px solid #E2E8F0",
-              borderRadius: "18px",
-            }}
-          >
-            Araçlar yükleniyor...
-          </section>
-        )}
-
         {hata && (
           <div
             role="alert"
             style={{
               padding: "14px",
+              marginBottom: "24px",
               borderRadius: "10px",
+              border: "1px solid #FECACA",
               backgroundColor: "#FEF2F2",
               color: "#B91C1C",
-              marginBottom: "24px",
             }}
           >
             {hata}
           </div>
         )}
 
+        {yukleniyor && (
+          <section
+            style={{
+              padding: "30px",
+              border: "1px solid #E2E8F0",
+              borderRadius: "18px",
+              backgroundColor: "#FFFFFF",
+              color: "#475569",
+            }}
+          >
+            Araçlar yükleniyor...
+          </section>
+        )}
+
         {!yukleniyor && !hata && araclar.length === 0 && (
           <section
             style={{
               padding: "34px",
-              backgroundColor: "#FFFFFF",
               border: "1px solid #E2E8F0",
               borderRadius: "18px",
+              backgroundColor: "#FFFFFF",
               boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
             }}
           >
@@ -234,8 +433,9 @@ export default function DashboardPage() {
 
             <p
               style={{
-                color: "#64748B",
                 marginBottom: "22px",
+                color: "#64748B",
+                lineHeight: 1.6,
               }}
             >
               İlk aracınızı ekleyerek muayene, sigorta, seyrüsefer ve bakım
@@ -259,13 +459,13 @@ export default function DashboardPage() {
           </section>
         )}
 
-        {!yukleniyor && !hata && araclar.length > 0 && (
+        {!yukleniyor && araclar.length > 0 && (
           <section>
             <h2
               style={{
                 margin: "0 0 20px",
-                fontSize: "26px",
                 color: "#0F172A",
+                fontSize: "26px",
               }}
             >
               Araçlarım
@@ -274,8 +474,7 @@ export default function DashboardPage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns:
-                  "repeat(auto-fit, minmax(300px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
                 gap: "20px",
               }}
             >
@@ -283,10 +482,10 @@ export default function DashboardPage() {
                 <article
                   key={arac.id}
                   style={{
-                    backgroundColor: "#FFFFFF",
+                    padding: "26px",
                     border: "1px solid #E2E8F0",
                     borderRadius: "18px",
-                    padding: "26px",
+                    backgroundColor: "#FFFFFF",
                     boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
                   }}
                 >
@@ -294,16 +493,16 @@ export default function DashboardPage() {
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      gap: "16px",
                       alignItems: "flex-start",
+                      gap: "16px",
                     }}
                   >
                     <div>
                       <h3
                         style={{
                           margin: 0,
-                          fontSize: "23px",
                           color: "#0F172A",
+                          fontSize: "23px",
                         }}
                       >
                         {arac.marka} {arac.model}
@@ -322,6 +521,7 @@ export default function DashboardPage() {
                     </div>
 
                     <span
+                      aria-hidden="true"
                       style={{
                         fontSize: "30px",
                       }}
@@ -332,95 +532,326 @@ export default function DashboardPage() {
 
                   <div
                     style={{
-                      marginTop: "22px",
                       display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
                       gap: "12px",
-                      color: "#475569",
+                      marginTop: "22px",
                     }}
                   >
-                    <div>
-                      <strong style={{ color: "#0F172A" }}>Yıl:</strong>{" "}
-                      {arac.yil ?? "Belirtilmedi"}
+                    <div
+                      style={{
+                        padding: "12px",
+                        border: "1px solid #E2E8F0",
+                        borderRadius: "11px",
+                        backgroundColor: "#F8FAFC",
+                      }}
+                    >
+                      <strong
+                        style={{
+                          display: "block",
+                          marginBottom: "4px",
+                          color: "#0F172A",
+                        }}
+                      >
+                        Yıl
+                      </strong>
+
+                      <span style={{ color: "#64748B" }}>
+                        {arac.yil ?? "Belirtilmedi"}
+                      </span>
                     </div>
 
-                    <div>
-                      <strong style={{ color: "#0F172A" }}>
-                        Kilometre:
-                      </strong>{" "}
-                      {kilometreFormatla(arac.kilometre)}
-                    </div>
+                    <div
+                      style={{
+                        padding: "12px",
+                        border: "1px solid #E2E8F0",
+                        borderRadius: "11px",
+                        backgroundColor: "#F8FAFC",
+                      }}
+                    >
+                      <strong
+                        style={{
+                          display: "block",
+                          marginBottom: "4px",
+                          color: "#0F172A",
+                        }}
+                      >
+                        Kilometre
+                      </strong>
 
-                    <div>
-                      <strong style={{ color: "#0F172A" }}>
-                        Muayene:
-                      </strong>{" "}
-                      {tarihFormatla(arac.muayene_tarihi)}
-                    </div>
-
-                    <div>
-                      <strong style={{ color: "#0F172A" }}>
-                        Sigorta:
-                      </strong>{" "}
-                      {tarihFormatla(arac.sigorta_tarihi)}
-                    </div>
-
-                    <div>
-                      <strong style={{ color: "#0F172A" }}>
-                        Seyrüsefer:
-                      </strong>{" "}
-                      {tarihFormatla(arac.seyrusefer_tarihi)}
-                    </div>
-
-                    <div>
-                      <strong style={{ color: "#0F172A" }}>
-                        Son bakım:
-                      </strong>{" "}
-                      {tarihFormatla(arac.son_bakim_tarihi)}
+                      <span style={{ color: "#64748B" }}>
+                        {kilometreFormatla(arac.kilometre)}
+                      </span>
                     </div>
                   </div>
-                  <div
-  style={{
-    display: "flex",
-    gap: "12px",
-    marginTop: "24px",
-    flexWrap: "wrap",
-  }}
->
-  <Link
-    href={`/arac-duzenle/${arac.id}`}
-    style={{
-      padding: "10px 18px",
-      backgroundColor: "#2563EB",
-      color: "#FFFFFF",
-      textDecoration: "none",
-      borderRadius: "10px",
-      fontWeight: 700,
-    }}
-  >
-    ✏️ Düzenle
-  </Link>
 
-  <button
-    type="button"
-    style={{
-      padding: "10px 18px",
-      backgroundColor: "#DC2626",
-      color: "#FFFFFF",
-      border: "none",
-      borderRadius: "10px",
-      fontWeight: 700,
-      cursor: "pointer",
-    }}
-  >
-    🗑️ Sil
-  </button>
-</div>
+                  <div
+                    style={{
+                      display: "grid",
+                      gap: "10px",
+                      marginTop: "14px",
+                    }}
+                  >
+                    <TarihSatiri
+                      baslik="Muayene"
+                      tarih={arac.muayene_tarihi}
+                    />
+
+                    <TarihSatiri
+                      baslik="Sigorta"
+                      tarih={arac.sigorta_tarihi}
+                    />
+
+                    <TarihSatiri
+                      baslik="Seyrüsefer"
+                      tarih={arac.seyrusefer_tarihi}
+                    />
+
+                    <TarihSatiri
+                      baslik="Son bakım"
+                      tarih={arac.son_bakim_tarihi}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fit, minmax(140px, 1fr))",
+                      gap: "10px",
+                      marginTop: "24px",
+                    }}
+                  >
+                    <Link
+                      href={`/bakim-ekle/${arac.id}`}
+                      style={{
+                        padding: "11px 14px",
+                        borderRadius: "10px",
+                        backgroundColor: "#059669",
+                        color: "#FFFFFF",
+                        textAlign: "center",
+                        textDecoration: "none",
+                        fontWeight: 700,
+                      }}
+                    >
+                      🔧 Bakım Ekle
+                    </Link>
+
+                    <Link
+                      href={`/bakim-gecmisi/${arac.id}`}
+                      style={{
+                        padding: "11px 14px",
+                        border: "1px solid #A5B4FC",
+                        borderRadius: "10px",
+                        backgroundColor: "#EEF2FF",
+                        color: "#3730A3",
+                        textAlign: "center",
+                        textDecoration: "none",
+                        fontWeight: 700,
+                      }}
+                    >
+                      📋 Bakım Geçmişi
+                    </Link>
+
+                    <Link
+                      href={`/arac-duzenle/${arac.id}`}
+                      style={{
+                        padding: "11px 14px",
+                        borderRadius: "10px",
+                        backgroundColor: "#2563EB",
+                        color: "#FFFFFF",
+                        textAlign: "center",
+                        textDecoration: "none",
+                        fontWeight: 700,
+                      }}
+                    >
+                      ✏️ Düzenle
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => setSilinecekArac(arac)}
+                      disabled={silinenAracId === arac.id}
+                      style={{
+                        padding: "11px 14px",
+                        border: "none",
+                        borderRadius: "10px",
+                        backgroundColor:
+                          silinenAracId === arac.id ? "#94A3B8" : "#DC2626",
+                        color: "#FFFFFF",
+                        fontWeight: 700,
+                        cursor:
+                          silinenAracId === arac.id
+                            ? "not-allowed"
+                            : "pointer",
+                      }}
+                    >
+                      {silinenAracId === arac.id
+                        ? "Siliniyor..."
+                        : "🗑️ Sil"}
+                    </button>
+                  </div>
                 </article>
               ))}
             </div>
           </section>
         )}
       </div>
+
+      {silinecekArac && (
+        <div
+          role="presentation"
+          onClick={() => {
+            if (!silinenAracId) {
+              setSilinecekArac(null);
+            }
+          }}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "24px",
+            backgroundColor: "rgba(15, 23, 42, 0.65)",
+            backdropFilter: "blur(4px)",
+          }}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="silme-basligi"
+            onClick={(event) => event.stopPropagation()}
+            style={{
+              width: "100%",
+              maxWidth: "460px",
+              padding: "30px",
+              border: "1px solid #E2E8F0",
+              borderRadius: "20px",
+              backgroundColor: "#FFFFFF",
+              boxShadow: "0 30px 80px rgba(15, 23, 42, 0.35)",
+            }}
+          >
+            <div
+              style={{
+                width: "54px",
+                height: "54px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "16px",
+                backgroundColor: "#FEF2F2",
+                fontSize: "27px",
+              }}
+            >
+              🗑️
+            </div>
+
+            <h2
+              id="silme-basligi"
+              style={{
+                margin: "22px 0 10px",
+                color: "#0F172A",
+                fontSize: "25px",
+              }}
+            >
+              Bu aracı silmek istiyor musunuz?
+            </h2>
+
+            <p
+              style={{
+                margin: 0,
+                color: "#64748B",
+                lineHeight: 1.6,
+              }}
+            >
+              Bu işlem geri alınamaz. Araca bağlı bakım kayıtları da kalıcı
+              olarak silinecektir.
+            </p>
+
+            <div
+              style={{
+                marginTop: "20px",
+                padding: "16px",
+                border: "1px solid #E2E8F0",
+                borderRadius: "12px",
+                backgroundColor: "#F8FAFC",
+              }}
+            >
+              <strong
+                style={{
+                  display: "block",
+                  color: "#0F172A",
+                  fontSize: "18px",
+                }}
+              >
+                {silinecekArac.marka} {silinecekArac.model}
+              </strong>
+
+              <span
+                style={{
+                  display: "block",
+                  marginTop: "5px",
+                  color: "#2563EB",
+                  fontWeight: 800,
+                }}
+              >
+                {silinecekArac.plaka}
+              </span>
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "12px",
+                marginTop: "26px",
+                flexWrap: "wrap",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setSilinecekArac(null)}
+                disabled={silinenAracId !== null}
+                style={{
+                  padding: "12px 18px",
+                  border: "1px solid #CBD5E1",
+                  borderRadius: "10px",
+                  backgroundColor: "#FFFFFF",
+                  color: "#334155",
+                  fontWeight: 700,
+                  cursor:
+                    silinenAracId !== null ? "not-allowed" : "pointer",
+                }}
+              >
+                Vazgeç
+              </button>
+
+              <button
+                type="button"
+                onClick={aracSil}
+                disabled={silinenAracId !== null}
+                style={{
+                  padding: "12px 18px",
+                  border: "none",
+                  borderRadius: "10px",
+                  backgroundColor:
+                    silinenAracId !== null ? "#94A3B8" : "#DC2626",
+                  color: "#FFFFFF",
+                  fontWeight: 800,
+                  cursor:
+                    silinenAracId !== null ? "not-allowed" : "pointer",
+                }}
+              >
+                {silinenAracId !== null
+                  ? "Araç siliniyor..."
+                  : "Aracı Sil"}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
