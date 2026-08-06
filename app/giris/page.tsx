@@ -35,7 +35,7 @@ export default function GirisPage() {
         return;
       }
 
-      router.push("/panel");
+      router.push("/dashboard");
       router.refresh();
     } catch {
       setHata("Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.");
@@ -54,6 +54,7 @@ export default function GirisPage() {
         padding: "24px",
         backgroundColor: "#F8FAFC",
         fontFamily: "Arial, Helvetica, sans-serif",
+        color: "#0F172A",
       }}
     >
       <section
@@ -131,6 +132,8 @@ export default function GirisPage() {
                 padding: "14px",
                 borderRadius: "10px",
                 border: "1px solid #CBD5E1",
+                backgroundColor: "#FFFFFF",
+                color: "#0F172A",
                 fontSize: "16px",
               }}
             />
@@ -157,6 +160,8 @@ export default function GirisPage() {
                 padding: "14px",
                 borderRadius: "10px",
                 border: "1px solid #CBD5E1",
+                backgroundColor: "#FFFFFF",
+                color: "#0F172A",
                 fontSize: "16px",
               }}
             />
