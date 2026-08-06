@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
 type Vehicle = {
@@ -23,6 +23,15 @@ type TarihDurumu = {
   arkaPlan: string;
   renk: string;
   kenarlik: string;
+};
+
+type Bildirim = {
+  id: string;
+  aracId: string;
+  baslik: string;
+  aciklama: string;
+  ikon: string;
+  seviye: "kritik" | "uyari";
 };
 
 export default function DashboardPage() {
@@ -112,6 +121,10 @@ export default function DashboardPage() {
     return Math.ceil(fark / (1000 * 60 * 60 * 24));
   }
 
+  function gecenGunHesapla(tarih: string) {
+    return Math.abs(kalanGunHesapla(tarih));
+  }
+
   function tarihDurumuGetir(tarih: string | null): TarihDurumu {
     if (!tarih) {
       return {
@@ -167,6 +180,110 @@ export default function DashboardPage() {
       kenarlik: "#BBF7D0",
     };
   }
+
+  const bildirimler = useMemo<Bildirim[]>(() => {
+    const yeniBildirimler: Bildirim[] = [];
+
+    function tarihBildirimiEkle(
+      arac: Vehicle,
+      tur: string,
+      tarih: string | null,
+      ikon: string
+    ) {
+      if (!tarih) {
+        return;
+      }
+
+      const kalanGun = kalanGunHesapla(tarih);
+      const aracAdi = `${arac.marka} ${arac.model} – ${arac.plaka}`;
+
+      if (kalanGun < 0) {
+        yeniBildirimler.push({
+          id: `${arac.id}-${tur}`,
+          aracId: arac.id,
+          baslik: `${tur} süresi geçti`,
+          aciklama: `${aracAdi}: ${Math.abs(kalanGun)} gün gecikti.`,
+          ikon,
+          seviye: "kritik",
+        });
+        return;
+      }
+
+      if (kalanGun === 0) {
+        yeniBildirimler.push({
+          id: `${arac.id}-${tur}`,
+          aracId: arac.id,
+          baslik: `${tur} bugün sona eriyor`,
+          aciklama: aracAdi,
+          ikon,
+          seviye: "kritik",
+        });
+        return;
+      }
+
+      if (kalanGun <= 30) {
+        yeniBildirimler.push({
+          id: `${arac.id}-${tur}`,
+          aracId: arac.id,
+          baslik: `${tur} yaklaşıyor`,
+          aciklama: `${aracAdi}: ${kalanGun} gün kaldı.`,
+          ikon,
+          seviye: kalanGun <= 7 ? "kritik" : "uyari",
+        });
+      }
+    }
+
+    araclar.forEach((arac) => {
+      tarihBildirimiEkle(
+        arac,
+        "Muayene",
+        arac.muayene_tarihi,
+        "📅"
+      );
+
+      tarihBildirimiEkle(
+        arac,
+        "Sigorta",
+        arac.sigorta_tarihi,
+        "🛡️"
+      );
+
+      tarihBildirimiEkle(
+        arac,
+        "Seyrüsefer",
+        arac.seyrusefer_tarihi,
+        "📄"
+      );
+
+      if (arac.son_bakim_tarihi) {
+        const bakimdanSonraGecenGun = gecenGunHesapla(
+          arac.son_bakim_tarihi
+        );
+
+        if (
+          kalanGunHesapla(arac.son_bakim_tarihi) < 0 &&
+          bakimdanSonraGecenGun >= 180
+        ) {
+          yeniBildirimler.push({
+            id: `${arac.id}-bakim`,
+            aracId: arac.id,
+            baslik: "Bakım kontrolü öneriliyor",
+            aciklama: `${arac.marka} ${arac.model} – ${arac.plaka}: Son bakımın üzerinden ${bakimdanSonraGecenGun} gün geçti.`,
+            ikon: "🔧",
+            seviye: "uyari",
+          });
+        }
+      }
+    });
+
+    return yeniBildirimler.sort((a, b) => {
+      if (a.seviye === b.seviye) {
+        return 0;
+      }
+
+      return a.seviye === "kritik" ? -1 : 1;
+    });
+  }, [araclar]);
 
   async function cikisYap() {
     setHata("");
@@ -398,6 +515,158 @@ export default function DashboardPage() {
           </div>
         )}
 
+        {!yukleniyor && araclar.length > 0 && (
+          <section
+            style={{
+              marginBottom: "30px",
+              padding: "24px",
+              border: "1px solid #E2E8F0",
+              borderRadius: "18px",
+              backgroundColor: "#FFFFFF",
+              boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                gap: "14px",
+                flexWrap: "wrap",
+              }}
+            >
+              <div>
+                <h2
+                  style={{
+                    margin: 0,
+                    color: "#0F172A",
+                    fontSize: "25px",
+                  }}
+                >
+                  🔔 Bildirim Merkezi
+                </h2>
+
+                <p
+                  style={{
+                    margin: "8px 0 0",
+                    color: "#64748B",
+                  }}
+                >
+                  Yaklaşan ve geciken işlemleriniz.
+                </p>
+              </div>
+
+              {bildirimler.length > 0 && (
+                <span
+                  style={{
+                    padding: "7px 12px",
+                    borderRadius: "999px",
+                    backgroundColor: "#FEF2F2",
+                    color: "#B91C1C",
+                    border: "1px solid #FECACA",
+                    fontSize: "14px",
+                    fontWeight: 800,
+                  }}
+                >
+                  {bildirimler.length} uyarı
+                </span>
+              )}
+            </div>
+
+            {bildirimler.length === 0 ? (
+              <div
+                style={{
+                  marginTop: "20px",
+                  padding: "17px",
+                  border: "1px solid #BBF7D0",
+                  borderRadius: "12px",
+                  backgroundColor: "#F0FDF4",
+                  color: "#166534",
+                  fontWeight: 700,
+                }}
+              >
+                ✅ Şu anda yaklaşan veya geciken bir işleminiz yok.
+              </div>
+            ) : (
+              <div
+                style={{
+                  display: "grid",
+                  gap: "12px",
+                  marginTop: "20px",
+                }}
+              >
+                {bildirimler.map((bildirim) => {
+                  const kritik = bildirim.seviye === "kritik";
+
+                  return (
+                    <Link
+                      key={bildirim.id}
+                      href={`/arac-duzenle/${bildirim.aracId}`}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "14px",
+                        padding: "16px",
+                        border: kritik
+                          ? "1px solid #FECACA"
+                          : "1px solid #FED7AA",
+                        borderRadius: "13px",
+                        backgroundColor: kritik
+                          ? "#FEF2F2"
+                          : "#FFF7ED",
+                        color: "#0F172A",
+                        textDecoration: "none",
+                      }}
+                    >
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          fontSize: "27px",
+                        }}
+                      >
+                        {bildirim.ikon}
+                      </span>
+
+                      <div style={{ flex: 1 }}>
+                        <strong
+                          style={{
+                            display: "block",
+                            color: kritik ? "#B91C1C" : "#C2410C",
+                            fontSize: "16px",
+                          }}
+                        >
+                          {bildirim.baslik}
+                        </strong>
+
+                        <span
+                          style={{
+                            display: "block",
+                            marginTop: "5px",
+                            color: "#475569",
+                            lineHeight: 1.5,
+                          }}
+                        >
+                          {bildirim.aciklama}
+                        </span>
+                      </div>
+
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          color: "#64748B",
+                          fontSize: "20px",
+                        }}
+                      >
+                        →
+                      </span>
+                    </Link>
+                  );
+                })}
+              </div>
+            )}
+          </section>
+        )}
+
         {yukleniyor && (
           <section
             style={{
@@ -520,12 +789,7 @@ export default function DashboardPage() {
                       </p>
                     </div>
 
-                    <span
-                      aria-hidden="true"
-                      style={{
-                        fontSize: "30px",
-                      }}
-                    >
+                    <span aria-hidden="true" style={{ fontSize: "30px" }}>
                       🚘
                     </span>
                   </div>
