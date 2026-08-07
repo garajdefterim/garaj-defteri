@@ -12,8 +12,9 @@ export default function GirisPage() {
   const [sifre, setSifre] = useState("");
   const [hata, setHata] = useState("");
   const [yukleniyor, setYukleniyor] = useState(false);
+  const [googleYukleniyor, setGoogleYukleniyor] = useState(false);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
     setHata("");
@@ -41,6 +42,28 @@ export default function GirisPage() {
       setHata("Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.");
     } finally {
       setYukleniyor(false);
+    }
+  }
+
+  async function googleIleGirisYap() {
+    setHata("");
+    setGoogleYukleniyor(true);
+
+    try {
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
+      });
+
+      if (error) {
+        setHata(`Google ile giriş başlatılamadı: ${error.message}`);
+        setGoogleYukleniyor(false);
+      }
+    } catch {
+      setHata("Google ile giriş başlatılırken bir hata oluştu.");
+      setGoogleYukleniyor(false);
     }
   }
 
@@ -101,6 +124,79 @@ export default function GirisPage() {
           >
             Garaj Defteri hesabınıza giriş yapın.
           </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={googleIleGirisYap}
+          disabled={googleYukleniyor || yukleniyor}
+          style={{
+            width: "100%",
+            padding: "14px 16px",
+            border: "1px solid #CBD5E1",
+            borderRadius: "11px",
+            backgroundColor: "#FFFFFF",
+            color: "#0F172A",
+            fontSize: "16px",
+            fontWeight: 700,
+            cursor:
+              googleYukleniyor || yukleniyor ? "not-allowed" : "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "12px",
+            opacity: googleYukleniyor ? 0.7 : 1,
+          }}
+        >
+          <span
+            aria-hidden="true"
+            style={{
+              fontSize: "20px",
+              fontWeight: 900,
+              color: "#4285F4",
+            }}
+          >
+            G
+          </span>
+
+          {googleYukleniyor
+            ? "Google'a yönlendiriliyor..."
+            : "Google ile devam et"}
+        </button>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            margin: "24px 0",
+          }}
+        >
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              backgroundColor: "#E2E8F0",
+            }}
+          />
+
+          <span
+            style={{
+              color: "#94A3B8",
+              fontSize: "13px",
+              fontWeight: 700,
+            }}
+          >
+            VEYA
+          </span>
+
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              backgroundColor: "#E2E8F0",
+            }}
+          />
         </div>
 
         <form
@@ -176,6 +272,7 @@ export default function GirisPage() {
                 backgroundColor: "#FEF2F2",
                 color: "#B91C1C",
                 fontSize: "14px",
+                lineHeight: 1.5,
               }}
             >
               {hata}
@@ -184,7 +281,7 @@ export default function GirisPage() {
 
           <button
             type="submit"
-            disabled={yukleniyor}
+            disabled={yukleniyor || googleYukleniyor}
             style={{
               marginTop: "6px",
               padding: "15px",
@@ -194,7 +291,8 @@ export default function GirisPage() {
               color: "#FFFFFF",
               fontSize: "16px",
               fontWeight: 800,
-              cursor: yukleniyor ? "not-allowed" : "pointer",
+              cursor:
+                yukleniyor || googleYukleniyor ? "not-allowed" : "pointer",
             }}
           >
             {yukleniyor ? "Giriş yapılıyor..." : "Giriş Yap"}
