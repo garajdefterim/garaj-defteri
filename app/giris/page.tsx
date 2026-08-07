@@ -14,7 +14,7 @@ export default function GirisPage() {
   const [yukleniyor, setYukleniyor] = useState(false);
   const [googleYukleniyor, setGoogleYukleniyor] = useState(false);
 
-  async function handleSubmit(event: FormEvent) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     setHata("");
@@ -151,9 +151,17 @@ export default function GirisPage() {
           <span
             aria-hidden="true"
             style={{
-              fontSize: "20px",
-              fontWeight: 900,
+              width: "24px",
+              height: "24px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "50%",
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #E2E8F0",
               color: "#4285F4",
+              fontSize: "17px",
+              fontWeight: 900,
             }}
           >
             G
@@ -269,6 +277,7 @@ export default function GirisPage() {
               style={{
                 padding: "12px",
                 borderRadius: "10px",
+                border: "1px solid #FECACA",
                 backgroundColor: "#FEF2F2",
                 color: "#B91C1C",
                 fontSize: "14px",
@@ -292,7 +301,9 @@ export default function GirisPage() {
               fontSize: "16px",
               fontWeight: 800,
               cursor:
-                yukleniyor || googleYukleniyor ? "not-allowed" : "pointer",
+                yukleniyor || googleYukleniyor
+                  ? "not-allowed"
+                  : "pointer",
             }}
           >
             {yukleniyor ? "Giriş yapılıyor..." : "Giriş Yap"}
