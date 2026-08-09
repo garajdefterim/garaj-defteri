@@ -13,6 +13,8 @@ type ProfilBilgisi = {
   olusturulmaTarihi: string | null;
 };
 
+type Tema = "acik" | "koyu";
+
 export default function ProfilPage() {
   const router = useRouter();
 
@@ -20,10 +22,11 @@ export default function ProfilPage() {
   const [adSoyad, setAdSoyad] = useState("");
   const [email, setEmail] = useState("");
 
-  const [tema, setTema] = useState<"acik" | "koyu">("acik");
+  const [tema, setTema] = useState<Tema>("acik");
 
   const [yukleniyor, setYukleniyor] = useState(true);
   const [kaydediliyor, setKaydediliyor] = useState(false);
+  const [temaKaydediliyor, setTemaKaydediliyor] = useState(false);
   const [cikisYapiliyor, setCikisYapiliyor] = useState(false);
 
   const [hata, setHata] = useState("");
@@ -75,11 +78,28 @@ export default function ProfilPage() {
         setAdSoyad(bilgi.adSoyad);
         setEmail(bilgi.email);
 
-        const kayitliTema = localStorage.getItem("garaj-defteri-tema");
+        const supabaseTema = metadata.tema;
+        const localTema = localStorage.getItem("garaj-defteri-tema");
 
-        if (kayitliTema === "koyu") {
-          setTema("koyu");
+        let secilenTema: Tema = "acik";
+
+        if (supabaseTema === "koyu" || supabaseTema === "acik") {
+          secilenTema = supabaseTema;
+        } else if (localTema === "koyu" || localTema === "acik") {
+          secilenTema = localTema;
         }
+
+        setTema(secilenTema);
+
+        localStorage.setItem(
+          "garaj-defteri-tema",
+          secilenTema
+        );
+
+        document.documentElement.setAttribute(
+          "data-theme",
+          secilenTema
+        );
       } catch {
         setHata("Profil bilgileri alınırken bir hata oluştu.");
       } finally {
@@ -90,7 +110,9 @@ export default function ProfilPage() {
     profiliGetir();
   }, [router]);
 
-  async function bilgileriKaydet(event: FormEvent<HTMLFormElement>) {
+  async function bilgileriKaydet(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
     setHata("");
@@ -135,6 +157,7 @@ export default function ProfilPage() {
           ad_soyad: temizAd,
           full_name: temizAd,
           name: temizAd,
+          tema,
         },
       });
 
@@ -158,23 +181,75 @@ export default function ProfilPage() {
           "Profil bilgileriniz kaydedildi. E-posta değişikliği için doğrulama bağlantısı gönderilmiş olabilir."
         );
       } else {
-        setMesaj("Profil bilgileriniz başarıyla kaydedildi.");
+        setMesaj(
+          "Profil bilgileriniz başarıyla kaydedildi."
+        );
       }
     } catch {
-      setHata("Profil kaydedilirken beklenmeyen bir hata oluştu.");
+      setHata(
+        "Profil kaydedilirken beklenmeyen bir hata oluştu."
+      );
     } finally {
       setKaydediliyor(false);
     }
   }
 
-  function temaDegistir(yeniTema: "acik" | "koyu") {
-    setTema(yeniTema);
-    localStorage.setItem("garaj-defteri-tema", yeniTema);
+  async function temaDegistir(yeniTema: Tema) {
+    setHata("");
+    setMesaj("");
+    setTemaKaydediliyor(true);
 
-    if (yeniTema === "koyu") {
-      document.documentElement.style.backgroundColor = "#0F172A";
-    } else {
-      document.documentElement.style.backgroundColor = "#F8FAFC";
+    // Önce anında ekrana uygula.
+    setTema(yeniTema);
+
+    localStorage.setItem(
+      "garaj-defteri-tema",
+      yeniTema
+    );
+
+    document.documentElement.setAttribute(
+      "data-theme",
+      yeniTema
+    );
+
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        setHata(
+          "Tema hesabınıza kaydedilemedi. Lütfen tekrar giriş yapın."
+        );
+        return;
+      }
+
+      const { error } = await supabase.auth.updateUser({
+        data: {
+          ...user.user_metadata,
+          tema: yeniTema,
+        },
+      });
+
+      if (error) {
+        setHata(
+          `Tema tercihi kaydedilemedi: ${error.message}`
+        );
+        return;
+      }
+
+      setMesaj(
+        yeniTema === "koyu"
+          ? "Koyu tema tercihiniz kaydedildi."
+          : "Açık tema tercihiniz kaydedildi."
+      );
+    } catch {
+      setHata(
+        "Tema tercihi kaydedilirken bir hata oluştu."
+      );
+    } finally {
+      setTemaKaydediliyor(false);
     }
   }
 
@@ -217,8 +292,8 @@ export default function ProfilPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#F8FAFC",
-          color: "#64748B",
+          backgroundColor: "var(--background)",
+          color: "var(--foreground)",
           fontFamily: "Arial, Helvetica, sans-serif",
         }}
       >
@@ -229,12 +304,29 @@ export default function ProfilPage() {
 
   const koyuTema = tema === "koyu";
 
-  const sayfaArkaPlan = koyuTema ? "#0F172A" : "#F8FAFC";
-  const kartArkaPlan = koyuTema ? "#1E293B" : "#FFFFFF";
-  const anaRenk = koyuTema ? "#F8FAFC" : "#0F172A";
-  const ikinciRenk = koyuTema ? "#CBD5E1" : "#64748B";
-  const kenarlik = koyuTema ? "#334155" : "#E2E8F0";
-  const inputArkaPlan = koyuTema ? "#0F172A" : "#FFFFFF";
+  const sayfaArkaPlan = koyuTema
+    ? "#0F172A"
+    : "#F8FAFC";
+
+  const kartArkaPlan = koyuTema
+    ? "#1E293B"
+    : "#FFFFFF";
+
+  const anaRenk = koyuTema
+    ? "#F8FAFC"
+    : "#0F172A";
+
+  const ikinciRenk = koyuTema
+    ? "#CBD5E1"
+    : "#64748B";
+
+  const kenarlik = koyuTema
+    ? "#334155"
+    : "#E2E8F0";
+
+  const inputArkaPlan = koyuTema
+    ? "#0F172A"
+    : "#FFFFFF";
 
   const kartStili = {
     padding: "26px",
@@ -249,7 +341,9 @@ export default function ProfilPage() {
   const inputStili = {
     width: "100%",
     padding: "13px 14px",
-    border: `1px solid ${koyuTema ? "#475569" : "#CBD5E1"}`,
+    border: `1px solid ${
+      koyuTema ? "#475569" : "#CBD5E1"
+    }`,
     borderRadius: "10px",
     backgroundColor: inputArkaPlan,
     color: anaRenk,
@@ -341,7 +435,9 @@ export default function ProfilPage() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: koyuTema ? "#334155" : "#EFF6FF",
+                  backgroundColor: koyuTema
+                    ? "#334155"
+                    : "#EFF6FF",
                   border: "3px solid #DBEAFE",
                   fontSize: "36px",
                 }}
@@ -406,7 +502,8 @@ export default function ProfilPage() {
               lineHeight: 1.5,
             }}
           >
-            Hesabınızda görünen bilgileri buradan düzenleyebilirsiniz.
+            Hesabınızda görünen bilgileri buradan
+            düzenleyebilirsiniz.
           </p>
 
           <div
@@ -427,7 +524,9 @@ export default function ProfilPage() {
               <input
                 type="text"
                 value={adSoyad}
-                onChange={(event) => setAdSoyad(event.target.value)}
+                onChange={(event) =>
+                  setAdSoyad(event.target.value)
+                }
                 style={inputStili}
               />
             </label>
@@ -444,7 +543,9 @@ export default function ProfilPage() {
               <input
                 type="email"
                 value={email}
-                onChange={(event) => setEmail(event.target.value)}
+                onChange={(event) =>
+                  setEmail(event.target.value)
+                }
                 style={inputStili}
               />
 
@@ -455,8 +556,8 @@ export default function ProfilPage() {
                   fontWeight: 400,
                 }}
               >
-                E-posta adresinizi değiştirirseniz yeni adresi doğrulamanız
-                istenebilir.
+                E-posta adresinizi değiştirirseniz yeni
+                adresi doğrulamanız istenebilir.
               </span>
             </label>
 
@@ -497,11 +598,15 @@ export default function ProfilPage() {
                 padding: "14px",
                 border: "none",
                 borderRadius: "10px",
-                backgroundColor: kaydediliyor ? "#94A3B8" : "#2563EB",
+                backgroundColor: kaydediliyor
+                  ? "#94A3B8"
+                  : "#2563EB",
                 color: "#FFFFFF",
                 fontSize: "16px",
                 fontWeight: 800,
-                cursor: kaydediliyor ? "not-allowed" : "pointer",
+                cursor: kaydediliyor
+                  ? "not-allowed"
+                  : "pointer",
               }}
             >
               {kaydediliyor
@@ -545,7 +650,9 @@ export default function ProfilPage() {
 
             <BilgiSatiri
               baslik="Hesap oluşturulma tarihi"
-              deger={tarihFormatla(profil?.olusturulmaTarihi ?? null)}
+              deger={tarihFormatla(
+                profil?.olusturulmaTarihi ?? null
+              )}
               koyuTema={koyuTema}
             />
           </div>
@@ -570,21 +677,25 @@ export default function ProfilPage() {
             style={{
               margin: "8px 0 20px",
               color: ikinciRenk,
+              lineHeight: 1.5,
             }}
           >
-            Garaj Defteri profil sayfasının görünümünü seçin.
+            Tema tercihiniz hesabınıza kaydedilir ve tekrar
+            giriş yaptığınızda hatırlanır.
           </p>
 
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gridTemplateColumns:
+                "repeat(2, minmax(0, 1fr))",
               gap: "12px",
             }}
           >
             <button
               type="button"
               onClick={() => temaDegistir("acik")}
+              disabled={temaKaydediliyor}
               style={{
                 padding: "15px",
                 borderRadius: "11px",
@@ -595,7 +706,10 @@ export default function ProfilPage() {
                 backgroundColor: "#FFFFFF",
                 color: "#0F172A",
                 fontWeight: 800,
-                cursor: "pointer",
+                cursor: temaKaydediliyor
+                  ? "not-allowed"
+                  : "pointer",
+                opacity: temaKaydediliyor ? 0.7 : 1,
               }}
             >
               ☀️ Açık Tema
@@ -604,6 +718,7 @@ export default function ProfilPage() {
             <button
               type="button"
               onClick={() => temaDegistir("koyu")}
+              disabled={temaKaydediliyor}
               style={{
                 padding: "15px",
                 borderRadius: "11px",
@@ -614,12 +729,27 @@ export default function ProfilPage() {
                 backgroundColor: "#0F172A",
                 color: "#FFFFFF",
                 fontWeight: 800,
-                cursor: "pointer",
+                cursor: temaKaydediliyor
+                  ? "not-allowed"
+                  : "pointer",
+                opacity: temaKaydediliyor ? 0.7 : 1,
               }}
             >
               🌙 Koyu Tema
             </button>
           </div>
+
+          {temaKaydediliyor && (
+            <p
+              style={{
+                margin: "14px 0 0",
+                color: ikinciRenk,
+                fontSize: "13px",
+              }}
+            >
+              Tema tercihiniz kaydediliyor...
+            </p>
+          )}
         </section>
 
         <section
@@ -643,7 +773,8 @@ export default function ProfilPage() {
               color: ikinciRenk,
             }}
           >
-            Muayene e-postalarını ve hatırlatma sürelerini yönetin.
+            Muayene e-postalarını ve hatırlatma sürelerini
+            yönetin.
           </p>
 
           <Link
@@ -693,7 +824,9 @@ export default function ProfilPage() {
               color: "#B91C1C",
               fontSize: "16px",
               fontWeight: 800,
-              cursor: cikisYapiliyor ? "not-allowed" : "pointer",
+              cursor: cikisYapiliyor
+                ? "not-allowed"
+                : "pointer",
             }}
           >
             {cikisYapiliyor
@@ -708,13 +841,17 @@ export default function ProfilPage() {
             padding: "26px",
             borderRadius: "18px",
             border: "1px solid #FECACA",
-            backgroundColor: koyuTema ? "#450A0A" : "#FFF7F7",
+            backgroundColor: koyuTema
+              ? "#450A0A"
+              : "#FFF7F7",
           }}
         >
           <h2
             style={{
               margin: 0,
-              color: koyuTema ? "#FCA5A5" : "#B91C1C",
+              color: koyuTema
+                ? "#FCA5A5"
+                : "#B91C1C",
               fontSize: "22px",
             }}
           >
@@ -723,13 +860,16 @@ export default function ProfilPage() {
 
           <p
             style={{
-              color: koyuTema ? "#FECACA" : "#64748B",
+              color: koyuTema
+                ? "#FECACA"
+                : "#64748B",
               lineHeight: 1.6,
             }}
           >
-            Hesabınızı silme özelliğini bir sonraki adımda güvenli sunucu
-            fonksiyonu ile bağlayacağız. Bu işlem araçlarınızı ve hesap
-            verilerinizi kalıcı olarak silebileceği için tarayıcı tarafında
+            Hesabınızı silme özelliğini güvenli sunucu
+            fonksiyonu ile bağlayacağız. Bu işlem
+            araçlarınızı ve hesap verilerinizi kalıcı olarak
+            silebileceği için tarayıcı tarafında
             yapılmamalıdır.
           </p>
 
@@ -781,7 +921,9 @@ function BilgiSatiri({
       <span
         style={{
           display: "block",
-          color: koyuTema ? "#94A3B8" : "#64748B",
+          color: koyuTema
+            ? "#94A3B8"
+            : "#64748B",
           fontSize: "13px",
           fontWeight: 700,
         }}

@@ -3,6 +3,27 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
+  --card: #ffffff;
+  --card-soft: #f8fafc;
+  --border: #e2e8f0;
+  --muted: #64748b;
+  --input-bg: #ffffff;
+}
+
+html[data-theme="koyu"] {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-soft: #0f172a;
+  --border: #334155;
+  --muted: #94a3b8;
+  --input-bg: #0f172a;
+
+  color-scheme: dark;
+}
+
+html[data-theme="acik"] {
+  color-scheme: light;
 }
 
 * {
@@ -16,10 +37,17 @@ body {
   min-height: 100%;
 }
 
+html {
+  background-color: var(--background);
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
 }
 
 h1,
@@ -49,4 +77,148 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+/* ------------------------- */
+/* GLOBAL KOYU TEMA          */
+/* ------------------------- */
+
+html[data-theme="koyu"] body,
+html[data-theme="koyu"] main {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+/* Beyaz kartlar */
+html[data-theme="koyu"] section[style*="background-color: rgb(255, 255, 255)"],
+html[data-theme="koyu"] section[style*="backgroundColor"],
+html[data-theme="koyu"] article[style*="backgroundColor"],
+html[data-theme="koyu"] div[style*="backgroundColor"] {
+  border-color: #334155;
+}
+
+/*
+  React inline style çıktısındaki yaygın açık tema renklerini
+  koyu temada eziyoruz.
+*/
+
+html[data-theme="koyu"] [style*="background-color: rgb(255, 255, 255)"] {
+  background-color: #1e293b !important;
+}
+
+html[data-theme="koyu"] [style*="background-color: #FFFFFF"],
+html[data-theme="koyu"] [style*="background-color: #ffffff"] {
+  background-color: #1e293b !important;
+}
+
+html[data-theme="koyu"] [style*="background-color: rgb(248, 250, 252)"] {
+  background-color: #0f172a !important;
+}
+
+html[data-theme="koyu"] [style*="background-color: #F8FAFC"],
+html[data-theme="koyu"] [style*="background-color: #f8fafc"] {
+  background-color: #0f172a !important;
+}
+
+/* Açık gri kart alanları */
+html[data-theme="koyu"] [style*="background-color: #F1F5F9"],
+html[data-theme="koyu"] [style*="background-color: #f1f5f9"] {
+  background-color: #1e293b !important;
+}
+
+/* Border */
+html[data-theme="koyu"] [style*="border: 1px solid #E2E8F0"],
+html[data-theme="koyu"] [style*="border: 1px solid rgb(226, 232, 240)"] {
+  border-color: #334155 !important;
+}
+
+html[data-theme="koyu"] [style*="border: 1px solid #CBD5E1"],
+html[data-theme="koyu"] [style*="border: 1px solid rgb(203, 213, 225)"] {
+  border-color: #475569 !important;
+}
+
+/* Ana yazılar */
+html[data-theme="koyu"] [style*="color: #0F172A"],
+html[data-theme="koyu"] [style*="color: #0f172a"] {
+  color: #f8fafc !important;
+}
+
+/* İkincil yazılar */
+html[data-theme="koyu"] [style*="color: #64748B"],
+html[data-theme="koyu"] [style*="color: #64748b"] {
+  color: #94a3b8 !important;
+}
+
+html[data-theme="koyu"] [style*="color: #475569"],
+html[data-theme="koyu"] [style*="color: #475569"] {
+  color: #cbd5e1 !important;
+}
+
+html[data-theme="koyu"] [style*="color: #334155"],
+html[data-theme="koyu"] [style*="color: #334155"] {
+  color: #e2e8f0 !important;
+}
+
+html[data-theme="koyu"] [style*="color: #94A3B8"],
+html[data-theme="koyu"] [style*="color: #94a3b8"] {
+  color: #94a3b8 !important;
+}
+
+/* Form elemanları */
+html[data-theme="koyu"] input,
+html[data-theme="koyu"] textarea,
+html[data-theme="koyu"] select {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+html[data-theme="koyu"] input::placeholder,
+html[data-theme="koyu"] textarea::placeholder {
+  color: #64748b !important;
+}
+
+/* Tarayıcı autofill */
+html[data-theme="koyu"] input:-webkit-autofill,
+html[data-theme="koyu"] input:-webkit-autofill:hover,
+html[data-theme="koyu"] input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f8fafc;
+  -webkit-box-shadow: 0 0 0 1000px #0f172a inset;
+}
+
+/* Beyaz butonlar */
+html[data-theme="koyu"] button[style*="background-color: #FFFFFF"],
+html[data-theme="koyu"] a[style*="background-color: #FFFFFF"],
+html[data-theme="koyu"] button[style*="background-color: #ffffff"],
+html[data-theme="koyu"] a[style*="background-color: #ffffff"] {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+/* Gölgeyi koyu temada azalt */
+html[data-theme="koyu"] section,
+html[data-theme="koyu"] article {
+  box-shadow: none !important;
+}
+
+/* Scrollbar */
+html[data-theme="koyu"] {
+  scrollbar-color: #475569 #0f172a;
+}
+
+/* Tema geçişini biraz yumuşat */
+body,
+main,
+section,
+article,
+input,
+textarea,
+select,
+button,
+a {
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
