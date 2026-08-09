@@ -303,3 +303,12 @@ html[data-theme="koyu"] span,
 html[data-theme="koyu"] label {
   text-shadow: none;
 }
+/* =========================================
+   DASHBOARD İSTATİSTİK KARTLARI DÜZELTMESİ
+   ========================================= */
+
+html[data-theme="koyu"] .dashboard-stat-value {
+  color: #0f172a !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}

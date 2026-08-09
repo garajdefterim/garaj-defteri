@@ -1016,6 +1016,8 @@ export default function DashboardPage() {
                       typeof deger === "number"
                         ? "29px"
                         : "22px",
+                    color: String(color),
+                    fontWeight: 800,
                   }}
                 >
                   {deger}
