@@ -344,6 +344,7 @@ export default function DashboardPage() {
 
   function kilometreFormatla(kilometre: number | null) {
     if (kilometre === null) return "Belirtilmedi";
+
     return `${new Intl.NumberFormat("tr-TR").format(kilometre)} km`;
   }
 
@@ -589,6 +590,7 @@ export default function DashboardPage() {
 
   async function cikisYap() {
     setHata("");
+
     const { error } = await supabase.auth.signOut();
 
     if (error) {
@@ -632,6 +634,7 @@ export default function DashboardPage() {
       setAraclar((mevcut) =>
         mevcut.filter((arac) => arac.id !== silinecekArac.id)
       );
+
       setSilinecekArac(null);
     } catch {
       setHata("Araç silinirken beklenmeyen bir hata oluştu.");
@@ -673,9 +676,11 @@ export default function DashboardPage() {
             <strong style={{ display: "block", marginBottom: "4px" }}>
               {baslik}
             </strong>
+
             <span style={{ color: "#64748B", fontSize: "14px" }}>
               {tarihFormatla(tarih)}
             </span>
+
             {altBilgi && (
               <span
                 style={{
@@ -724,7 +729,10 @@ export default function DashboardPage() {
             border: "1px solid #E2E8F0",
           }}
         >
-          <strong style={{ display: "block" }}>Resmî muayene dönemi</strong>
+          <strong style={{ display: "block" }}>
+            Resmî muayene dönemi
+          </strong>
+
           <span
             style={{
               display: "block",
@@ -763,6 +771,7 @@ export default function DashboardPage() {
             <strong style={{ display: "block", marginBottom: "4px" }}>
               Resmî muayene dönemi
             </strong>
+
             <span
               style={{
                 display: "block",
@@ -773,6 +782,7 @@ export default function DashboardPage() {
               {tarihFormatla(takvim.inspection_start_date)} –{" "}
               {tarihFormatla(takvim.inspection_end_date)}
             </span>
+
             <span
               style={{
                 display: "block",
@@ -814,7 +824,13 @@ export default function DashboardPage() {
         fontFamily: "Arial, Helvetica, sans-serif",
       }}
     >
-      <div style={{ width: "100%", maxWidth: "1100px", margin: "0 auto" }}>
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1100px",
+          margin: "0 auto",
+        }}
+      >
         <header
           style={{
             display: "flex",
@@ -826,7 +842,10 @@ export default function DashboardPage() {
           }}
         >
           <div>
-            <h1 style={{ margin: 0, fontSize: "38px" }}>🚗 Garaj Defteri</h1>
+            <h1 style={{ margin: 0, fontSize: "38px" }}>
+              🚗 Garaj Defteri
+            </h1>
+
             <p
               style={{
                 margin: "10px 0 0",
@@ -838,24 +857,52 @@ export default function DashboardPage() {
             </p>
           </div>
 
-          <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexWrap: "wrap",
+            }}
+          >
+            <Link
+              href="/profil"
+              style={ustButonStili(
+                "#FFFFFF",
+                "#334155",
+                "#CBD5E1"
+              )}
+            >
+              👤 Profilim
+            </Link>
+
             <Link
               href="/bildirim-ayarlari"
-              style={ustButonStili("#EEF2FF", "#3730A3", "#A5B4FC")}
+              style={ustButonStili(
+                "#EEF2FF",
+                "#3730A3",
+                "#A5B4FC"
+              )}
             >
               🔔 Bildirim Ayarları
             </Link>
 
             <Link
               href="/bildirim-gecmisi"
-              style={ustButonStili("#F0FDF4", "#166534", "#BBF7D0")}
+              style={ustButonStili(
+                "#F0FDF4",
+                "#166534",
+                "#BBF7D0"
+              )}
             >
               📨 Gönderilenler
             </Link>
 
             <Link
               href="/arac-ekle"
-              style={ustButonStili("#2563EB", "#FFFFFF")}
+              style={ustButonStili(
+                "#2563EB",
+                "#FFFFFF"
+              )}
             >
               + Araç Ekle
             </Link>
@@ -898,17 +945,48 @@ export default function DashboardPage() {
           <section
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))",
+              gridTemplateColumns:
+                "repeat(auto-fit, minmax(190px, 1fr))",
               gap: "16px",
               marginBottom: "30px",
             }}
           >
             {[
-              ["🚗 Toplam araç", araclar.length, "#EFF6FF", "#DBEAFE", "#1D4ED8"],
-              ["⏳ Yaklaşan işlem", yaklasanIslemSayisi, "#FFF7ED", "#FED7AA", "#C2410C"],
-              ["⚠️ Geciken işlem", gecikenIslemSayisi, "#FEF2F2", "#FECACA", "#B91C1C"],
-              ["📨 Gönderilen e-posta", gonderilenBildirimSayisi, "#F5F3FF", "#DDD6FE", "#6D28D9"],
-              ["💳 Toplam bakım masrafı", paraFormatla(toplamBakimMasrafi), "#F0FDF4", "#BBF7D0", "#166534"],
+              [
+                "🚗 Toplam araç",
+                araclar.length,
+                "#EFF6FF",
+                "#DBEAFE",
+                "#1D4ED8",
+              ],
+              [
+                "⏳ Yaklaşan işlem",
+                yaklasanIslemSayisi,
+                "#FFF7ED",
+                "#FED7AA",
+                "#C2410C",
+              ],
+              [
+                "⚠️ Geciken işlem",
+                gecikenIslemSayisi,
+                "#FEF2F2",
+                "#FECACA",
+                "#B91C1C",
+              ],
+              [
+                "📨 Gönderilen e-posta",
+                gonderilenBildirimSayisi,
+                "#F5F3FF",
+                "#DDD6FE",
+                "#6D28D9",
+              ],
+              [
+                "💳 Toplam bakım masrafı",
+                paraFormatla(toplamBakimMasrafi),
+                "#F0FDF4",
+                "#BBF7D0",
+                "#166534",
+              ],
             ].map(([baslik, deger, bg, border, color]) => (
               <div
                 key={String(baslik)}
@@ -929,11 +1007,15 @@ export default function DashboardPage() {
                 >
                   {baslik}
                 </span>
+
                 <strong
                   style={{
                     display: "block",
                     marginTop: "9px",
-                    fontSize: typeof deger === "number" ? "29px" : "22px",
+                    fontSize:
+                      typeof deger === "number"
+                        ? "29px"
+                        : "22px",
                   }}
                 >
                   {deger}
@@ -972,7 +1054,12 @@ export default function DashboardPage() {
                     flexWrap: "wrap",
                   }}
                 >
-                  <h2 style={{ margin: 0, fontSize: "24px" }}>
+                  <h2
+                    style={{
+                      margin: 0,
+                      fontSize: "24px",
+                    }}
+                  >
                     📧 Muayene e-posta hatırlatması
                   </h2>
 
@@ -983,7 +1070,9 @@ export default function DashboardPage() {
                       backgroundColor: emailBildirimiAcik
                         ? "#F0FDF4"
                         : "#FEF2F2",
-                      color: emailBildirimiAcik ? "#166534" : "#B91C1C",
+                      color: emailBildirimiAcik
+                        ? "#166534"
+                        : "#B91C1C",
                       border: emailBildirimiAcik
                         ? "1px solid #BBF7D0"
                         : "1px solid #FECACA",
@@ -991,7 +1080,9 @@ export default function DashboardPage() {
                       fontWeight: 800,
                     }}
                   >
-                    {emailBildirimiAcik ? "Açık" : "Kapalı"}
+                    {emailBildirimiAcik
+                      ? "Açık"
+                      : "Kapalı"}
                   </span>
                 </div>
 
@@ -1002,8 +1093,9 @@ export default function DashboardPage() {
                     lineHeight: 1.6,
                   }}
                 >
-                  Resmî muayene dönemi başlamadan {hatirlatmaGunu} gün önce
-                  otomatik e-posta gönderilir.
+                  Resmî muayene dönemi başlamadan{" "}
+                  {hatirlatmaGunu} gün önce otomatik e-posta
+                  gönderilir.
                 </p>
 
                 <div
@@ -1032,6 +1124,7 @@ export default function DashboardPage() {
                     >
                       Bildirim adresi
                     </span>
+
                     <strong
                       style={{
                         display: "block",
@@ -1060,7 +1153,13 @@ export default function DashboardPage() {
                     >
                       Hatırlatma zamanı
                     </span>
-                    <strong style={{ display: "block", marginTop: "5px" }}>
+
+                    <strong
+                      style={{
+                        display: "block",
+                        marginTop: "5px",
+                      }}
+                    >
                       {hatirlatmaGunu} gün önce
                     </strong>
                   </div>
@@ -1086,7 +1185,13 @@ export default function DashboardPage() {
         )}
 
         {!yukleniyor && araclar.length > 0 && (
-          <section style={{ ...kart, marginBottom: "30px", padding: "24px" }}>
+          <section
+            style={{
+              ...kart,
+              marginBottom: "30px",
+              padding: "24px",
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -1097,10 +1202,21 @@ export default function DashboardPage() {
               }}
             >
               <div>
-                <h2 style={{ margin: 0, fontSize: "25px" }}>
+                <h2
+                  style={{
+                    margin: 0,
+                    fontSize: "25px",
+                  }}
+                >
                   🔔 Bildirim Merkezi
                 </h2>
-                <p style={{ margin: "8px 0 0", color: "#64748B" }}>
+
+                <p
+                  style={{
+                    margin: "8px 0 0",
+                    color: "#64748B",
+                  }}
+                >
                   Yaklaşan ve geciken işlemleriniz.
                 </p>
               </div>
@@ -1137,9 +1253,16 @@ export default function DashboardPage() {
                 ✅ Şu anda yaklaşan veya geciken bir işleminiz yok.
               </div>
             ) : (
-              <div style={{ display: "grid", gap: "12px", marginTop: "20px" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gap: "12px",
+                  marginTop: "20px",
+                }}
+              >
                 {bildirimler.map((bildirim) => {
-                  const kritik = bildirim.seviye === "kritik";
+                  const kritik =
+                    bildirim.seviye === "kritik";
 
                   return (
                     <Link
@@ -1154,23 +1277,34 @@ export default function DashboardPage() {
                           ? "1px solid #FECACA"
                           : "1px solid #FED7AA",
                         borderRadius: "13px",
-                        backgroundColor: kritik ? "#FEF2F2" : "#FFF7ED",
+                        backgroundColor: kritik
+                          ? "#FEF2F2"
+                          : "#FFF7ED",
                         color: "#0F172A",
                         textDecoration: "none",
                       }}
                     >
-                      <span aria-hidden="true" style={{ fontSize: "27px" }}>
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          fontSize: "27px",
+                        }}
+                      >
                         {bildirim.ikon}
                       </span>
+
                       <div style={{ flex: 1 }}>
                         <strong
                           style={{
                             display: "block",
-                            color: kritik ? "#B91C1C" : "#C2410C",
+                            color: kritik
+                              ? "#B91C1C"
+                              : "#C2410C",
                           }}
                         >
                           {bildirim.baslik}
                         </strong>
+
                         <span
                           style={{
                             display: "block",
@@ -1182,7 +1316,13 @@ export default function DashboardPage() {
                           {bildirim.aciklama}
                         </span>
                       </div>
-                      <span aria-hidden="true" style={{ color: "#64748B" }}>
+
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          color: "#64748B",
+                        }}
+                      >
                         →
                       </span>
                     </Link>
@@ -1194,18 +1334,40 @@ export default function DashboardPage() {
         )}
 
         {yukleniyor && (
-          <section style={{ ...kart, padding: "30px", color: "#475569" }}>
+          <section
+            style={{
+              ...kart,
+              padding: "30px",
+              color: "#475569",
+            }}
+          >
             Araçlar ve resmî muayene takvimi yükleniyor...
           </section>
         )}
 
         {!yukleniyor && !hata && araclar.length === 0 && (
-          <section style={{ ...kart, padding: "34px" }}>
-            <h2 style={{ margin: 0 }}>Henüz araç eklemediniz</h2>
-            <p style={{ marginBottom: "22px", color: "#64748B", lineHeight: 1.6 }}>
-              İlk aracınızı ekleyerek muayene, sigorta, seyrüsefer ve bakım
-              tarihlerini takip etmeye başlayın.
+          <section
+            style={{
+              ...kart,
+              padding: "34px",
+            }}
+          >
+            <h2 style={{ margin: 0 }}>
+              Henüz araç eklemediniz
+            </h2>
+
+            <p
+              style={{
+                marginBottom: "22px",
+                color: "#64748B",
+                lineHeight: 1.6,
+              }}
+            >
+              İlk aracınızı ekleyerek muayene, sigorta,
+              seyrüsefer ve bakım tarihlerini takip etmeye
+              başlayın.
             </p>
+
             <Link
               href="/arac-ekle"
               style={{
@@ -1225,20 +1387,35 @@ export default function DashboardPage() {
 
         {!yukleniyor && araclar.length > 0 && (
           <section>
-            <h2 style={{ margin: "0 0 20px", fontSize: "26px" }}>Araçlarım</h2>
+            <h2
+              style={{
+                margin: "0 0 20px",
+                fontSize: "26px",
+              }}
+            >
+              Araçlarım
+            </h2>
 
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                gridTemplateColumns:
+                  "repeat(auto-fit, minmax(320px, 1fr))",
                 gap: "20px",
               }}
             >
               {araclar.map((arac) => {
-                const resmiMuayeneTakvimi = aracMuayeneTakvimleri.get(arac.id);
+                const resmiMuayeneTakvimi =
+                  aracMuayeneTakvimleri.get(arac.id);
 
                 return (
-                  <article key={arac.id} style={{ ...kart, padding: "26px" }}>
+                  <article
+                    key={arac.id}
+                    style={{
+                      ...kart,
+                      padding: "26px",
+                    }}
+                  >
                     <div
                       style={{
                         display: "flex",
@@ -1248,9 +1425,15 @@ export default function DashboardPage() {
                       }}
                     >
                       <div>
-                        <h3 style={{ margin: 0, fontSize: "23px" }}>
+                        <h3
+                          style={{
+                            margin: 0,
+                            fontSize: "23px",
+                          }}
+                        >
                           {arac.marka} {arac.model}
                         </h3>
+
                         <p
                           style={{
                             margin: "8px 0 0",
@@ -1261,6 +1444,7 @@ export default function DashboardPage() {
                         >
                           {arac.plaka}
                         </p>
+
                         <span
                           style={{
                             display: "inline-block",
@@ -1276,7 +1460,13 @@ export default function DashboardPage() {
                           Araç kategorisi: {arac.vehicle_category}
                         </span>
                       </div>
-                      <span aria-hidden="true" style={{ fontSize: "30px" }}>
+
+                      <span
+                        aria-hidden="true"
+                        style={{
+                          fontSize: "30px",
+                        }}
+                      >
                         🚘
                       </span>
                     </div>
@@ -1297,13 +1487,24 @@ export default function DashboardPage() {
                           backgroundColor: "#F8FAFC",
                         }}
                       >
-                        <strong style={{ display: "block", marginBottom: "4px" }}>
+                        <strong
+                          style={{
+                            display: "block",
+                            marginBottom: "4px",
+                          }}
+                        >
                           Yıl
                         </strong>
-                        <span style={{ color: "#64748B" }}>
+
+                        <span
+                          style={{
+                            color: "#64748B",
+                          }}
+                        >
                           {arac.yil ?? "Belirtilmedi"}
                         </span>
                       </div>
+
                       <div
                         style={{
                           padding: "12px",
@@ -1312,28 +1513,56 @@ export default function DashboardPage() {
                           backgroundColor: "#F8FAFC",
                         }}
                       >
-                        <strong style={{ display: "block", marginBottom: "4px" }}>
+                        <strong
+                          style={{
+                            display: "block",
+                            marginBottom: "4px",
+                          }}
+                        >
                           Kilometre
                         </strong>
-                        <span style={{ color: "#64748B" }}>
+
+                        <span
+                          style={{
+                            color: "#64748B",
+                          }}
+                        >
                           {kilometreFormatla(arac.kilometre)}
                         </span>
                       </div>
                     </div>
 
-                    <div style={{ display: "grid", gap: "10px", marginTop: "14px" }}>
-                      <MuayeneSatiri takvim={resmiMuayeneTakvimi} />
-                      <TarihSatiri baslik="Sigorta" tarih={arac.sigorta_tarihi} />
+                    <div
+                      style={{
+                        display: "grid",
+                        gap: "10px",
+                        marginTop: "14px",
+                      }}
+                    >
+                      <MuayeneSatiri
+                        takvim={resmiMuayeneTakvimi}
+                      />
+
+                      <TarihSatiri
+                        baslik="Sigorta"
+                        tarih={arac.sigorta_tarihi}
+                      />
+
                       <TarihSatiri
                         baslik="Seyrüsefer"
                         tarih={arac.seyrusefer_tarihi}
                       />
+
                       <TarihSatiri
                         baslik="Sonraki bakım"
-                        tarih={sonrakiBakimTarihiHesapla(arac.son_bakim_tarihi)}
+                        tarih={sonrakiBakimTarihiHesapla(
+                          arac.son_bakim_tarihi
+                        )}
                         altBilgi={
                           arac.son_bakim_tarihi
-                            ? `Son bakım: ${tarihFormatla(arac.son_bakim_tarihi)}`
+                            ? `Son bakım: ${tarihFormatla(
+                                arac.son_bakim_tarihi
+                              )}`
                             : "Son bakım tarihi girilmedi"
                         }
                       />
@@ -1350,7 +1579,9 @@ export default function DashboardPage() {
                         border: emailBildirimiAcik
                           ? "1px solid #BBF7D0"
                           : "1px solid #FECACA",
-                        color: emailBildirimiAcik ? "#166534" : "#B91C1C",
+                        color: emailBildirimiAcik
+                          ? "#166534"
+                          : "#B91C1C",
                         fontSize: "13px",
                         fontWeight: 700,
                       }}
@@ -1363,35 +1594,54 @@ export default function DashboardPage() {
                     <div
                       style={{
                         display: "grid",
-                        gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+                        gridTemplateColumns:
+                          "repeat(auto-fit, minmax(140px, 1fr))",
                         gap: "10px",
                         marginTop: "24px",
                       }}
                     >
                       <Link
                         href={`/arac/${arac.id}`}
-                        style={butonStili("#FFFFFF", "#334155", "#CBD5E1")}
+                        style={butonStili(
+                          "#FFFFFF",
+                          "#334155",
+                          "#CBD5E1"
+                        )}
                       >
                         🚘 Detay
                       </Link>
+
                       <Link
                         href={`/bakim-ekle/${arac.id}`}
-                        style={butonStili("#059669", "#FFFFFF")}
+                        style={butonStili(
+                          "#059669",
+                          "#FFFFFF"
+                        )}
                       >
                         🔧 Bakım Ekle
                       </Link>
+
                       <Link
                         href={`/bakim-gecmisi/${arac.id}`}
-                        style={butonStili("#EEF2FF", "#3730A3", "#A5B4FC")}
+                        style={butonStili(
+                          "#EEF2FF",
+                          "#3730A3",
+                          "#A5B4FC"
+                        )}
                       >
                         📋 Bakım Geçmişi
                       </Link>
+
                       <Link
                         href={`/arac-duzenle/${arac.id}`}
-                        style={butonStili("#2563EB", "#FFFFFF")}
+                        style={butonStili(
+                          "#2563EB",
+                          "#FFFFFF"
+                        )}
                       >
                         ✏️ Düzenle
                       </Link>
+
                       <button
                         type="button"
                         onClick={() => setSilinecekArac(arac)}
@@ -1401,14 +1651,20 @@ export default function DashboardPage() {
                           border: "none",
                           borderRadius: "10px",
                           backgroundColor:
-                            silinenAracId === arac.id ? "#94A3B8" : "#DC2626",
+                            silinenAracId === arac.id
+                              ? "#94A3B8"
+                              : "#DC2626",
                           color: "#FFFFFF",
                           fontWeight: 700,
                           cursor:
-                            silinenAracId === arac.id ? "not-allowed" : "pointer",
+                            silinenAracId === arac.id
+                              ? "not-allowed"
+                              : "pointer",
                         }}
                       >
-                        {silinenAracId === arac.id ? "Siliniyor..." : "🗑️ Sil"}
+                        {silinenAracId === arac.id
+                          ? "Siliniyor..."
+                          : "🗑️ Sil"}
                       </button>
                     </div>
                   </article>
@@ -1423,7 +1679,9 @@ export default function DashboardPage() {
         <div
           role="presentation"
           onClick={() => {
-            if (!silinenAracId) setSilinecekArac(null);
+            if (!silinenAracId) {
+              setSilinecekArac(null);
+            }
           }}
           style={{
             position: "fixed",
@@ -1449,7 +1707,8 @@ export default function DashboardPage() {
               border: "1px solid #E2E8F0",
               borderRadius: "20px",
               backgroundColor: "#FFFFFF",
-              boxShadow: "0 30px 80px rgba(15, 23, 42, 0.35)",
+              boxShadow:
+                "0 30px 80px rgba(15, 23, 42, 0.35)",
             }}
           >
             <div
@@ -1466,13 +1725,28 @@ export default function DashboardPage() {
             >
               🗑️
             </div>
-            <h2 id="silme-basligi" style={{ margin: "22px 0 10px", fontSize: "25px" }}>
+
+            <h2
+              id="silme-basligi"
+              style={{
+                margin: "22px 0 10px",
+                fontSize: "25px",
+              }}
+            >
               Bu aracı silmek istiyor musunuz?
             </h2>
-            <p style={{ margin: 0, color: "#64748B", lineHeight: 1.6 }}>
-              Bu işlem geri alınamaz. Araca bağlı bakım kayıtları da kalıcı
-              olarak silinecektir.
+
+            <p
+              style={{
+                margin: 0,
+                color: "#64748B",
+                lineHeight: 1.6,
+              }}
+            >
+              Bu işlem geri alınamaz. Araca bağlı bakım kayıtları
+              da kalıcı olarak silinecektir.
             </p>
+
             <div
               style={{
                 marginTop: "20px",
@@ -1482,9 +1756,15 @@ export default function DashboardPage() {
                 backgroundColor: "#F8FAFC",
               }}
             >
-              <strong style={{ display: "block", fontSize: "18px" }}>
+              <strong
+                style={{
+                  display: "block",
+                  fontSize: "18px",
+                }}
+              >
                 {silinecekArac.marka} {silinecekArac.model}
               </strong>
+
               <span
                 style={{
                   display: "block",
@@ -1496,6 +1776,7 @@ export default function DashboardPage() {
                 {silinecekArac.plaka}
               </span>
             </div>
+
             <div
               style={{
                 display: "flex",
@@ -1516,11 +1797,14 @@ export default function DashboardPage() {
                   backgroundColor: "#FFFFFF",
                   color: "#334155",
                   fontWeight: 700,
-                  cursor: silinenAracId ? "not-allowed" : "pointer",
+                  cursor: silinenAracId
+                    ? "not-allowed"
+                    : "pointer",
                 }}
               >
                 Vazgeç
               </button>
+
               <button
                 type="button"
                 onClick={aracSil}
@@ -1529,13 +1813,19 @@ export default function DashboardPage() {
                   padding: "12px 18px",
                   border: "none",
                   borderRadius: "10px",
-                  backgroundColor: silinenAracId ? "#94A3B8" : "#DC2626",
+                  backgroundColor: silinenAracId
+                    ? "#94A3B8"
+                    : "#DC2626",
                   color: "#FFFFFF",
                   fontWeight: 800,
-                  cursor: silinenAracId ? "not-allowed" : "pointer",
+                  cursor: silinenAracId
+                    ? "not-allowed"
+                    : "pointer",
                 }}
               >
-                {silinenAracId ? "Araç siliniyor..." : "Aracı Sil"}
+                {silinenAracId
+                  ? "Araç siliniyor..."
+                  : "Aracı Sil"}
               </button>
             </div>
           </section>
@@ -1552,7 +1842,9 @@ function butonStili(
 ) {
   return {
     padding: "11px 14px",
-    border: borderColor ? `1px solid ${borderColor}` : "none",
+    border: borderColor
+      ? `1px solid ${borderColor}`
+      : "none",
     borderRadius: "10px",
     backgroundColor,
     color,
@@ -1569,7 +1861,9 @@ function ustButonStili(
 ) {
   return {
     padding: "13px 18px",
-    border: borderColor ? `1px solid ${borderColor}` : "none",
+    border: borderColor
+      ? `1px solid ${borderColor}`
+      : "none",
     borderRadius: "10px",
     backgroundColor,
     color,
