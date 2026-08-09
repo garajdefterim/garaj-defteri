@@ -17,6 +17,11 @@ export default function KayitPage() {
         provider: "google",
         options: {
           redirectTo: `${window.location.origin}/dashboard`,
+
+          // Google hesap seçme ekranını gösterir.
+          queryParams: {
+            prompt: "select_account",
+          },
         },
       });
 
@@ -62,7 +67,7 @@ export default function KayitPage() {
         >
           <div
             style={{
-              fontSize: "44px",
+              fontSize: "46px",
               marginBottom: "12px",
             }}
           >
@@ -76,7 +81,7 @@ export default function KayitPage() {
               fontSize: "30px",
             }}
           >
-            Garaj Defteri'ne Katıl
+            Garaj Defteri&apos;ne Katıl
           </h1>
 
           <p
@@ -84,9 +89,10 @@ export default function KayitPage() {
               margin: "12px 0 0",
               color: "#64748B",
               lineHeight: 1.6,
+              fontSize: "15px",
             }}
           >
-            Google hesabınızla birkaç saniye içinde hesabınızı oluşturun.
+            Google hesabınızla saniyeler içinde hesabınızı oluşturun.
           </p>
         </div>
 
@@ -96,9 +102,10 @@ export default function KayitPage() {
           disabled={googleYukleniyor}
           style={{
             width: "100%",
-            padding: "15px 16px",
+            minHeight: "54px",
+            padding: "14px 18px",
             border: "1px solid #CBD5E1",
-            borderRadius: "11px",
+            borderRadius: "12px",
             backgroundColor: "#FFFFFF",
             color: "#0F172A",
             fontSize: "16px",
@@ -109,13 +116,14 @@ export default function KayitPage() {
             justifyContent: "center",
             gap: "12px",
             opacity: googleYukleniyor ? 0.7 : 1,
+            boxShadow: "0 2px 8px rgba(15, 23, 42, 0.05)",
           }}
         >
           <span
             aria-hidden="true"
             style={{
-              width: "26px",
-              height: "26px",
+              width: "28px",
+              height: "28px",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
@@ -123,7 +131,7 @@ export default function KayitPage() {
               border: "1px solid #E2E8F0",
               backgroundColor: "#FFFFFF",
               color: "#4285F4",
-              fontSize: "18px",
+              fontSize: "19px",
               fontWeight: 900,
             }}
           >
@@ -131,7 +139,7 @@ export default function KayitPage() {
           </span>
 
           {googleYukleniyor
-            ? "Google'a yönlendiriliyor..."
+            ? "Google hesabınız açılıyor..."
             : "Google ile devam et"}
         </button>
 
@@ -162,11 +170,20 @@ export default function KayitPage() {
             backgroundColor: "#EFF6FF",
             color: "#1E3A8A",
             fontSize: "14px",
-            lineHeight: 1.6,
+            lineHeight: 1.65,
           }}
         >
-          Google ile devam ettiğinizde adınız ve e-posta adresiniz Google
-          hesabınızdan alınır. Ayrı bir şifre oluşturmanız gerekmez.
+          <strong
+            style={{
+              display: "block",
+              marginBottom: "5px",
+            }}
+          >
+            Hızlı ve kolay kayıt
+          </strong>
+
+          Google hesabınızı seçmeniz yeterlidir. Adınız ve e-posta adresiniz
+          Google hesabınızdan alınır. Ayrı bir şifre oluşturmanız gerekmez.
         </div>
 
         <p
