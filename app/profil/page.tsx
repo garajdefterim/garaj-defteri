@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { supabase } from "../../lib/supabase";
 
 type ProfilBilgisi = {
@@ -10,15 +10,24 @@ type ProfilBilgisi = {
   email: string;
   fotograf: string | null;
   provider: string;
+  olusturulmaTarihi: string | null;
 };
 
 export default function ProfilPage() {
   const router = useRouter();
 
   const [profil, setProfil] = useState<ProfilBilgisi | null>(null);
+  const [adSoyad, setAdSoyad] = useState("");
+  const [email, setEmail] = useState("");
+
+  const [tema, setTema] = useState<"acik" | "koyu">("acik");
+
   const [yukleniyor, setYukleniyor] = useState(true);
+  const [kaydediliyor, setKaydediliyor] = useState(false);
   const [cikisYapiliyor, setCikisYapiliyor] = useState(false);
+
   const [hata, setHata] = useState("");
+  const [mesaj, setMesaj] = useState("");
 
   useEffect(() => {
     async function profiliGetir() {
@@ -38,7 +47,7 @@ export default function ProfilPage() {
 
         const metadata = user.user_metadata ?? {};
 
-        const adSoyad =
+        const kullaniciAdi =
           metadata.full_name ||
           metadata.name ||
           metadata.ad_soyad ||
@@ -54,12 +63,23 @@ export default function ProfilPage() {
             ? "Google"
             : "E-posta";
 
-        setProfil({
-          adSoyad,
+        const bilgi: ProfilBilgisi = {
+          adSoyad: kullaniciAdi,
           email: user.email ?? "",
           fotograf,
           provider,
-        });
+          olusturulmaTarihi: user.created_at ?? null,
+        };
+
+        setProfil(bilgi);
+        setAdSoyad(bilgi.adSoyad);
+        setEmail(bilgi.email);
+
+        const kayitliTema = localStorage.getItem("garaj-defteri-tema");
+
+        if (kayitliTema === "koyu") {
+          setTema("koyu");
+        }
       } catch {
         setHata("Profil bilgileri alınırken bir hata oluştu.");
       } finally {
@@ -69,6 +89,94 @@ export default function ProfilPage() {
 
     profiliGetir();
   }, [router]);
+
+  async function bilgileriKaydet(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    setHata("");
+    setMesaj("");
+    setKaydediliyor(true);
+
+    try {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        router.replace("/giris");
+        return;
+      }
+
+      const temizAd = adSoyad.trim();
+      const temizEmail = email.trim().toLowerCase();
+
+      if (!temizAd) {
+        setHata("Ad soyad boş bırakılamaz.");
+        return;
+      }
+
+      if (!temizEmail) {
+        setHata("E-posta adresi boş bırakılamaz.");
+        return;
+      }
+
+      const emailDegisti =
+        temizEmail !== (user.email ?? "").toLowerCase();
+
+      const { data, error } = await supabase.auth.updateUser({
+        ...(emailDegisti
+          ? {
+              email: temizEmail,
+            }
+          : {}),
+        data: {
+          ...user.user_metadata,
+          ad_soyad: temizAd,
+          full_name: temizAd,
+          name: temizAd,
+        },
+      });
+
+      if (error) {
+        setHata(error.message);
+        return;
+      }
+
+      setProfil((mevcut) =>
+        mevcut
+          ? {
+              ...mevcut,
+              adSoyad: temizAd,
+              email: data.user?.email ?? temizEmail,
+            }
+          : mevcut
+      );
+
+      if (emailDegisti) {
+        setMesaj(
+          "Profil bilgileriniz kaydedildi. E-posta değişikliği için doğrulama bağlantısı gönderilmiş olabilir."
+        );
+      } else {
+        setMesaj("Profil bilgileriniz başarıyla kaydedildi.");
+      }
+    } catch {
+      setHata("Profil kaydedilirken beklenmeyen bir hata oluştu.");
+    } finally {
+      setKaydediliyor(false);
+    }
+  }
+
+  function temaDegistir(yeniTema: "acik" | "koyu") {
+    setTema(yeniTema);
+    localStorage.setItem("garaj-defteri-tema", yeniTema);
+
+    if (yeniTema === "koyu") {
+      document.documentElement.style.backgroundColor = "#0F172A";
+    } else {
+      document.documentElement.style.backgroundColor = "#F8FAFC";
+    }
+  }
 
   async function cikisYap() {
     setHata("");
@@ -91,6 +199,16 @@ export default function ProfilPage() {
     }
   }
 
+  function tarihFormatla(tarih: string | null) {
+    if (!tarih) {
+      return "Bilinmiyor";
+    }
+
+    return new Intl.DateTimeFormat("tr-TR", {
+      dateStyle: "long",
+    }).format(new Date(tarih));
+  }
+
   if (yukleniyor) {
     return (
       <main
@@ -109,42 +227,88 @@ export default function ProfilPage() {
     );
   }
 
+  const koyuTema = tema === "koyu";
+
+  const sayfaArkaPlan = koyuTema ? "#0F172A" : "#F8FAFC";
+  const kartArkaPlan = koyuTema ? "#1E293B" : "#FFFFFF";
+  const anaRenk = koyuTema ? "#F8FAFC" : "#0F172A";
+  const ikinciRenk = koyuTema ? "#CBD5E1" : "#64748B";
+  const kenarlik = koyuTema ? "#334155" : "#E2E8F0";
+  const inputArkaPlan = koyuTema ? "#0F172A" : "#FFFFFF";
+
+  const kartStili = {
+    padding: "26px",
+    border: `1px solid ${kenarlik}`,
+    borderRadius: "18px",
+    backgroundColor: kartArkaPlan,
+    boxShadow: koyuTema
+      ? "none"
+      : "0 10px 30px rgba(15, 23, 42, 0.06)",
+  };
+
+  const inputStili = {
+    width: "100%",
+    padding: "13px 14px",
+    border: `1px solid ${koyuTema ? "#475569" : "#CBD5E1"}`,
+    borderRadius: "10px",
+    backgroundColor: inputArkaPlan,
+    color: anaRenk,
+    fontSize: "16px",
+    boxSizing: "border-box" as const,
+  };
+
   return (
     <main
       style={{
         minHeight: "100vh",
         padding: "40px 24px",
-        backgroundColor: "#F8FAFC",
-        color: "#0F172A",
+        backgroundColor: sayfaArkaPlan,
+        color: anaRenk,
         fontFamily: "Arial, Helvetica, sans-serif",
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: "720px",
+          maxWidth: "820px",
           margin: "0 auto",
         }}
       >
-        <Link
-          href="/dashboard"
+        <div
           style={{
-            color: "#2563EB",
-            fontWeight: 700,
-            textDecoration: "none",
+            display: "flex",
+            justifyContent: "space-between",
+            gap: "14px",
+            flexWrap: "wrap",
+            alignItems: "center",
           }}
         >
-          ← Panele dön
-        </Link>
+          <Link
+            href="/dashboard"
+            style={{
+              color: "#2563EB",
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
+            ← Panele dön
+          </Link>
+
+          <span
+            style={{
+              color: ikinciRenk,
+              fontSize: "14px",
+            }}
+          >
+            Hesap Ayarları
+          </span>
+        </div>
 
         <section
           style={{
+            ...kartStili,
             marginTop: "24px",
             padding: "32px",
-            backgroundColor: "#FFFFFF",
-            border: "1px solid #E2E8F0",
-            borderRadius: "20px",
-            boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
           }}
         >
           <div
@@ -161,8 +325,8 @@ export default function ProfilPage() {
                 alt="Profil fotoğrafı"
                 referrerPolicy="no-referrer"
                 style={{
-                  width: "84px",
-                  height: "84px",
+                  width: "92px",
+                  height: "92px",
                   borderRadius: "50%",
                   objectFit: "cover",
                   border: "3px solid #DBEAFE",
@@ -171,15 +335,15 @@ export default function ProfilPage() {
             ) : (
               <div
                 style={{
-                  width: "84px",
-                  height: "84px",
+                  width: "92px",
+                  height: "92px",
                   borderRadius: "50%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: "#EFF6FF",
+                  backgroundColor: koyuTema ? "#334155" : "#EFF6FF",
                   border: "3px solid #DBEAFE",
-                  fontSize: "34px",
+                  fontSize: "36px",
                 }}
               >
                 👤
@@ -190,9 +354,9 @@ export default function ProfilPage() {
               <p
                 style={{
                   margin: "0 0 5px",
-                  color: "#64748B",
-                  fontSize: "14px",
-                  fontWeight: 700,
+                  color: ikinciRenk,
+                  fontSize: "13px",
+                  fontWeight: 800,
                 }}
               >
                 HESABIM
@@ -201,7 +365,7 @@ export default function ProfilPage() {
               <h1
                 style={{
                   margin: 0,
-                  fontSize: "28px",
+                  fontSize: "30px",
                 }}
               >
                 {profil?.adSoyad}
@@ -210,143 +374,429 @@ export default function ProfilPage() {
               <p
                 style={{
                   margin: "7px 0 0",
-                  color: "#64748B",
+                  color: ikinciRenk,
                 }}
               >
                 {profil?.email}
               </p>
             </div>
           </div>
+        </section>
+
+        <form
+          onSubmit={bilgileriKaydet}
+          style={{
+            ...kartStili,
+            marginTop: "20px",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontSize: "22px",
+            }}
+          >
+            👤 Kişisel Bilgiler
+          </h2>
+
+          <p
+            style={{
+              margin: "8px 0 22px",
+              color: ikinciRenk,
+              lineHeight: 1.5,
+            }}
+          >
+            Hesabınızda görünen bilgileri buradan düzenleyebilirsiniz.
+          </p>
 
           <div
             style={{
-              marginTop: "30px",
               display: "grid",
-              gap: "14px",
+              gap: "18px",
             }}
           >
-            <div
+            <label
               style={{
-                padding: "18px",
-                borderRadius: "12px",
-                border: "1px solid #E2E8F0",
-                backgroundColor: "#F8FAFC",
+                display: "grid",
+                gap: "8px",
+                fontWeight: 700,
               }}
             >
-              <span
-                style={{
-                  display: "block",
-                  color: "#64748B",
-                  fontSize: "13px",
-                  fontWeight: 700,
-                }}
-              >
-                E-POSTA
-              </span>
+              Ad Soyad
 
-              <strong
-                style={{
-                  display: "block",
-                  marginTop: "6px",
-                }}
-              >
-                {profil?.email}
-              </strong>
-            </div>
+              <input
+                type="text"
+                value={adSoyad}
+                onChange={(event) => setAdSoyad(event.target.value)}
+                style={inputStili}
+              />
+            </label>
 
-            <div
+            <label
               style={{
-                padding: "18px",
-                borderRadius: "12px",
-                border: "1px solid #E2E8F0",
-                backgroundColor: "#F8FAFC",
+                display: "grid",
+                gap: "8px",
+                fontWeight: 700,
               }}
             >
+              E-posta
+
+              <input
+                type="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                style={inputStili}
+              />
+
               <span
                 style={{
-                  display: "block",
-                  color: "#64748B",
-                  fontSize: "13px",
-                  fontWeight: 700,
+                  color: ikinciRenk,
+                  fontSize: "12px",
+                  fontWeight: 400,
                 }}
               >
-                GİRİŞ YÖNTEMİ
+                E-posta adresinizi değiştirirseniz yeni adresi doğrulamanız
+                istenebilir.
               </span>
+            </label>
 
-              <strong
+            {hata && (
+              <div
+                role="alert"
                 style={{
-                  display: "block",
-                  marginTop: "6px",
+                  padding: "13px",
+                  borderRadius: "10px",
+                  border: "1px solid #FECACA",
+                  backgroundColor: "#FEF2F2",
+                  color: "#B91C1C",
                 }}
               >
-                {profil?.provider === "Google"
-                  ? "Google ile giriş"
-                  : "E-posta ile giriş"}
-              </strong>
-            </div>
-          </div>
+                {hata}
+              </div>
+            )}
 
-          {hata && (
-            <div
-              role="alert"
+            {mesaj && (
+              <div
+                role="status"
+                style={{
+                  padding: "13px",
+                  borderRadius: "10px",
+                  border: "1px solid #BBF7D0",
+                  backgroundColor: "#F0FDF4",
+                  color: "#166534",
+                }}
+              >
+                {mesaj}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={kaydediliyor}
               style={{
-                marginTop: "20px",
-                padding: "13px",
+                padding: "14px",
+                border: "none",
                 borderRadius: "10px",
-                border: "1px solid #FECACA",
-                backgroundColor: "#FEF2F2",
-                color: "#B91C1C",
+                backgroundColor: kaydediliyor ? "#94A3B8" : "#2563EB",
+                color: "#FFFFFF",
+                fontSize: "16px",
+                fontWeight: 800,
+                cursor: kaydediliyor ? "not-allowed" : "pointer",
               }}
             >
-              {hata}
-            </div>
-          )}
+              {kaydediliyor
+                ? "Kaydediliyor..."
+                : "Kişisel Bilgileri Kaydet"}
+            </button>
+          </div>
+        </form>
+
+        <section
+          style={{
+            ...kartStili,
+            marginTop: "20px",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontSize: "22px",
+            }}
+          >
+            🔐 Hesap Bilgileri
+          </h2>
 
           <div
             style={{
               display: "grid",
               gap: "12px",
-              marginTop: "28px",
+              marginTop: "20px",
             }}
           >
-            <Link
-              href="/bildirim-ayarlari"
+            <BilgiSatiri
+              baslik="Giriş yöntemi"
+              deger={
+                profil?.provider === "Google"
+                  ? "Google ile giriş"
+                  : "E-posta ile giriş"
+              }
+              koyuTema={koyuTema}
+            />
+
+            <BilgiSatiri
+              baslik="Hesap oluşturulma tarihi"
+              deger={tarihFormatla(profil?.olusturulmaTarihi ?? null)}
+              koyuTema={koyuTema}
+            />
+          </div>
+        </section>
+
+        <section
+          style={{
+            ...kartStili,
+            marginTop: "20px",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontSize: "22px",
+            }}
+          >
+            🎨 Görünüm
+          </h2>
+
+          <p
+            style={{
+              margin: "8px 0 20px",
+              color: ikinciRenk,
+            }}
+          >
+            Garaj Defteri profil sayfasının görünümünü seçin.
+          </p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gap: "12px",
+            }}
+          >
+            <button
+              type="button"
+              onClick={() => temaDegistir("acik")}
               style={{
                 padding: "15px",
                 borderRadius: "11px",
-                backgroundColor: "#EFF6FF",
-                border: "1px solid #BFDBFE",
-                color: "#1D4ED8",
+                border:
+                  tema === "acik"
+                    ? "2px solid #2563EB"
+                    : `1px solid ${kenarlik}`,
+                backgroundColor: "#FFFFFF",
+                color: "#0F172A",
                 fontWeight: 800,
-                textAlign: "center",
-                textDecoration: "none",
+                cursor: "pointer",
               }}
             >
-              🔔 Bildirim Ayarları
-            </Link>
+              ☀️ Açık Tema
+            </button>
 
             <button
               type="button"
-              onClick={cikisYap}
-              disabled={cikisYapiliyor}
+              onClick={() => temaDegistir("koyu")}
               style={{
                 padding: "15px",
                 borderRadius: "11px",
-                border: "1px solid #FECACA",
-                backgroundColor: "#FEF2F2",
-                color: "#B91C1C",
-                fontSize: "16px",
+                border:
+                  tema === "koyu"
+                    ? "2px solid #60A5FA"
+                    : "1px solid #475569",
+                backgroundColor: "#0F172A",
+                color: "#FFFFFF",
                 fontWeight: 800,
-                cursor: cikisYapiliyor
-                  ? "not-allowed"
-                  : "pointer",
+                cursor: "pointer",
               }}
             >
-              {cikisYapiliyor ? "Çıkış yapılıyor..." : "Çıkış Yap"}
+              🌙 Koyu Tema
             </button>
           </div>
         </section>
+
+        <section
+          style={{
+            ...kartStili,
+            marginTop: "20px",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontSize: "22px",
+            }}
+          >
+            🔔 Bildirimler
+          </h2>
+
+          <p
+            style={{
+              margin: "8px 0 20px",
+              color: ikinciRenk,
+            }}
+          >
+            Muayene e-postalarını ve hatırlatma sürelerini yönetin.
+          </p>
+
+          <Link
+            href="/bildirim-ayarlari"
+            style={{
+              display: "block",
+              padding: "14px",
+              borderRadius: "10px",
+              backgroundColor: "#EFF6FF",
+              border: "1px solid #BFDBFE",
+              color: "#1D4ED8",
+              textAlign: "center",
+              textDecoration: "none",
+              fontWeight: 800,
+            }}
+          >
+            🔔 Bildirim Ayarlarını Aç
+          </Link>
+        </section>
+
+        <section
+          style={{
+            ...kartStili,
+            marginTop: "20px",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontSize: "22px",
+            }}
+          >
+            🚪 Oturum
+          </h2>
+
+          <button
+            type="button"
+            onClick={cikisYap}
+            disabled={cikisYapiliyor}
+            style={{
+              width: "100%",
+              marginTop: "20px",
+              padding: "14px",
+              borderRadius: "10px",
+              border: "1px solid #FECACA",
+              backgroundColor: "#FEF2F2",
+              color: "#B91C1C",
+              fontSize: "16px",
+              fontWeight: 800,
+              cursor: cikisYapiliyor ? "not-allowed" : "pointer",
+            }}
+          >
+            {cikisYapiliyor
+              ? "Çıkış yapılıyor..."
+              : "Çıkış Yap"}
+          </button>
+        </section>
+
+        <section
+          style={{
+            marginTop: "20px",
+            padding: "26px",
+            borderRadius: "18px",
+            border: "1px solid #FECACA",
+            backgroundColor: koyuTema ? "#450A0A" : "#FFF7F7",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              color: koyuTema ? "#FCA5A5" : "#B91C1C",
+              fontSize: "22px",
+            }}
+          >
+            ⚠️ Tehlikeli Bölge
+          </h2>
+
+          <p
+            style={{
+              color: koyuTema ? "#FECACA" : "#64748B",
+              lineHeight: 1.6,
+            }}
+          >
+            Hesabınızı silme özelliğini bir sonraki adımda güvenli sunucu
+            fonksiyonu ile bağlayacağız. Bu işlem araçlarınızı ve hesap
+            verilerinizi kalıcı olarak silebileceği için tarayıcı tarafında
+            yapılmamalıdır.
+          </p>
+
+          <button
+            type="button"
+            disabled
+            style={{
+              width: "100%",
+              padding: "14px",
+              border: "none",
+              borderRadius: "10px",
+              backgroundColor: "#94A3B8",
+              color: "#FFFFFF",
+              fontSize: "16px",
+              fontWeight: 800,
+              cursor: "not-allowed",
+            }}
+          >
+            Hesabımı Sil
+          </button>
+        </section>
       </div>
     </main>
+  );
+}
+
+function BilgiSatiri({
+  baslik,
+  deger,
+  koyuTema,
+}: {
+  baslik: string;
+  deger: string;
+  koyuTema: boolean;
+}) {
+  return (
+    <div
+      style={{
+        padding: "16px",
+        borderRadius: "11px",
+        border: koyuTema
+          ? "1px solid #475569"
+          : "1px solid #E2E8F0",
+        backgroundColor: koyuTema
+          ? "#0F172A"
+          : "#F8FAFC",
+      }}
+    >
+      <span
+        style={{
+          display: "block",
+          color: koyuTema ? "#94A3B8" : "#64748B",
+          fontSize: "13px",
+          fontWeight: 700,
+        }}
+      >
+        {baslik}
+      </span>
+
+      <strong
+        style={{
+          display: "block",
+          marginTop: "6px",
+        }}
+      >
+        {deger}
+      </strong>
+    </div>
   );
 }
