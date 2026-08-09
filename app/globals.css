@@ -222,3 +222,84 @@ a {
     color 0.2s ease,
     border-color 0.2s ease;
 }
+/* Koyu temada buton ve yazı kontrast düzeltmeleri */
+
+html[data-theme="koyu"] a[style*="background-color: #EFF6FF"],
+html[data-theme="koyu"] a[style*="background-color: #EEF2FF"],
+html[data-theme="koyu"] a[style*="background-color: #F0FDF4"] {
+  background-color: #1e293b !important;
+  color: #e2e8f0 !important;
+  border-color: #475569 !important;
+}
+
+html[data-theme="koyu"] button[style*="background-color: #FFFFFF"],
+html[data-theme="koyu"] a[style*="background-color: #FFFFFF"] {
+  background-color: #1e293b !important;
+  color: #f8fafc !important;
+  border-color: #475569 !important;
+}
+
+html[data-theme="koyu"] [style*="background-color: #EFF6FF"] {
+  background-color: #172554 !important;
+  color: #dbeafe !important;
+}
+
+html[data-theme="koyu"] [style*="background-color: #EEF2FF"] {
+  background-color: #312e81 !important;
+  color: #e0e7ff !important;
+}
+
+html[data-theme="koyu"] [style*="background-color: #F0FDF4"] {
+  background-color: #14532d !important;
+  color: #dcfce7 !important;
+}
+
+html[data-theme="koyu"] [style*="background-color: #FFF7ED"] {
+  background-color: #7c2d12 !important;
+  color: #ffedd5 !important;
+}
+
+html[data-theme="koyu"] [style*="background-color: #FEF2F2"] {
+  background-color: #7f1d1d !important;
+  color: #fee2e2 !important;
+}
+
+html[data-theme="koyu"] [style*="background-color: #F5F3FF"] {
+  background-color: #4c1d95 !important;
+  color: #ede9fe !important;
+}
+
+html[data-theme="koyu"] [style*="color: #1D4ED8"],
+html[data-theme="koyu"] [style*="color: #2563EB"] {
+  color: #93c5fd !important;
+}
+
+html[data-theme="koyu"] [style*="color: #3730A3"],
+html[data-theme="koyu"] [style*="color: #6D28D9"] {
+  color: #c4b5fd !important;
+}
+
+html[data-theme="koyu"] [style*="color: #166534"] {
+  color: #bbf7d0 !important;
+}
+
+html[data-theme="koyu"] [style*="color: #C2410C"] {
+  color: #fdba74 !important;
+}
+
+html[data-theme="koyu"] [style*="color: #B91C1C"] {
+  color: #fecaca !important;
+}
+
+html[data-theme="koyu"] strong,
+html[data-theme="koyu"] h1,
+html[data-theme="koyu"] h2,
+html[data-theme="koyu"] h3 {
+  color: #f8fafc;
+}
+
+html[data-theme="koyu"] p,
+html[data-theme="koyu"] span,
+html[data-theme="koyu"] label {
+  text-shadow: none;
+}
