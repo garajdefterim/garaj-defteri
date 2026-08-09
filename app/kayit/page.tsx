@@ -1,64 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type FormEvent } from "react";
+import { useState } from "react";
 import { supabase } from "../../lib/supabase";
 
 export default function KayitPage() {
-  const [adSoyad, setAdSoyad] = useState("");
-  const [email, setEmail] = useState("");
-  const [sifre, setSifre] = useState("");
-  const [mesaj, setMesaj] = useState("");
   const [hata, setHata] = useState("");
-  const [yukleniyor, setYukleniyor] = useState(false);
   const [googleYukleniyor, setGoogleYukleniyor] = useState(false);
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    setMesaj("");
-    setHata("");
-
-    if (sifre.length < 8) {
-      setHata("Şifre en az 8 karakter olmalıdır.");
-      return;
-    }
-
-    setYukleniyor(true);
-
-    try {
-      const { error } = await supabase.auth.signUp({
-        email: email.trim().toLowerCase(),
-        password: sifre,
-        options: {
-          data: {
-            ad_soyad: adSoyad.trim(),
-          },
-        },
-      });
-
-      if (error) {
-        setHata(error.message);
-        return;
-      }
-
-      setMesaj(
-        "Hesabınız oluşturuldu. E-posta adresinize gönderilen doğrulama bağlantısını kontrol edin."
-      );
-
-      setAdSoyad("");
-      setEmail("");
-      setSifre("");
-    } catch {
-      setHata("Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.");
-    } finally {
-      setYukleniyor(false);
-    }
-  }
 
   async function googleIleDevamEt() {
     setHata("");
-    setMesaj("");
     setGoogleYukleniyor(true);
 
     try {
@@ -106,13 +57,13 @@ export default function KayitPage() {
         <div
           style={{
             textAlign: "center",
-            marginBottom: "28px",
+            marginBottom: "30px",
           }}
         >
           <div
             style={{
-              fontSize: "42px",
-              marginBottom: "10px",
+              fontSize: "44px",
+              marginBottom: "12px",
             }}
           >
             🚗
@@ -125,34 +76,34 @@ export default function KayitPage() {
               fontSize: "30px",
             }}
           >
-            Hesap Oluştur
+            Garaj Defteri'ne Katıl
           </h1>
 
           <p
             style={{
-              margin: "10px 0 0",
+              margin: "12px 0 0",
               color: "#64748B",
+              lineHeight: 1.6,
             }}
           >
-            Garaj Defteri hesabınızı oluşturun.
+            Google hesabınızla birkaç saniye içinde hesabınızı oluşturun.
           </p>
         </div>
 
         <button
           type="button"
           onClick={googleIleDevamEt}
-          disabled={googleYukleniyor || yukleniyor}
+          disabled={googleYukleniyor}
           style={{
             width: "100%",
-            padding: "14px 16px",
+            padding: "15px 16px",
             border: "1px solid #CBD5E1",
             borderRadius: "11px",
             backgroundColor: "#FFFFFF",
             color: "#0F172A",
             fontSize: "16px",
             fontWeight: 700,
-            cursor:
-              googleYukleniyor || yukleniyor ? "not-allowed" : "pointer",
+            cursor: googleYukleniyor ? "not-allowed" : "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -163,15 +114,16 @@ export default function KayitPage() {
           <span
             aria-hidden="true"
             style={{
-              width: "24px",
-              height: "24px",
+              width: "26px",
+              height: "26px",
               display: "inline-flex",
               alignItems: "center",
               justifyContent: "center",
               borderRadius: "50%",
               border: "1px solid #E2E8F0",
+              backgroundColor: "#FFFFFF",
               color: "#4285F4",
-              fontSize: "17px",
+              fontSize: "18px",
               fontWeight: 900,
             }}
           >
@@ -183,159 +135,43 @@ export default function KayitPage() {
             : "Google ile devam et"}
         </button>
 
+        {hata && (
+          <div
+            role="alert"
+            style={{
+              marginTop: "18px",
+              padding: "13px",
+              borderRadius: "10px",
+              border: "1px solid #FECACA",
+              backgroundColor: "#FEF2F2",
+              color: "#B91C1C",
+              fontSize: "14px",
+              lineHeight: 1.5,
+            }}
+          >
+            {hata}
+          </div>
+        )}
+
         <div
           style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            margin: "24px 0",
+            marginTop: "24px",
+            padding: "16px",
+            borderRadius: "12px",
+            border: "1px solid #DBEAFE",
+            backgroundColor: "#EFF6FF",
+            color: "#1E3A8A",
+            fontSize: "14px",
+            lineHeight: 1.6,
           }}
         >
-          <div
-            style={{
-              flex: 1,
-              height: "1px",
-              backgroundColor: "#E2E8F0",
-            }}
-          />
-
-          <span
-            style={{
-              color: "#94A3B8",
-              fontSize: "13px",
-              fontWeight: 700,
-            }}
-          >
-            VEYA
-          </span>
-
-          <div
-            style={{
-              flex: 1,
-              height: "1px",
-              backgroundColor: "#E2E8F0",
-            }}
-          />
+          Google ile devam ettiğinizde adınız ve e-posta adresiniz Google
+          hesabınızdan alınır. Ayrı bir şifre oluşturmanız gerekmez.
         </div>
-
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "18px",
-          }}
-        >
-          <input
-            type="text"
-            required
-            autoComplete="name"
-            value={adSoyad}
-            onChange={(event) => setAdSoyad(event.target.value)}
-            placeholder="Ad Soyad"
-            style={{
-              padding: "14px",
-              borderRadius: "10px",
-              border: "1px solid #CBD5E1",
-              fontSize: "16px",
-              color: "#0F172A",
-              backgroundColor: "#FFFFFF",
-            }}
-          />
-
-          <input
-            type="email"
-            required
-            autoComplete="email"
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            placeholder="E-posta"
-            style={{
-              padding: "14px",
-              borderRadius: "10px",
-              border: "1px solid #CBD5E1",
-              fontSize: "16px",
-              color: "#0F172A",
-              backgroundColor: "#FFFFFF",
-            }}
-          />
-
-          <input
-            type="password"
-            required
-            minLength={8}
-            autoComplete="new-password"
-            value={sifre}
-            onChange={(event) => setSifre(event.target.value)}
-            placeholder="Şifre"
-            style={{
-              padding: "14px",
-              borderRadius: "10px",
-              border: "1px solid #CBD5E1",
-              fontSize: "16px",
-              color: "#0F172A",
-              backgroundColor: "#FFFFFF",
-            }}
-          />
-
-          {hata && (
-            <div
-              role="alert"
-              style={{
-                padding: "12px",
-                borderRadius: "10px",
-                border: "1px solid #FECACA",
-                backgroundColor: "#FEF2F2",
-                color: "#B91C1C",
-                fontSize: "14px",
-                lineHeight: 1.5,
-              }}
-            >
-              {hata}
-            </div>
-          )}
-
-          {mesaj && (
-            <div
-              role="status"
-              style={{
-                padding: "12px",
-                borderRadius: "10px",
-                border: "1px solid #BBF7D0",
-                backgroundColor: "#F0FDF4",
-                color: "#166534",
-                fontSize: "14px",
-                lineHeight: 1.5,
-              }}
-            >
-              {mesaj}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={yukleniyor || googleYukleniyor}
-            style={{
-              padding: "15px",
-              border: "none",
-              borderRadius: "11px",
-              backgroundColor: yukleniyor ? "#94A3B8" : "#2563EB",
-              color: "#FFFFFF",
-              fontSize: "16px",
-              fontWeight: 800,
-              cursor:
-                yukleniyor || googleYukleniyor
-                  ? "not-allowed"
-                  : "pointer",
-            }}
-          >
-            {yukleniyor ? "Hesap oluşturuluyor..." : "Hesap Oluştur"}
-          </button>
-        </form>
 
         <p
           style={{
-            margin: "24px 0 0",
+            margin: "26px 0 0",
             textAlign: "center",
             color: "#64748B",
           }}
