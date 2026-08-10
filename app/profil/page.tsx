@@ -28,6 +28,9 @@ export default function ProfilPage() {
   const [kaydediliyor, setKaydediliyor] = useState(false);
   const [temaKaydediliyor, setTemaKaydediliyor] = useState(false);
   const [cikisYapiliyor, setCikisYapiliyor] = useState(false);
+  const [silmePenceresiAcik, setSilmePenceresiAcik] = useState(false);
+  const [silmeOnayi, setSilmeOnayi] = useState("");
+  const [hesapSiliniyor, setHesapSiliniyor] = useState(false);
 
   const [hata, setHata] = useState("");
   const [mesaj, setMesaj] = useState("");
@@ -271,6 +274,84 @@ export default function ProfilPage() {
       setHata("Çıkış yapılırken bir hata oluştu.");
     } finally {
       setCikisYapiliyor(false);
+    }
+  }
+
+  function hesapSilmePenceresiniAc() {
+    setHata("");
+    setMesaj("");
+    setSilmeOnayi("");
+    setSilmePenceresiAcik(true);
+  }
+
+  function hesapSilmePenceresiniKapat() {
+    if (hesapSiliniyor) return;
+
+    setSilmePenceresiAcik(false);
+    setSilmeOnayi("");
+  }
+
+  async function hesabiKaliciSil() {
+    if (silmeOnayi.trim() !== "HESABIMI SİL") {
+      setHata("Devam etmek için HESABIMI SİL yazmalısınız.");
+      return;
+    }
+
+    setHata("");
+    setMesaj("");
+    setHesapSiliniyor(true);
+
+    try {
+      const {
+        data: { session },
+        error: sessionError,
+      } = await supabase.auth.getSession();
+
+      if (sessionError || !session?.access_token) {
+        setHata("Oturum doğrulanamadı. Lütfen tekrar giriş yapın.");
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke(
+        "delete-account",
+        {
+          body: {},
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        }
+      );
+
+      if (error) {
+        console.error("delete-account çağrı hatası:", error);
+        setHata("Hesap silinemedi. Lütfen tekrar deneyin.");
+        return;
+      }
+
+      if (!data?.success) {
+        setHata(
+          data?.error ||
+            "Hesap silme işlemi tamamlanamadı. Lütfen tekrar deneyin."
+        );
+        return;
+      }
+
+      try {
+        await supabase.auth.signOut();
+      } catch {
+        // Kullanıcı sunucuda silindiği için yerel oturumu ayrıca temizlemeye devam ediyoruz.
+      }
+
+      localStorage.removeItem("garaj-defteri-tema");
+      document.documentElement.setAttribute("data-theme", "acik");
+
+      router.replace("/giris");
+      router.refresh();
+    } catch (error) {
+      console.error("Hesap silme hatası:", error);
+      setHata("Hesap silinirken beklenmeyen bir hata oluştu.");
+    } finally {
+      setHesapSiliniyor(false);
     }
   }
 
@@ -866,32 +947,219 @@ export default function ProfilPage() {
               lineHeight: 1.6,
             }}
           >
-            Hesabınızı silme özelliğini güvenli sunucu
-            fonksiyonu ile bağlayacağız. Bu işlem
-            araçlarınızı ve hesap verilerinizi kalıcı olarak
-            silebileceği için tarayıcı tarafında
-            yapılmamalıdır.
+            Hesabınızı silerseniz araçlarınız, bakım kayıtlarınız, bildirim
+            ayarlarınız ve hesap bilgileriniz kalıcı olarak silinir. Bu işlem
+            geri alınamaz.
           </p>
 
           <button
             type="button"
-            disabled
+            onClick={hesapSilmePenceresiniAc}
             style={{
               width: "100%",
               padding: "14px",
               border: "none",
               borderRadius: "10px",
-              backgroundColor: "#94A3B8",
+              backgroundColor: "#DC2626",
               color: "#FFFFFF",
               fontSize: "16px",
               fontWeight: 800,
-              cursor: "not-allowed",
+              cursor: "pointer",
             }}
           >
-            Hesabımı Sil
+            Hesabımı Kalıcı Olarak Sil
           </button>
         </section>
       </div>
+
+      {silmePenceresiAcik && (
+        <div
+          role="presentation"
+          onClick={hesapSilmePenceresiniKapat}
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 1000,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "24px",
+            backgroundColor: "rgba(15, 23, 42, 0.72)",
+            backdropFilter: "blur(5px)",
+          }}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="hesap-silme-basligi"
+            onClick={(event) => event.stopPropagation()}
+            style={{
+              width: "100%",
+              maxWidth: "500px",
+              padding: "30px",
+              borderRadius: "20px",
+              border: koyuTema
+                ? "1px solid #7F1D1D"
+                : "1px solid #FECACA",
+              backgroundColor: koyuTema ? "#1E293B" : "#FFFFFF",
+              color: koyuTema ? "#F8FAFC" : "#0F172A",
+              boxShadow: "0 30px 80px rgba(15, 23, 42, 0.38)",
+            }}
+          >
+            <div
+              style={{
+                width: "58px",
+                height: "58px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "16px",
+                backgroundColor: koyuTema ? "#450A0A" : "#FEF2F2",
+                fontSize: "28px",
+              }}
+            >
+              ⚠️
+            </div>
+
+            <h2
+              id="hesap-silme-basligi"
+              style={{
+                margin: "20px 0 10px",
+                fontSize: "25px",
+                color: koyuTema ? "#FCA5A5" : "#B91C1C",
+              }}
+            >
+              Hesabınızı kalıcı olarak silmek üzeresiniz
+            </h2>
+
+            <p
+              style={{
+                margin: 0,
+                color: koyuTema ? "#CBD5E1" : "#64748B",
+                lineHeight: 1.65,
+              }}
+            >
+              Bu işlem geri alınamaz. Araçlarınız, bakım kayıtlarınız,
+              bildirim ayarlarınız ve Garaj Defteri hesabınız silinecektir.
+            </p>
+
+            <div
+              style={{
+                marginTop: "20px",
+                padding: "15px",
+                borderRadius: "12px",
+                border: koyuTema
+                  ? "1px solid #7F1D1D"
+                  : "1px solid #FECACA",
+                backgroundColor: koyuTema ? "#450A0A" : "#FFF7F7",
+              }}
+            >
+              <strong
+                style={{
+                  display: "block",
+                  color: koyuTema ? "#FECACA" : "#991B1B",
+                }}
+              >
+                Devam etmek için aşağıya tam olarak HESABIMI SİL yazın.
+              </strong>
+            </div>
+
+            <input
+              type="text"
+              value={silmeOnayi}
+              onChange={(event) => setSilmeOnayi(event.target.value)}
+              disabled={hesapSiliniyor}
+              placeholder="HESABIMI SİL"
+              autoComplete="off"
+              style={{
+                width: "100%",
+                marginTop: "16px",
+                padding: "14px",
+                borderRadius: "10px",
+                border: koyuTema
+                  ? "1px solid #475569"
+                  : "1px solid #CBD5E1",
+                backgroundColor: koyuTema ? "#0F172A" : "#FFFFFF",
+                color: koyuTema ? "#F8FAFC" : "#0F172A",
+                fontSize: "16px",
+              }}
+            />
+
+            {hata && (
+              <div
+                role="alert"
+                style={{
+                  marginTop: "16px",
+                  padding: "13px",
+                  borderRadius: "10px",
+                  border: "1px solid #FECACA",
+                  backgroundColor: "#FEF2F2",
+                  color: "#B91C1C",
+                  lineHeight: 1.5,
+                }}
+              >
+                {hata}
+              </div>
+            )}
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "12px",
+                marginTop: "24px",
+                flexWrap: "wrap",
+              }}
+            >
+              <button
+                type="button"
+                onClick={hesapSilmePenceresiniKapat}
+                disabled={hesapSiliniyor}
+                style={{
+                  padding: "12px 18px",
+                  borderRadius: "10px",
+                  border: koyuTema
+                    ? "1px solid #475569"
+                    : "1px solid #CBD5E1",
+                  backgroundColor: koyuTema ? "#1E293B" : "#FFFFFF",
+                  color: koyuTema ? "#E2E8F0" : "#334155",
+                  fontWeight: 700,
+                  cursor: hesapSiliniyor ? "not-allowed" : "pointer",
+                }}
+              >
+                Vazgeç
+              </button>
+
+              <button
+                type="button"
+                onClick={hesabiKaliciSil}
+                disabled={
+                  hesapSiliniyor || silmeOnayi.trim() !== "HESABIMI SİL"
+                }
+                style={{
+                  padding: "12px 18px",
+                  border: "none",
+                  borderRadius: "10px",
+                  backgroundColor:
+                    hesapSiliniyor || silmeOnayi.trim() !== "HESABIMI SİL"
+                      ? "#94A3B8"
+                      : "#DC2626",
+                  color: "#FFFFFF",
+                  fontWeight: 800,
+                  cursor:
+                    hesapSiliniyor || silmeOnayi.trim() !== "HESABIMI SİL"
+                      ? "not-allowed"
+                      : "pointer",
+                }}
+              >
+                {hesapSiliniyor
+                  ? "Hesap siliniyor..."
+                  : "Hesabımı Kalıcı Olarak Sil"}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }
