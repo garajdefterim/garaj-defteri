@@ -58,8 +58,8 @@ type TarihDurumu = {
 };
 
 const kart = {
-  backgroundColor: "#FFFFFF",
-  border: "1px solid #E2E8F0",
+  backgroundColor: "var(--card)",
+  border: "1px solid var(--border)",
   borderRadius: "18px",
   boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
 };
@@ -819,8 +819,8 @@ export default function DashboardPage() {
       style={{
         minHeight: "100vh",
         padding: "40px 24px",
-        backgroundColor: "#F8FAFC",
-        color: "#0F172A",
+        backgroundColor: "var(--background)",
+        color: "var(--foreground)",
         fontFamily: "Arial, Helvetica, sans-serif",
       }}
     >
@@ -867,9 +867,9 @@ export default function DashboardPage() {
             <Link
               href="/profil"
               style={ustButonStili(
-                "#FFFFFF",
-                "#334155",
-                "#CBD5E1"
+                "var(--card)",
+                "var(--foreground)",
+                "var(--border-strong)"
               )}
             >
               👤 Profilim
@@ -913,9 +913,9 @@ export default function DashboardPage() {
               style={{
                 padding: "13px 18px",
                 borderRadius: "10px",
-                border: "1px solid #CBD5E1",
-                backgroundColor: "#FFFFFF",
-                color: "#334155",
+                border: "1px solid var(--border-strong)",
+                backgroundColor: "var(--card)",
+                color: "var(--foreground)",
                 fontWeight: 700,
                 cursor: "pointer",
               }}
@@ -1009,6 +1009,7 @@ export default function DashboardPage() {
                 </span>
 
                 <strong
+                  className="dashboard-stat-value"
                   style={{
                     display: "block",
                     marginTop: "9px",
@@ -1605,9 +1606,9 @@ export default function DashboardPage() {
                       <Link
                         href={`/arac/${arac.id}`}
                         style={butonStili(
-                          "#FFFFFF",
-                          "#334155",
-                          "#CBD5E1"
+                          "var(--card)",
+                          "var(--foreground)",
+                          "var(--border-strong)"
                         )}
                       >
                         🚘 Detay
@@ -1708,7 +1709,7 @@ export default function DashboardPage() {
               padding: "30px",
               border: "1px solid #E2E8F0",
               borderRadius: "20px",
-              backgroundColor: "#FFFFFF",
+              backgroundColor: "var(--card)",
               boxShadow:
                 "0 30px 80px rgba(15, 23, 42, 0.35)",
             }}
@@ -1794,10 +1795,10 @@ export default function DashboardPage() {
                 disabled={silinenAracId !== null}
                 style={{
                   padding: "12px 18px",
-                  border: "1px solid #CBD5E1",
+                  border: "1px solid var(--border-strong)",
                   borderRadius: "10px",
-                  backgroundColor: "#FFFFFF",
-                  color: "#334155",
+                  backgroundColor: "var(--card)",
+                  color: "var(--foreground)",
                   fontWeight: 700,
                   cursor: silinenAracId
                     ? "not-allowed"
