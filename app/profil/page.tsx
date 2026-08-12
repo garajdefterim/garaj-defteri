@@ -29,7 +29,6 @@ export default function ProfilPage() {
   const [temaKaydediliyor, setTemaKaydediliyor] = useState(false);
   const [cikisYapiliyor, setCikisYapiliyor] = useState(false);
   const [silmePenceresiAcik, setSilmePenceresiAcik] = useState(false);
-  const [silmeOnayi, setSilmeOnayi] = useState("");
   const [hesapSiliniyor, setHesapSiliniyor] = useState(false);
 
   const [hata, setHata] = useState("");
@@ -280,7 +279,6 @@ export default function ProfilPage() {
   function hesapSilmePenceresiniAc() {
     setHata("");
     setMesaj("");
-    setSilmeOnayi("");
     setSilmePenceresiAcik(true);
   }
 
@@ -288,15 +286,9 @@ export default function ProfilPage() {
     if (hesapSiliniyor) return;
 
     setSilmePenceresiAcik(false);
-    setSilmeOnayi("");
   }
 
   async function hesabiKaliciSil() {
-    if (silmeOnayi.trim() !== "HESABIMI SİL") {
-      setHata("Devam etmek için HESABIMI SİL yazmalısınız.");
-      return;
-    }
-
     setHata("");
     setMesaj("");
     setHesapSiliniyor(true);
@@ -967,7 +959,7 @@ export default function ProfilPage() {
               cursor: "pointer",
             }}
           >
-            Hesabımı Kalıcı Olarak Sil
+            Hesabımı Sil
           </button>
         </section>
       </div>
@@ -1029,7 +1021,7 @@ export default function ProfilPage() {
                 color: koyuTema ? "#FCA5A5" : "#B91C1C",
               }}
             >
-              Hesabınızı kalıcı olarak silmek üzeresiniz
+              Hesabınızı silmek istediğinize emin misiniz?
             </h2>
 
             <p
@@ -1040,50 +1032,9 @@ export default function ProfilPage() {
               }}
             >
               Bu işlem geri alınamaz. Araçlarınız, bakım kayıtlarınız,
-              bildirim ayarlarınız ve Garaj Defteri hesabınız silinecektir.
+              bildirim ayarlarınız ve Garaj Defteri hesabınız kalıcı olarak
+              silinecektir.
             </p>
-
-            <div
-              style={{
-                marginTop: "20px",
-                padding: "15px",
-                borderRadius: "12px",
-                border: koyuTema
-                  ? "1px solid #7F1D1D"
-                  : "1px solid #FECACA",
-                backgroundColor: koyuTema ? "#450A0A" : "#FFF7F7",
-              }}
-            >
-              <strong
-                style={{
-                  display: "block",
-                  color: koyuTema ? "#FECACA" : "#991B1B",
-                }}
-              >
-                Devam etmek için aşağıya tam olarak HESABIMI SİL yazın.
-              </strong>
-            </div>
-
-            <input
-              type="text"
-              value={silmeOnayi}
-              onChange={(event) => setSilmeOnayi(event.target.value)}
-              disabled={hesapSiliniyor}
-              placeholder="HESABIMI SİL"
-              autoComplete="off"
-              style={{
-                width: "100%",
-                marginTop: "16px",
-                padding: "14px",
-                borderRadius: "10px",
-                border: koyuTema
-                  ? "1px solid #475569"
-                  : "1px solid #CBD5E1",
-                backgroundColor: koyuTema ? "#0F172A" : "#FFFFFF",
-                color: koyuTema ? "#F8FAFC" : "#0F172A",
-                fontSize: "16px",
-              }}
-            />
 
             {hata && (
               <div
@@ -1127,34 +1078,26 @@ export default function ProfilPage() {
                   cursor: hesapSiliniyor ? "not-allowed" : "pointer",
                 }}
               >
-                Vazgeç
+                Hayır, vazgeç
               </button>
 
               <button
                 type="button"
                 onClick={hesabiKaliciSil}
-                disabled={
-                  hesapSiliniyor || silmeOnayi.trim() !== "HESABIMI SİL"
-                }
+                disabled={hesapSiliniyor}
                 style={{
                   padding: "12px 18px",
                   border: "none",
                   borderRadius: "10px",
-                  backgroundColor:
-                    hesapSiliniyor || silmeOnayi.trim() !== "HESABIMI SİL"
-                      ? "#94A3B8"
-                      : "#DC2626",
+                  backgroundColor: hesapSiliniyor ? "#94A3B8" : "#DC2626",
                   color: "#FFFFFF",
                   fontWeight: 800,
-                  cursor:
-                    hesapSiliniyor || silmeOnayi.trim() !== "HESABIMI SİL"
-                      ? "not-allowed"
-                      : "pointer",
+                  cursor: hesapSiliniyor ? "not-allowed" : "pointer",
                 }}
               >
                 {hesapSiliniyor
                   ? "Hesap siliniyor..."
-                  : "Hesabımı Kalıcı Olarak Sil"}
+                  : "Evet, Hesabımı Sil"}
               </button>
             </div>
           </section>
