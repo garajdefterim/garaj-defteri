@@ -186,8 +186,8 @@ export default function BildirimAyarlariPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#F8FAFC",
-          color: "#0F172A",
+          backgroundColor: "var(--background)",
+          color: "var(--foreground)",
           fontFamily: "Arial, Helvetica, sans-serif",
         }}
       >
@@ -199,10 +199,10 @@ export default function BildirimAyarlariPage() {
   const inputStyle = {
     width: "100%",
     padding: "13px 14px",
-    border: "1px solid #CBD5E1",
+    border: "1px solid var(--border-strong)",
     borderRadius: "10px",
-    backgroundColor: "#FFFFFF",
-    color: "#0F172A",
+    backgroundColor: "var(--input-bg)",
+    color: "var(--foreground)",
     fontSize: "16px",
     boxSizing: "border-box" as const,
   };
@@ -212,8 +212,8 @@ export default function BildirimAyarlariPage() {
       style={{
         minHeight: "100vh",
         padding: "40px 24px",
-        backgroundColor: "#F8FAFC",
-        color: "#0F172A",
+        backgroundColor: "var(--background)",
+        color: "var(--foreground)",
         fontFamily: "Arial, Helvetica, sans-serif",
       }}
     >
@@ -250,9 +250,9 @@ export default function BildirimAyarlariPage() {
             style={{
               padding: "11px 16px",
               borderRadius: "10px",
-              border: "1px solid #A5B4FC",
-              backgroundColor: "#EEF2FF",
-              color: "#3730A3",
+              border: "1px solid var(--border-strong)",
+              backgroundColor: "var(--card)",
+              color: "var(--foreground)",
               fontWeight: 700,
               textDecoration: "none",
             }}
@@ -264,9 +264,9 @@ export default function BildirimAyarlariPage() {
         <section
           style={{
             padding: "30px",
-            border: "1px solid #E2E8F0",
+            border: "1px solid var(--border)",
             borderRadius: "18px",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "var(--card)",
             boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
           }}
         >
@@ -284,7 +284,7 @@ export default function BildirimAyarlariPage() {
                 style={{
                   margin: 0,
                   fontSize: "34px",
-                  color: "#0F172A",
+                  color: "var(--foreground)",
                 }}
               >
                 🔔 Bildirim Ayarları
@@ -293,12 +293,12 @@ export default function BildirimAyarlariPage() {
               <p
                 style={{
                   margin: "10px 0 0",
-                  color: "#64748B",
+                  color: "var(--muted)",
                   lineHeight: 1.6,
                 }}
               >
-                Resmî muayene dönemi yaklaşırken gönderilecek
-                e-postaları buradan yönetebilirsiniz.
+                Muayene, sigorta, seyrüsefer ve bakım için gönderilecek
+                e-posta hatırlatmalarını buradan yönetebilirsiniz.
               </p>
             </div>
 
@@ -379,7 +379,7 @@ export default function BildirimAyarlariPage() {
                 fontWeight: 700,
               }}
             >
-              ⏰ Hatırlatma zamanı
+              ⏰ Muayene hatırlatması
             </span>
 
             <strong
@@ -425,14 +425,91 @@ export default function BildirimAyarlariPage() {
           </div>
         </section>
 
+        <section
+          style={{
+            marginTop: "22px",
+            padding: "24px",
+            border: "1px solid var(--border)",
+            borderRadius: "18px",
+            backgroundColor: "var(--card)",
+          }}
+        >
+          <h2
+            style={{
+              margin: 0,
+              fontSize: "22px",
+            }}
+          >
+            📅 Hatırlatma Planı
+          </h2>
+
+          <p
+            style={{
+              margin: "8px 0 18px",
+              color: "var(--muted)",
+              lineHeight: 1.6,
+            }}
+          >
+            Otomatik e-postaların hangi tarihte gönderileceğini burada
+            görebilirsiniz. Muayene süresini siz seçebilirsiniz.
+          </p>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
+              gap: "12px",
+            }}
+          >
+            {[
+              ["🚗 Muayene", `${hatirlatmaGunu} gün önce`, "#EFF6FF", "#BFDBFE", "#1D4ED8"],
+              ["🛡️ Sigorta", "7 gün önce", "#EFF6FF", "#BFDBFE", "#1D4ED8"],
+              ["📄 Seyrüsefer", "14 gün önce", "#F5F3FF", "#DDD6FE", "#6D28D9"],
+              ["🔧 Bakım", "14 gün önce", "#F0FDF4", "#BBF7D0", "#166534"],
+            ].map(([baslik, zaman, arkaPlan, kenarlik, renk]) => (
+              <div
+                key={String(baslik)}
+                style={{
+                  padding: "16px",
+                  borderRadius: "12px",
+                  border: `1px solid ${kenarlik}`,
+                  backgroundColor: String(arkaPlan),
+                }}
+              >
+                <span
+                  style={{
+                    display: "block",
+                    color: String(renk),
+                    fontSize: "13px",
+                    fontWeight: 800,
+                  }}
+                >
+                  {baslik}
+                </span>
+
+                <strong
+                  style={{
+                    display: "block",
+                    marginTop: "7px",
+                    color: String(renk),
+                    fontSize: "18px",
+                  }}
+                >
+                  {zaman}
+                </strong>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <form
           onSubmit={ayarlariKaydet}
           style={{
             marginTop: "22px",
             padding: "30px",
-            border: "1px solid #E2E8F0",
+            border: "1px solid var(--border)",
             borderRadius: "18px",
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "var(--card)",
             boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
           }}
         >
@@ -450,9 +527,9 @@ export default function BildirimAyarlariPage() {
                 gap: "18px",
                 flexWrap: "wrap",
                 padding: "18px",
-                border: "1px solid #E2E8F0",
+                border: "1px solid var(--border)",
                 borderRadius: "14px",
-                backgroundColor: "#F8FAFC",
+                backgroundColor: "var(--card-soft)",
               }}
             >
               <div>
@@ -462,20 +539,20 @@ export default function BildirimAyarlariPage() {
                     fontSize: "17px",
                   }}
                 >
-                  Muayene e-posta bildirimleri
+                  E-posta bildirimleri
                 </strong>
 
                 <span
                   style={{
                     display: "block",
                     marginTop: "6px",
-                    color: "#64748B",
+                    color: "var(--muted)",
                     fontSize: "14px",
                     lineHeight: 1.5,
                   }}
                 >
-                  Kapattığınızda otomatik muayene e-postaları
-                  gönderilmez.
+                  Kapattığınızda muayene, sigorta, seyrüsefer ve bakım
+                  hatırlatma e-postaları gönderilmez.
                 </span>
               </div>
 
@@ -521,7 +598,7 @@ export default function BildirimAyarlariPage() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "8px",
-                color: "#334155",
+                color: "var(--foreground)",
                 fontWeight: 700,
               }}
             >
@@ -540,12 +617,12 @@ export default function BildirimAyarlariPage() {
 
               <span
                 style={{
-                  color: "#94A3B8",
+                  color: "var(--muted)",
                   fontSize: "12px",
                   fontWeight: 400,
                 }}
               >
-                Muayene hatırlatma e-postaları bu adrese
+                Tüm araç hatırlatma e-postaları bu adrese
                 gönderilir.
               </span>
             </label>
@@ -555,11 +632,11 @@ export default function BildirimAyarlariPage() {
                 display: "flex",
                 flexDirection: "column",
                 gap: "8px",
-                color: "#334155",
+                color: "var(--foreground)",
                 fontWeight: 700,
               }}
             >
-              Kaç gün önce hatırlatılsın?
+              Muayene için kaç gün önce hatırlatılsın?
 
               <select
                 value={hatirlatmaGunu}
@@ -577,6 +654,19 @@ export default function BildirimAyarlariPage() {
                 <option value="14">14 gün önce</option>
                 <option value="30">30 gün önce</option>
               </select>
+
+              <span
+                style={{
+                  color: "var(--muted)",
+                  fontSize: "12px",
+                  fontWeight: 400,
+                  lineHeight: 1.5,
+                }}
+              >
+                Bu seçim yalnızca resmî muayene hatırlatmasını değiştirir.
+                Sigorta 7 gün, seyrüsefer 14 gün ve bakım 14 gün önce
+                gönderilir.
+              </span>
             </label>
 
             <div
@@ -600,10 +690,10 @@ export default function BildirimAyarlariPage() {
                   fontSize: "14px",
                 }}
               >
-                Garaj Defteri her gün resmî muayene takvimini
-                kontrol eder. Aracınızın muayene dönemi seçtiğiniz
-                gün sayısı kadar yaklaştığında yalnızca bir kez
-                e-posta gönderilir.
+                Garaj Defteri her gün araç tarihlerinizi kontrol eder. Muayene için
+                yukarıda seçtiğiniz süre kullanılır. Sigorta 7 gün, seyrüsefer
+                14 gün ve bakım 14 gün önce hatırlatılır. Aynı hatırlatma
+                yalnızca bir kez gönderilir.
               </span>
             </div>
 
