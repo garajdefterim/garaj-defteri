@@ -1051,8 +1051,8 @@ export default function DashboardPage() {
           <section
             style={{
               ...kart,
-              marginBottom: "30px",
-              padding: "24px",
+              marginBottom: "24px",
+              padding: "18px",
               border: emailBildirimiAcik
                 ? "1px solid #BBF7D0"
                 : "1px solid #FECACA",
@@ -1060,34 +1060,40 @@ export default function DashboardPage() {
           >
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                gap: "18px",
-                flexWrap: "wrap",
+                display: "grid",
+                gap: "14px",
               }}
             >
-              <div style={{ flex: "1 1 420px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  gap: "12px",
+                  flexWrap: "wrap",
+                }}
+              >
                 <div
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "10px",
+                    gap: "9px",
                     flexWrap: "wrap",
                   }}
                 >
                   <h2
                     style={{
                       margin: 0,
-                      fontSize: "24px",
+                      fontSize: "20px",
+                      lineHeight: 1.25,
                     }}
                   >
-                    📧 Muayene e-posta hatırlatması
+                    📧 E-posta hatırlatmaları
                   </h2>
 
                   <span
                     style={{
-                      padding: "6px 10px",
+                      padding: "5px 9px",
                       borderRadius: "999px",
                       backgroundColor: emailBildirimiAcik
                         ? "#F0FDF4"
@@ -1098,110 +1104,100 @@ export default function DashboardPage() {
                       border: emailBildirimiAcik
                         ? "1px solid #BBF7D0"
                         : "1px solid #FECACA",
-                      fontSize: "13px",
+                      fontSize: "12px",
                       fontWeight: 800,
                     }}
                   >
-                    {emailBildirimiAcik
-                      ? "Açık"
-                      : "Kapalı"}
+                    {emailBildirimiAcik ? "Açık" : "Kapalı"}
                   </span>
                 </div>
 
-                <p
+                <Link
+                  href="/bildirim-ayarlari"
                   style={{
-                    margin: "12px 0 0",
-                    color: "#64748B",
-                    lineHeight: 1.6,
+                    padding: "9px 13px",
+                    borderRadius: "9px",
+                    backgroundColor: "#2563EB",
+                    color: "#FFFFFF",
+                    textDecoration: "none",
+                    fontSize: "14px",
+                    fontWeight: 700,
+                    whiteSpace: "nowrap",
                   }}
                 >
-                  Resmî muayene dönemi başlamadan{" "}
-                  {hatirlatmaGunu} gün önce otomatik e-posta
-                  gönderilir.
-                </p>
-
-                <div
-                  style={{
-                    marginTop: "16px",
-                    display: "grid",
-                    gridTemplateColumns:
-                      "repeat(auto-fit, minmax(220px, 1fr))",
-                    gap: "12px",
-                  }}
-                >
-                  <div
-                    style={{
-                      padding: "13px",
-                      borderRadius: "12px",
-                      backgroundColor: "#F8FAFC",
-                      border: "1px solid #E2E8F0",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "block",
-                        color: "#64748B",
-                        fontSize: "13px",
-                      }}
-                    >
-                      Bildirim adresi
-                    </span>
-
-                    <strong
-                      style={{
-                        display: "block",
-                        marginTop: "5px",
-                        wordBreak: "break-word",
-                      }}
-                    >
-                      {bildirimEmaili}
-                    </strong>
-                  </div>
-
-                  <div
-                    style={{
-                      padding: "13px",
-                      borderRadius: "12px",
-                      backgroundColor: "#F8FAFC",
-                      border: "1px solid #E2E8F0",
-                    }}
-                  >
-                    <span
-                      style={{
-                        display: "block",
-                        color: "#64748B",
-                        fontSize: "13px",
-                      }}
-                    >
-                      Hatırlatma zamanı
-                    </span>
-
-                    <strong
-                      style={{
-                        display: "block",
-                        marginTop: "5px",
-                      }}
-                    >
-                      {hatirlatmaGunu} gün önce
-                    </strong>
-                  </div>
-                </div>
+                  Ayarları Yönet →
+                </Link>
               </div>
 
-              <Link
-                href="/bildirim-ayarlari"
+              <p
                 style={{
-                  padding: "12px 17px",
-                  borderRadius: "10px",
-                  backgroundColor: "#2563EB",
-                  color: "#FFFFFF",
-                  textDecoration: "none",
-                  fontWeight: 700,
-                  whiteSpace: "nowrap",
+                  margin: 0,
+                  color: "#64748B",
+                  fontSize: "14px",
+                  lineHeight: 1.55,
                 }}
               >
-                Ayarları Yönet →
-              </Link>
+                Araç tarihleriniz yaklaşınca otomatik e-posta gönderilir.
+              </p>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns:
+                    "repeat(auto-fit, minmax(135px, 1fr))",
+                  gap: "8px",
+                }}
+              >
+                {[
+                  ["🚗 Muayene", `${hatirlatmaGunu} gün önce`],
+                  ["🛡️ Sigorta", "7 gün önce"],
+                  ["📄 Seyrüsefer", "14 gün önce"],
+                  ["🔧 Bakım", "14 gün önce"],
+                ].map(([baslik, zaman]) => (
+                  <div
+                    key={String(baslik)}
+                    style={{
+                      padding: "10px 11px",
+                      borderRadius: "10px",
+                      backgroundColor: "#F8FAFC",
+                      border: "1px solid #E2E8F0",
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: "block",
+                        color: "#64748B",
+                        fontSize: "12px",
+                        fontWeight: 700,
+                      }}
+                    >
+                      {baslik}
+                    </span>
+
+                    <strong
+                      style={{
+                        display: "block",
+                        marginTop: "4px",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {zaman}
+                    </strong>
+                  </div>
+                ))}
+              </div>
+
+              <div
+                style={{
+                  paddingTop: "2px",
+                  color: "#64748B",
+                  fontSize: "12px",
+                  lineHeight: 1.5,
+                  overflowWrap: "anywhere",
+                }}
+              >
+                Bildirim adresi: <strong>{bildirimEmaili}</strong>
+              </div>
             </div>
           </section>
         )}
