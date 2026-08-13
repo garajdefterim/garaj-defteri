@@ -833,16 +833,19 @@ export default function DashboardPage() {
       >
         <header
           style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "20px",
-            flexWrap: "wrap",
+            display: "grid",
+            gap: "22px",
             marginBottom: "30px",
           }}
         >
           <div>
-            <h1 style={{ margin: 0, fontSize: "38px" }}>
+            <h1
+              style={{
+                margin: 0,
+                fontSize: "clamp(30px, 8vw, 38px)",
+                lineHeight: 1.1,
+              }}
+            >
               🚗 Garaj Defteri
             </h1>
 
@@ -850,7 +853,8 @@ export default function DashboardPage() {
               style={{
                 margin: "10px 0 0",
                 color: "#64748B",
-                fontSize: "18px",
+                fontSize: "clamp(15px, 4vw, 18px)",
+                lineHeight: 1.5,
               }}
             >
               Araçlarınızı ve önemli tarihlerinizi yönetin.
@@ -859,50 +863,64 @@ export default function DashboardPage() {
 
           <div
             style={{
-              display: "flex",
+              display: "grid",
+              gridTemplateColumns:
+                "repeat(auto-fit, minmax(150px, 1fr))",
               gap: "10px",
-              flexWrap: "wrap",
+              width: "100%",
             }}
           >
             <Link
               href="/profil"
-              style={ustButonStili(
-                "var(--card)",
-                "var(--foreground)",
-                "var(--border-strong)"
-              )}
+              style={{
+                ...ustButonStili(
+                  "var(--card)",
+                  "var(--foreground)",
+                  "var(--border-strong)"
+                ),
+                textAlign: "center",
+              }}
             >
               👤 Profilim
             </Link>
 
             <Link
               href="/bildirim-ayarlari"
-              style={ustButonStili(
-                "#EEF2FF",
-                "#3730A3",
-                "#A5B4FC"
-              )}
+              style={{
+                ...ustButonStili(
+                  "#EEF2FF",
+                  "#3730A3",
+                  "#A5B4FC"
+                ),
+                textAlign: "center",
+              }}
             >
               🔔 Bildirim Ayarları
             </Link>
 
             <Link
               href="/bildirim-gecmisi"
-              style={ustButonStili(
-                "#F0FDF4",
-                "#166534",
-                "#BBF7D0"
-              )}
+              style={{
+                ...ustButonStili(
+                  "#F0FDF4",
+                  "#166534",
+                  "#BBF7D0"
+                ),
+                textAlign: "center",
+              }}
             >
               📨 Gönderilenler
             </Link>
 
             <Link
               href="/arac-ekle"
-              style={ustButonStili(
-                "#2563EB",
-                "#FFFFFF"
-              )}
+              style={{
+                ...ustButonStili(
+                  "#2563EB",
+                  "#FFFFFF"
+                ),
+                textAlign: "center",
+              }}
             >
               + Araç Ekle
             </Link>
@@ -918,6 +936,7 @@ export default function DashboardPage() {
                 color: "var(--foreground)",
                 fontWeight: 700,
                 cursor: "pointer",
+                textAlign: "center",
               }}
             >
               Çıkış Yap
