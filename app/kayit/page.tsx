@@ -1,39 +1,191 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import {
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { supabase } from "../../lib/supabase";
 
 export default function KayitPage() {
+  const captchaRef = useRef<HCaptcha>(null);
+
+  const [kullaniciAdi, setKullaniciAdi] = useState("");
+  const [email, setEmail] = useState("");
+  const [sifre, setSifre] = useState("");
+  const [sifreTekrar, setSifreTekrar] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
+
   const [hata, setHata] = useState("");
-  const [googleYukleniyor, setGoogleYukleniyor] = useState(false);
+  const [mesaj, setMesaj] = useState("");
+  const [kayitYukleniyor, setKayitYukleniyor] =
+    useState(false);
+  const [googleYukleniyor, setGoogleYukleniyor] =
+    useState(false);
+
+  const hcaptchaSiteKey =
+    process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? "";
+
+  async function emailIleKayitOl(
+    event: FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
+
+    setHata("");
+    setMesaj("");
+
+    const temizKullaniciAdi = kullaniciAdi.trim();
+    const temizEmail = email.trim().toLowerCase();
+
+    if (temizKullaniciAdi.length < 3) {
+      setHata(
+        "Kullanıcı adı en az 3 karakter olmalıdır."
+      );
+      return;
+    }
+
+    if (!temizEmail) {
+      setHata("Lütfen e-posta adresinizi girin.");
+      return;
+    }
+
+    if (sifre.length < 8) {
+      setHata(
+        "Şifreniz en az 8 karakter olmalıdır."
+      );
+      return;
+    }
+
+    if (sifre !== sifreTekrar) {
+      setHata("Şifreler birbiriyle eşleşmiyor.");
+      return;
+    }
+
+    if (!hcaptchaSiteKey) {
+      setHata(
+        "Güvenlik doğrulaması yapılandırılmamış."
+      );
+      return;
+    }
+
+    if (!captchaToken) {
+      setHata(
+        "Lütfen güvenlik doğrulamasını tamamlayın."
+      );
+      return;
+    }
+
+    setKayitYukleniyor(true);
+
+    try {
+      const { data, error } =
+        await supabase.auth.signUp({
+          email: temizEmail,
+          password: sifre,
+          options: {
+            captchaToken,
+            emailRedirectTo:
+              `${window.location.origin}/giris`,
+            data: {
+              username: temizKullaniciAdi,
+            },
+          },
+        });
+
+      captchaRef.current?.resetCaptcha();
+      setCaptchaToken("");
+
+      if (error) {
+        const hataMesaji =
+          error.message.toLowerCase();
+
+        if (hataMesaji.includes("captcha")) {
+          setHata(
+            "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
+          );
+        } else if (
+          hataMesaji.includes("password")
+        ) {
+          setHata(
+            "Şifre güvenlik şartlarını karşılamıyor."
+          );
+        } else {
+          setHata(
+            "Kayıt oluşturulamadı. Bilgilerinizi kontrol edip tekrar deneyin."
+          );
+        }
+
+        return;
+      }
+
+      if (data.session) {
+        setMesaj(
+          "Hesabınız oluşturuldu. Artık giriş yapabilirsiniz."
+        );
+      } else {
+        setMesaj(
+          "Hesabınız oluşturuldu. E-posta adresinize gönderilen doğrulama bağlantısına tıklayın."
+        );
+      }
+
+      setKullaniciAdi("");
+      setEmail("");
+      setSifre("");
+      setSifreTekrar("");
+    } catch {
+      captchaRef.current?.resetCaptcha();
+      setCaptchaToken("");
+
+      setHata(
+        "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin."
+      );
+    } finally {
+      setKayitYukleniyor(false);
+    }
+  }
 
   async function googleIleDevamEt() {
     setHata("");
+    setMesaj("");
     setGoogleYukleniyor(true);
 
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-
-          // Google hesap seçme ekranını gösterir.
-          queryParams: {
-            prompt: "select_account",
+      const { error } =
+        await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo:
+              `${window.location.origin}/dashboard`,
+            queryParams: {
+              prompt: "select_account",
+            },
           },
-        },
-      });
+        });
 
       if (error) {
-        setHata(`Google ile devam edilemedi: ${error.message}`);
+        setHata(
+          `Google ile devam edilemedi: ${error.message}`
+        );
         setGoogleYukleniyor(false);
       }
     } catch {
-      setHata("Google ile devam edilirken bir hata oluştu.");
+      setHata(
+        "Google ile devam edilirken bir hata oluştu."
+      );
       setGoogleYukleniyor(false);
     }
   }
+
+  const inputStyle = {
+    padding: "14px",
+    borderRadius: "10px",
+    border: "1px solid #CBD5E1",
+    backgroundColor: "#FFFFFF",
+    color: "#0F172A",
+    fontSize: "16px",
+  };
 
   return (
     <main
@@ -44,19 +196,21 @@ export default function KayitPage() {
         justifyContent: "center",
         padding: "24px",
         backgroundColor: "#F8FAFC",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily:
+          "Arial, Helvetica, sans-serif",
         color: "#0F172A",
       }}
     >
       <section
         style={{
           width: "100%",
-          maxWidth: "460px",
+          maxWidth: "480px",
           backgroundColor: "#FFFFFF",
           border: "1px solid #E2E8F0",
           borderRadius: "20px",
           padding: "36px",
-          boxShadow: "0 20px 50px rgba(15, 23, 42, 0.08)",
+          boxShadow:
+            "0 20px 50px rgba(15, 23, 42, 0.08)",
         }}
       >
         <div
@@ -92,14 +246,18 @@ export default function KayitPage() {
               fontSize: "15px",
             }}
           >
-            Google hesabınızla saniyeler içinde hesabınızı oluşturun.
+            Google hesabınızla veya e-posta
+            adresinizle hesap oluşturun.
           </p>
         </div>
 
         <button
           type="button"
           onClick={googleIleDevamEt}
-          disabled={googleYukleniyor}
+          disabled={
+            googleYukleniyor ||
+            kayitYukleniyor
+          }
           style={{
             width: "100%",
             minHeight: "54px",
@@ -110,13 +268,18 @@ export default function KayitPage() {
             color: "#0F172A",
             fontSize: "16px",
             fontWeight: 700,
-            cursor: googleYukleniyor ? "not-allowed" : "pointer",
+            cursor:
+              googleYukleniyor ||
+              kayitYukleniyor
+                ? "not-allowed"
+                : "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: "12px",
-            opacity: googleYukleniyor ? 0.7 : 1,
-            boxShadow: "0 2px 8px rgba(15, 23, 42, 0.05)",
+            opacity: googleYukleniyor
+              ? 0.7
+              : 1,
           }}
         >
           <span
@@ -143,48 +306,246 @@ export default function KayitPage() {
             : "Google ile devam et"}
         </button>
 
-        {hata && (
-          <div
-            role="alert"
-            style={{
-              marginTop: "18px",
-              padding: "13px",
-              borderRadius: "10px",
-              border: "1px solid #FECACA",
-              backgroundColor: "#FEF2F2",
-              color: "#B91C1C",
-              fontSize: "14px",
-              lineHeight: 1.5,
-            }}
-          >
-            {hata}
-          </div>
-        )}
-
         <div
           style={{
-            marginTop: "24px",
-            padding: "16px",
-            borderRadius: "12px",
-            border: "1px solid #DBEAFE",
-            backgroundColor: "#EFF6FF",
-            color: "#1E3A8A",
-            fontSize: "14px",
-            lineHeight: 1.65,
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            margin: "24px 0",
           }}
         >
-          <strong
+          <div
             style={{
-              display: "block",
-              marginBottom: "5px",
+              flex: 1,
+              height: "1px",
+              backgroundColor: "#E2E8F0",
+            }}
+          />
+
+          <span
+            style={{
+              color: "#94A3B8",
+              fontSize: "13px",
+              fontWeight: 700,
             }}
           >
-            Hızlı ve kolay kayıt
-          </strong>
+            VEYA
+          </span>
 
-          Google hesabınızı seçmeniz yeterlidir. Adınız ve e-posta adresiniz
-          Google hesabınızdan alınır. Ayrı bir şifre oluşturmanız gerekmez.
+          <div
+            style={{
+              flex: 1,
+              height: "1px",
+              backgroundColor: "#E2E8F0",
+            }}
+          />
         </div>
+
+        <form
+          onSubmit={emailIleKayitOl}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "17px",
+          }}
+        >
+          <label
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+              color: "#334155",
+              fontWeight: 700,
+            }}
+          >
+            Kullanıcı adı
+
+            <input
+              type="text"
+              required
+              minLength={3}
+              autoComplete="username"
+              value={kullaniciAdi}
+              onChange={(event) =>
+                setKullaniciAdi(
+                  event.target.value
+                )
+              }
+              placeholder="Kullanıcı adınız"
+              style={inputStyle}
+            />
+          </label>
+
+          <label
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+              color: "#334155",
+              fontWeight: 700,
+            }}
+          >
+            E-posta
+
+            <input
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
+              placeholder="ornek@email.com"
+              style={inputStyle}
+            />
+          </label>
+
+          <label
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+              color: "#334155",
+              fontWeight: 700,
+            }}
+          >
+            Şifre
+
+            <input
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              value={sifre}
+              onChange={(event) =>
+                setSifre(event.target.value)
+              }
+              placeholder="En az 8 karakter"
+              style={inputStyle}
+            />
+          </label>
+
+          <label
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "8px",
+              color: "#334155",
+              fontWeight: 700,
+            }}
+          >
+            Şifre tekrar
+
+            <input
+              type="password"
+              required
+              minLength={8}
+              autoComplete="new-password"
+              value={sifreTekrar}
+              onChange={(event) =>
+                setSifreTekrar(
+                  event.target.value
+                )
+              }
+              placeholder="Şifrenizi tekrar yazın"
+              style={inputStyle}
+            />
+          </label>
+
+          {hcaptchaSiteKey && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                overflow: "hidden",
+              }}
+            >
+              <HCaptcha
+                ref={captchaRef}
+                sitekey={hcaptchaSiteKey}
+                onVerify={(token) => {
+                  setCaptchaToken(token);
+                  setHata("");
+                }}
+                onExpire={() => {
+                  setCaptchaToken("");
+                }}
+                onError={() => {
+                  setCaptchaToken("");
+                  setHata(
+                    "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
+                  );
+                }}
+              />
+            </div>
+          )}
+
+          {hata && (
+            <div
+              role="alert"
+              style={{
+                padding: "13px",
+                borderRadius: "10px",
+                border: "1px solid #FECACA",
+                backgroundColor: "#FEF2F2",
+                color: "#B91C1C",
+                fontSize: "14px",
+                lineHeight: 1.5,
+              }}
+            >
+              {hata}
+            </div>
+          )}
+
+          {mesaj && (
+            <div
+              role="status"
+              style={{
+                padding: "13px",
+                borderRadius: "10px",
+                border: "1px solid #BBF7D0",
+                backgroundColor: "#F0FDF4",
+                color: "#166534",
+                fontSize: "14px",
+                lineHeight: 1.5,
+              }}
+            >
+              {mesaj}
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={
+              kayitYukleniyor ||
+              googleYukleniyor ||
+              !captchaToken
+            }
+            style={{
+              padding: "15px",
+              border: "none",
+              borderRadius: "11px",
+              backgroundColor:
+                kayitYukleniyor ||
+                !captchaToken
+                  ? "#94A3B8"
+                  : "#2563EB",
+              color: "#FFFFFF",
+              fontSize: "16px",
+              fontWeight: 800,
+              cursor:
+                kayitYukleniyor ||
+                googleYukleniyor ||
+                !captchaToken
+                  ? "not-allowed"
+                  : "pointer",
+            }}
+          >
+            {kayitYukleniyor
+              ? "Hesap oluşturuluyor..."
+              : "Hesap Oluştur"}
+          </button>
+        </form>
 
         <p
           style={{

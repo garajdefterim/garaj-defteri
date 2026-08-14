@@ -2,35 +2,84 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import {
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { supabase } from "../../lib/supabase";
 
 export default function GirisPage() {
   const router = useRouter();
 
+  const captchaRef = useRef<HCaptcha>(null);
+
   const [email, setEmail] = useState("");
   const [sifre, setSifre] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
   const [hata, setHata] = useState("");
   const [yukleniyor, setYukleniyor] = useState(false);
-  const [googleYukleniyor, setGoogleYukleniyor] = useState(false);
+  const [googleYukleniyor, setGoogleYukleniyor] =
+    useState(false);
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const hcaptchaSiteKey =
+    process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? "";
+
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
     event.preventDefault();
 
     setHata("");
+
+    if (!hcaptchaSiteKey) {
+      setHata(
+        "Güvenlik doğrulaması yapılandırılmamış."
+      );
+      return;
+    }
+
+    if (!captchaToken) {
+      setHata(
+        "Lütfen güvenlik doğrulamasını tamamlayın."
+      );
+      return;
+    }
+
     setYukleniyor(true);
 
     try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: email.trim().toLowerCase(),
-        password: sifre,
-      });
+      const { error } =
+        await supabase.auth.signInWithPassword({
+          email: email.trim().toLowerCase(),
+          password: sifre,
+          options: {
+            captchaToken,
+          },
+        });
 
       if (error) {
-        if (error.message.toLowerCase().includes("email not confirmed")) {
-          setHata("Önce e-posta adresinizi doğrulamanız gerekiyor.");
+        captchaRef.current?.resetCaptcha();
+        setCaptchaToken("");
+
+        const mesaj = error.message.toLowerCase();
+
+        if (mesaj.includes("email not confirmed")) {
+          setHata(
+            "Önce e-posta adresinizi doğrulamanız gerekiyor."
+          );
+        } else if (
+          mesaj.includes("captcha") ||
+          mesaj.includes("challenge")
+        ) {
+          setHata(
+            "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
+          );
         } else {
-          setHata("E-posta adresi veya şifre hatalı.");
+          setHata(
+            "E-posta adresi veya şifre hatalı."
+          );
         }
 
         return;
@@ -39,7 +88,12 @@ export default function GirisPage() {
       router.push("/dashboard");
       router.refresh();
     } catch {
-      setHata("Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.");
+      captchaRef.current?.resetCaptcha();
+      setCaptchaToken("");
+
+      setHata(
+        "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin."
+      );
     } finally {
       setYukleniyor(false);
     }
@@ -50,19 +104,24 @@ export default function GirisPage() {
     setGoogleYukleniyor(true);
 
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-        },
-      });
+      const { error } =
+        await supabase.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: `${window.location.origin}/dashboard`,
+          },
+        });
 
       if (error) {
-        setHata(`Google ile giriş başlatılamadı: ${error.message}`);
+        setHata(
+          `Google ile giriş başlatılamadı: ${error.message}`
+        );
         setGoogleYukleniyor(false);
       }
     } catch {
-      setHata("Google ile giriş başlatılırken bir hata oluştu.");
+      setHata(
+        "Google ile giriş başlatılırken bir hata oluştu."
+      );
       setGoogleYukleniyor(false);
     }
   }
@@ -76,7 +135,8 @@ export default function GirisPage() {
         justifyContent: "center",
         padding: "24px",
         backgroundColor: "#F8FAFC",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily:
+          "Arial, Helvetica, sans-serif",
         color: "#0F172A",
       }}
     >
@@ -88,7 +148,8 @@ export default function GirisPage() {
           border: "1px solid #E2E8F0",
           borderRadius: "20px",
           padding: "36px",
-          boxShadow: "0 20px 50px rgba(15, 23, 42, 0.08)",
+          boxShadow:
+            "0 20px 50px rgba(15, 23, 42, 0.08)",
         }}
       >
         <div
@@ -129,7 +190,9 @@ export default function GirisPage() {
         <button
           type="button"
           onClick={googleIleGirisYap}
-          disabled={googleYukleniyor || yukleniyor}
+          disabled={
+            googleYukleniyor || yukleniyor
+          }
           style={{
             width: "100%",
             padding: "14px 16px",
@@ -140,12 +203,16 @@ export default function GirisPage() {
             fontSize: "16px",
             fontWeight: 700,
             cursor:
-              googleYukleniyor || yukleniyor ? "not-allowed" : "pointer",
+              googleYukleniyor || yukleniyor
+                ? "not-allowed"
+                : "pointer",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: "12px",
-            opacity: googleYukleniyor ? 0.7 : 1,
+            opacity: googleYukleniyor
+              ? 0.7
+              : 1,
           }}
         >
           <span
@@ -230,7 +297,9 @@ export default function GirisPage() {
               required
               autoComplete="email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) =>
+                setEmail(event.target.value)
+              }
               placeholder="ornek@email.com"
               style={{
                 padding: "14px",
@@ -258,7 +327,9 @@ export default function GirisPage() {
               required
               autoComplete="current-password"
               value={sifre}
-              onChange={(event) => setSifre(event.target.value)}
+              onChange={(event) =>
+                setSifre(event.target.value)
+              }
               placeholder="Şifrenizi yazın"
               style={{
                 padding: "14px",
@@ -270,6 +341,34 @@ export default function GirisPage() {
               }}
             />
           </label>
+
+          {hcaptchaSiteKey && (
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                overflow: "hidden",
+              }}
+            >
+              <HCaptcha
+                ref={captchaRef}
+                sitekey={hcaptchaSiteKey}
+                onVerify={(token) => {
+                  setCaptchaToken(token);
+                  setHata("");
+                }}
+                onExpire={() => {
+                  setCaptchaToken("");
+                }}
+                onError={() => {
+                  setCaptchaToken("");
+                  setHata(
+                    "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
+                  );
+                }}
+              />
+            </div>
+          )}
 
           {hata && (
             <div
@@ -290,23 +389,34 @@ export default function GirisPage() {
 
           <button
             type="submit"
-            disabled={yukleniyor || googleYukleniyor}
+            disabled={
+              yukleniyor ||
+              googleYukleniyor ||
+              !captchaToken
+            }
             style={{
               marginTop: "6px",
               padding: "15px",
               border: "none",
               borderRadius: "11px",
-              backgroundColor: yukleniyor ? "#94A3B8" : "#2563EB",
+              backgroundColor:
+                yukleniyor || !captchaToken
+                  ? "#94A3B8"
+                  : "#2563EB",
               color: "#FFFFFF",
               fontSize: "16px",
               fontWeight: 800,
               cursor:
-                yukleniyor || googleYukleniyor
+                yukleniyor ||
+                googleYukleniyor ||
+                !captchaToken
                   ? "not-allowed"
                   : "pointer",
             }}
           >
-            {yukleniyor ? "Giriş yapılıyor..." : "Giriş Yap"}
+            {yukleniyor
+              ? "Giriş yapılıyor..."
+              : "Giriş Yap"}
           </button>
         </form>
 
