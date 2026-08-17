@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   useRef,
   useState,
@@ -10,6 +11,7 @@ import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { supabase } from "../../lib/supabase";
 
 export default function KayitPage() {
+  const router = useRouter();
   const captchaRef = useRef<HCaptcha>(null);
 
   const [kullaniciAdi, setKullaniciAdi] = useState("");
@@ -80,14 +82,18 @@ export default function KayitPage() {
     setKayitYukleniyor(true);
 
     try {
+      /*
+       * Tarayıcıda eski bir kullanıcı oturumu kaldıysa
+       * kayıt işleminden önce temizliyoruz.
+       */
+      await supabase.auth.signOut();
+
       const { data, error } =
         await supabase.auth.signUp({
           email: temizEmail,
           password: sifre,
           options: {
             captchaToken,
-            emailRedirectTo:
-              `${window.location.origin}/giris`,
             data: {
               username: temizKullaniciAdi,
             },
@@ -98,6 +104,8 @@ export default function KayitPage() {
       setCaptchaToken("");
 
       if (error) {
+        console.error("Kayıt hatası:", error);
+
         const hataMesaji =
           error.message.toLowerCase();
 
@@ -111,30 +119,63 @@ export default function KayitPage() {
           setHata(
             "Şifre güvenlik şartlarını karşılamıyor."
           );
+        } else if (
+          hataMesaji.includes("rate") ||
+          hataMesaji.includes("limit")
+        ) {
+          setHata(
+            "Çok fazla kayıt denemesi yapıldı. Lütfen biraz bekleyip tekrar deneyin."
+          );
+        } else if (
+          hataMesaji.includes("email") &&
+          hataMesaji.includes("send")
+        ) {
+          setHata(
+            "Doğrulama e-postası gönderilemedi. Lütfen tekrar deneyin."
+          );
+        } else if (
+          hataMesaji.includes("already") ||
+          hataMesaji.includes("registered")
+        ) {
+          setHata(
+            "Bu e-posta adresiyle daha önce hesap oluşturulmuş olabilir."
+          );
         } else {
           setHata(
-            "Kayıt oluşturulamadı. Bilgilerinizi kontrol edip tekrar deneyin."
+            `Kayıt oluşturulamadı: ${error.message}`
           );
         }
 
         return;
       }
 
-      if (data.session) {
-        setMesaj(
-          "Hesabınız oluşturuldu. Artık giriş yapabilirsiniz."
+      if (!data.user) {
+        setHata(
+          "Hesap oluşturulamadı. Lütfen tekrar deneyin."
         );
-      } else {
-        setMesaj(
-          "Hesabınız oluşturuldu. E-posta adresinize gönderilen doğrulama bağlantısına tıklayın."
-        );
+        return;
       }
 
-      setKullaniciAdi("");
-      setEmail("");
-      setSifre("");
-      setSifreTekrar("");
-    } catch {
+      /*
+       * E-posta/şifre kaydında kullanıcıyı ASLA
+       * doğrudan dashboard'a göndermiyoruz.
+       *
+       * Kullanıcı önce 6 haneli kodu doğrulayacak.
+       */
+      if (data.session) {
+        await supabase.auth.signOut();
+      }
+
+      router.replace(
+        `/dogrula?email=${encodeURIComponent(
+          temizEmail
+        )}`
+      );
+
+      router.refresh();
+    } catch (error) {
+      console.error("Beklenmeyen kayıt hatası:", error);
+
       captchaRef.current?.resetCaptcha();
       setCaptchaToken("");
 
