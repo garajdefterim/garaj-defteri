@@ -9,21 +9,40 @@ import {
 } from "react";
 import { supabase } from "../../lib/supabase";
 
+function BrandMark() {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        width: "42px",
+        height: "42px",
+        borderRadius: "11px",
+        backgroundColor: "#0F172A",
+        color: "#FFFFFF",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "15px",
+        fontWeight: 800,
+        letterSpacing: "-0.5px",
+      }}
+    >
+      GD
+    </div>
+  );
+}
+
 export default function DogrulaPage() {
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [kod, setKod] = useState("");
-
   const [hata, setHata] = useState("");
   const [mesaj, setMesaj] = useState("");
-
   const [yukleniyor, setYukleniyor] =
     useState(false);
-
   const [tekrarGonderiliyor, setTekrarGonderiliyor] =
     useState(false);
-
   const [beklemeSuresi, setBeklemeSuresi] =
     useState(0);
 
@@ -120,19 +139,10 @@ export default function DogrulaPage() {
         return;
       }
 
-      /*
-       * verifyOtp başarılı olduğunda Supabase
-       * kullanıcı için oturum oluşturabilir.
-       *
-       * Biz kullanıcının doğrulamadan sonra
-       * giriş sayfasından şifresiyle giriş
-       * yapmasını istediğimiz için oturumu
-       * kapatıyoruz.
-       */
       await supabase.auth.signOut();
 
       setMesaj(
-        "E-posta adresiniz başarıyla doğrulandı. Giriş sayfasına yönlendiriliyorsunuz."
+        "E-posta adresiniz doğrulandı. Giriş sayfasına yönlendiriliyorsunuz."
       );
 
       setTimeout(() => {
@@ -215,10 +225,6 @@ export default function DogrulaPage() {
         "Yeni doğrulama kodu e-posta adresinize gönderildi."
       );
 
-      /*
-       * Supabase SMTP ayarında minimum interval
-       * değerimizi 60 saniye bırakmıştık.
-       */
       setBeklemeSuresi(60);
     } catch (error) {
       console.error(
@@ -241,311 +247,374 @@ export default function DogrulaPage() {
     <main
       style={{
         minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        backgroundColor: "#F8FAFC",
+        backgroundColor: "#F7F8FA",
+        color: "#111827",
         fontFamily:
-          "Arial, Helvetica, sans-serif",
-        color: "#0F172A",
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <section
+      <header
         style={{
           width: "100%",
-          maxWidth: "460px",
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #E2E8F0",
-          borderRadius: "20px",
-          padding: "36px",
-          boxShadow:
-            "0 20px 50px rgba(15, 23, 42, 0.08)",
+          maxWidth: "1180px",
+          margin: "0 auto",
+          boxSizing: "border-box",
+          padding: "28px 24px",
         }}
       >
-        <div
+        <Link
+          href="/"
           style={{
-            textAlign: "center",
-            marginBottom: "30px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "11px",
+            textDecoration: "none",
+            color: "#111827",
           }}
         >
-          <div
-            style={{
-              fontSize: "46px",
-              marginBottom: "12px",
-            }}
-          >
-            📧
-          </div>
+          <BrandMark />
 
-          <h1
-            style={{
-              margin: 0,
-              fontSize: "30px",
-              color: "#0F172A",
-            }}
-          >
-            E-postanızı Doğrulayın
-          </h1>
-
-          <p
-            style={{
-              margin: "12px 0 0",
-              color: "#64748B",
-              lineHeight: 1.6,
-            }}
-          >
-            E-posta adresinize gönderilen
-            6 haneli doğrulama kodunu girin.
-          </p>
-        </div>
-
-        {email ? (
-          <div
-            style={{
-              marginBottom: "22px",
-              padding: "13px",
-              borderRadius: "10px",
-              border:
-                "1px solid #DBEAFE",
-              backgroundColor: "#EFF6FF",
-              color: "#1E3A8A",
-              textAlign: "center",
-              fontSize: "14px",
-              wordBreak: "break-word",
-            }}
-          >
-            Kod şu adrese gönderildi:
-            <br />
-
-            <strong>{email}</strong>
-          </div>
-        ) : (
-          <div
-            role="alert"
-            style={{
-              marginBottom: "22px",
-              padding: "13px",
-              borderRadius: "10px",
-              border:
-                "1px solid #FECACA",
-              backgroundColor: "#FEF2F2",
-              color: "#B91C1C",
-              fontSize: "14px",
-              lineHeight: 1.5,
-            }}
-          >
-            Doğrulanacak e-posta adresi
-            bulunamadı. Lütfen tekrar kayıt
-            sayfasına dönün.
-          </div>
-        )}
-
-        <form
-          onSubmit={koduDogrula}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "18px",
-          }}
-        >
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-              color: "#334155",
-              fontWeight: 700,
-            }}
-          >
-            Doğrulama kodu
-
-            <input
-              type="text"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              maxLength={6}
-              required
-              disabled={!email || yukleniyor}
-              value={kod}
-              onChange={(event) => {
-                const sadeceRakam =
-                  event.target.value
-                    .replace(/\D/g, "")
-                    .slice(0, 6);
-
-                setKod(sadeceRakam);
-                setHata("");
-              }}
-              placeholder="123456"
+          <div>
+            <div
               style={{
-                padding: "16px",
-                borderRadius: "10px",
-                border:
-                  "1px solid #CBD5E1",
-                backgroundColor:
+                fontSize: "16px",
+                lineHeight: 1.2,
+                fontWeight: 750,
+                letterSpacing: "-0.3px",
+              }}
+            >
+              Garaj Defteri
+            </div>
+
+            <div
+              style={{
+                marginTop: "2px",
+                fontSize: "11px",
+                color: "#8A94A3",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Araç yönetimi, sadeleştirildi.
+            </div>
+          </div>
+        </Link>
+      </header>
+
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "24px 24px 72px",
+        }}
+      >
+        <section
+          style={{
+            width: "100%",
+            maxWidth: "420px",
+          }}
+        >
+          <div
+            style={{
+              marginBottom: "28px",
+            }}
+          >
+            <h1
+              style={{
+                margin: 0,
+                color: "#111827",
+                fontSize: "30px",
+                lineHeight: 1.2,
+                fontWeight: 750,
+                letterSpacing: "-0.8px",
+              }}
+            >
+              E-postanızı doğrulayın
+            </h1>
+
+            <p
+              style={{
+                margin: "9px 0 0",
+                color: "#6B7280",
+                fontSize: "15px",
+                lineHeight: 1.6,
+              }}
+            >
+              Hesabınızı etkinleştirmek için
+              e-postanıza gönderilen 6 haneli kodu
+              girin.
+            </p>
+          </div>
+
+          <div
+            style={{
+              padding: "28px",
+              backgroundColor: "#FFFFFF",
+              border: "1px solid #E3E7EC",
+              borderRadius: "14px",
+              boxShadow:
+                "0 1px 2px rgba(15, 23, 42, 0.03)",
+            }}
+          >
+            {email ? (
+              <div
+                style={{
+                  marginBottom: "22px",
+                  padding: "12px 13px",
+                  borderRadius: "8px",
+                  backgroundColor: "#F8FAFC",
+                  border: "1px solid #E5E7EB",
+                  color: "#4B5563",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
+                }}
+              >
+                Kod gönderilen adres
+                <div
+                  style={{
+                    marginTop: "3px",
+                    color: "#111827",
+                    fontWeight: 650,
+                    wordBreak: "break-word",
+                  }}
+                >
+                  {email}
+                </div>
+              </div>
+            ) : (
+              <div
+                role="alert"
+                style={{
+                  marginBottom: "22px",
+                  padding: "12px 13px",
+                  borderRadius: "8px",
+                  border: "1px solid #F1C7C7",
+                  backgroundColor: "#FFF7F7",
+                  color: "#A93838",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
+                }}
+              >
+                Doğrulanacak e-posta adresi
+                bulunamadı. Lütfen kayıt işlemini
+                yeniden başlatın.
+              </div>
+            )}
+
+            <form
+              onSubmit={koduDogrula}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "17px",
+              }}
+            >
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "7px",
+                  color: "#374151",
+                  fontSize: "14px",
+                  fontWeight: 600,
+                }}
+              >
+                Doğrulama kodu
+
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={6}
+                  required
+                  disabled={!email || yukleniyor}
+                  value={kod}
+                  onChange={(event) => {
+                    const sadeceRakam =
+                      event.target.value
+                        .replace(/\D/g, "")
+                        .slice(0, 6);
+
+                    setKod(sadeceRakam);
+                    setHata("");
+                  }}
+                  placeholder="000000"
+                  style={{
+                    width: "100%",
+                    boxSizing: "border-box",
+                    height: "54px",
+                    padding: "0 14px",
+                    borderRadius: "9px",
+                    border: "1px solid #D7DCE3",
+                    backgroundColor: !email
+                      ? "#F3F4F6"
+                      : "#FFFFFF",
+                    color: "#111827",
+                    fontSize: "22px",
+                    fontWeight: 700,
+                    textAlign: "center",
+                    letterSpacing: "10px",
+                    outline: "none",
+                  }}
+                />
+              </label>
+
+              {hata && (
+                <div
+                  role="alert"
+                  style={{
+                    padding: "12px 13px",
+                    borderRadius: "8px",
+                    border: "1px solid #F1C7C7",
+                    backgroundColor: "#FFF7F7",
+                    color: "#A93838",
+                    fontSize: "13px",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {hata}
+                </div>
+              )}
+
+              {mesaj && (
+                <div
+                  role="status"
+                  style={{
+                    padding: "12px 13px",
+                    borderRadius: "8px",
+                    border: "1px solid #C6E7D2",
+                    backgroundColor: "#F7FCF9",
+                    color: "#276749",
+                    fontSize: "13px",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {mesaj}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={
+                  yukleniyor ||
+                  tekrarGonderiliyor ||
+                  !kodHazir ||
                   !email
-                    ? "#F1F5F9"
-                    : "#FFFFFF",
-                color: "#0F172A",
-                fontSize: "24px",
-                fontWeight: 800,
-                textAlign: "center",
-                letterSpacing: "8px",
-                outline: "none",
+                }
+                style={{
+                  width: "100%",
+                  height: "48px",
+                  border: "none",
+                  borderRadius: "9px",
+                  backgroundColor:
+                    yukleniyor ||
+                    tekrarGonderiliyor ||
+                    !kodHazir ||
+                    !email
+                      ? "#AAB2BD"
+                      : "#1D4ED8",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  cursor:
+                    yukleniyor ||
+                    tekrarGonderiliyor ||
+                    !kodHazir ||
+                    !email
+                      ? "not-allowed"
+                      : "pointer",
+                }}
+              >
+                {yukleniyor
+                  ? "Doğrulanıyor..."
+                  : "Kodu Doğrula"}
+              </button>
+            </form>
+
+            <div
+              style={{
+                height: "1px",
+                backgroundColor: "#EEF0F2",
+                margin: "24px 0 20px",
               }}
             />
-          </label>
 
-          {hata && (
             <div
-              role="alert"
               style={{
-                padding: "13px",
-                borderRadius: "10px",
-                border:
-                  "1px solid #FECACA",
-                backgroundColor: "#FEF2F2",
-                color: "#B91C1C",
-                fontSize: "14px",
-                lineHeight: 1.5,
+                textAlign: "center",
               }}
             >
-              {hata}
+              <p
+                style={{
+                  margin: "0 0 8px",
+                  color: "#6B7280",
+                  fontSize: "13px",
+                }}
+              >
+                Kod ulaşmadı mı?
+              </p>
+
+              <button
+                type="button"
+                onClick={koduTekrarGonder}
+                disabled={
+                  !email ||
+                  yukleniyor ||
+                  tekrarGonderiliyor ||
+                  beklemeSuresi > 0
+                }
+                style={{
+                  border: "none",
+                  padding: 0,
+                  backgroundColor: "transparent",
+                  color:
+                    !email ||
+                    tekrarGonderiliyor ||
+                    beklemeSuresi > 0
+                      ? "#9CA3AF"
+                      : "#1D4ED8",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  cursor:
+                    !email ||
+                    tekrarGonderiliyor ||
+                    beklemeSuresi > 0
+                      ? "not-allowed"
+                      : "pointer",
+                }}
+              >
+                {tekrarGonderiliyor
+                  ? "Kod gönderiliyor..."
+                  : beklemeSuresi > 0
+                    ? `Tekrar gönder (${beklemeSuresi})`
+                    : "Kodu tekrar gönder"}
+              </button>
             </div>
-          )}
+          </div>
 
-          {mesaj && (
-            <div
-              role="status"
-              style={{
-                padding: "13px",
-                borderRadius: "10px",
-                border:
-                  "1px solid #BBF7D0",
-                backgroundColor: "#F0FDF4",
-                color: "#166534",
-                fontSize: "14px",
-                lineHeight: 1.5,
-              }}
-            >
-              {mesaj}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={
-              yukleniyor ||
-              tekrarGonderiliyor ||
-              !kodHazir ||
-              !email
-            }
-            style={{
-              padding: "15px",
-              border: "none",
-              borderRadius: "11px",
-              backgroundColor:
-                yukleniyor ||
-                tekrarGonderiliyor ||
-                !kodHazir ||
-                !email
-                  ? "#94A3B8"
-                  : "#2563EB",
-              color: "#FFFFFF",
-              fontSize: "16px",
-              fontWeight: 800,
-              cursor:
-                yukleniyor ||
-                tekrarGonderiliyor ||
-                !kodHazir ||
-                !email
-                  ? "not-allowed"
-                  : "pointer",
-            }}
-          >
-            {yukleniyor
-              ? "Doğrulanıyor..."
-              : "Kodu Doğrula"}
-          </button>
-        </form>
-
-        <div
-          style={{
-            marginTop: "18px",
-            textAlign: "center",
-          }}
-        >
           <p
             style={{
-              margin:
-                "0 0 10px",
-              color: "#64748B",
-              fontSize: "14px",
+              margin: "22px 0 0",
+              textAlign: "center",
             }}
           >
-            Kod gelmedi mi?
+            <Link
+              href="/kayit"
+              style={{
+                color: "#7B8492",
+                textDecoration: "none",
+                fontSize: "13px",
+                fontWeight: 500,
+              }}
+            >
+              Kayıt sayfasına dön
+            </Link>
           </p>
-
-          <button
-            type="button"
-            onClick={koduTekrarGonder}
-            disabled={
-              !email ||
-              yukleniyor ||
-              tekrarGonderiliyor ||
-              beklemeSuresi > 0
-            }
-            style={{
-              border: "none",
-              padding: 0,
-              backgroundColor:
-                "transparent",
-              color:
-                !email ||
-                tekrarGonderiliyor ||
-                beklemeSuresi > 0
-                  ? "#94A3B8"
-                  : "#2563EB",
-              fontSize: "14px",
-              fontWeight: 800,
-              cursor:
-                !email ||
-                tekrarGonderiliyor ||
-                beklemeSuresi > 0
-                  ? "not-allowed"
-                  : "pointer",
-            }}
-          >
-            {tekrarGonderiliyor
-              ? "Kod gönderiliyor..."
-              : beklemeSuresi > 0
-                ? `Tekrar gönder (${beklemeSuresi})`
-                : "Kodu tekrar gönder"}
-          </button>
-        </div>
-
-        <div
-          style={{
-            marginTop: "28px",
-            paddingTop: "20px",
-            borderTop:
-              "1px solid #E2E8F0",
-            textAlign: "center",
-          }}
-        >
-          <Link
-            href="/kayit"
-            style={{
-              color: "#64748B",
-              textDecoration: "none",
-              fontSize: "14px",
-            }}
-          >
-            ← Kayıt sayfasına dön
-          </Link>
-        </div>
-      </section>
+        </section>
+      </div>
     </main>
   );
 }

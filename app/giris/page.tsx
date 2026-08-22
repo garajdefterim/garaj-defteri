@@ -10,16 +10,68 @@ import {
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { supabase } from "../../lib/supabase";
 
+function GoogleIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <path
+        fill="#4285F4"
+        d="M21.6 12.23c0-.71-.06-1.4-.18-2.07H12v3.92h5.38a4.6 4.6 0 0 1-2 3.02v2.54h3.24c1.9-1.75 2.98-4.33 2.98-7.41Z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 22c2.7 0 4.97-.9 6.62-2.36l-3.24-2.54c-.9.6-2.05.96-3.38.96-2.61 0-4.82-1.76-5.61-4.13H3.04v2.62A10 10 0 0 0 12 22Z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M6.39 13.93A6.02 6.02 0 0 1 6.08 12c0-.67.11-1.32.31-1.93V7.45H3.04A10 10 0 0 0 2 12c0 1.61.38 3.14 1.04 4.55l3.35-2.62Z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 5.94c1.47 0 2.79.5 3.83 1.5l2.87-2.87A9.63 9.63 0 0 0 12 2a10 10 0 0 0-8.96 5.45l3.35 2.62C7.18 7.7 9.39 5.94 12 5.94Z"
+      />
+    </svg>
+  );
+}
+
+function BrandMark() {
+  return (
+    <div
+      aria-hidden="true"
+      style={{
+        width: "42px",
+        height: "42px",
+        borderRadius: "11px",
+        backgroundColor: "#0F172A",
+        color: "#FFFFFF",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "15px",
+        fontWeight: 800,
+        letterSpacing: "-0.5px",
+      }}
+    >
+      GD
+    </div>
+  );
+}
+
 export default function GirisPage() {
   const router = useRouter();
-
   const captchaRef = useRef<HCaptcha>(null);
 
   const [email, setEmail] = useState("");
   const [sifre, setSifre] = useState("");
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaToken, setCaptchaToken] =
+    useState("");
   const [hata, setHata] = useState("");
-  const [yukleniyor, setYukleniyor] = useState(false);
+  const [yukleniyor, setYukleniyor] =
+    useState(false);
   const [googleYukleniyor, setGoogleYukleniyor] =
     useState(false);
 
@@ -30,7 +82,6 @@ export default function GirisPage() {
     event: FormEvent<HTMLFormElement>
   ) {
     event.preventDefault();
-
     setHata("");
 
     if (!hcaptchaSiteKey) {
@@ -126,338 +177,384 @@ export default function GirisPage() {
     }
   }
 
+  const inputStyle = {
+    width: "100%",
+    boxSizing: "border-box" as const,
+    height: "48px",
+    padding: "0 14px",
+    borderRadius: "9px",
+    border: "1px solid #D7DCE3",
+    backgroundColor: "#FFFFFF",
+    color: "#111827",
+    fontSize: "15px",
+    outline: "none",
+  };
+
+  const labelStyle = {
+    display: "flex",
+    flexDirection: "column" as const,
+    gap: "7px",
+    color: "#374151",
+    fontSize: "14px",
+    fontWeight: 600,
+  };
+
+  const isDisabled =
+    yukleniyor ||
+    googleYukleniyor ||
+    !captchaToken;
+
   return (
     <main
       style={{
         minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-        backgroundColor: "#F8FAFC",
+        backgroundColor: "#F7F8FA",
+        color: "#111827",
         fontFamily:
-          "Arial, Helvetica, sans-serif",
-        color: "#0F172A",
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <section
+      <header
         style={{
           width: "100%",
-          maxWidth: "460px",
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #E2E8F0",
-          borderRadius: "20px",
-          padding: "36px",
-          boxShadow:
-            "0 20px 50px rgba(15, 23, 42, 0.08)",
+          maxWidth: "1180px",
+          margin: "0 auto",
+          boxSizing: "border-box",
+          padding: "28px 24px",
         }}
       >
-        <div
+        <Link
+          href="/"
           style={{
-            textAlign: "center",
-            marginBottom: "30px",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "11px",
+            textDecoration: "none",
+            color: "#111827",
           }}
         >
-          <div
-            style={{
-              fontSize: "42px",
-              marginBottom: "10px",
-            }}
-          >
-            🚗
+          <BrandMark />
+
+          <div>
+            <div
+              style={{
+                fontSize: "16px",
+                lineHeight: 1.2,
+                fontWeight: 750,
+                letterSpacing: "-0.3px",
+              }}
+            >
+              Garaj Defteri
+            </div>
+
+            <div
+              style={{
+                marginTop: "2px",
+                fontSize: "11px",
+                color: "#8A94A3",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Araç yönetimi, sadeleştirildi.
+            </div>
           </div>
+        </Link>
+      </header>
 
-          <h1
-            style={{
-              margin: 0,
-              fontSize: "30px",
-              color: "#0F172A",
-            }}
-          >
-            Giriş Yap
-          </h1>
-
-          <p
-            style={{
-              margin: "10px 0 0",
-              color: "#64748B",
-            }}
-          >
-            Garaj Defteri hesabınıza giriş yapın.
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={googleIleGirisYap}
-          disabled={
-            googleYukleniyor || yukleniyor
-          }
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "24px 24px 72px",
+        }}
+      >
+        <section
           style={{
             width: "100%",
-            padding: "14px 16px",
-            border: "1px solid #CBD5E1",
-            borderRadius: "11px",
-            backgroundColor: "#FFFFFF",
-            color: "#0F172A",
-            fontSize: "16px",
-            fontWeight: 700,
-            cursor:
-              googleYukleniyor || yukleniyor
-                ? "not-allowed"
-                : "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "12px",
-            opacity: googleYukleniyor
-              ? 0.7
-              : 1,
+            maxWidth: "420px",
           }}
         >
-          <span
-            aria-hidden="true"
+          <div
             style={{
-              width: "24px",
-              height: "24px",
-              display: "inline-flex",
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: "50%",
+              marginBottom: "28px",
+            }}
+          >
+            <h1
+              style={{
+                margin: 0,
+                color: "#111827",
+                fontSize: "30px",
+                lineHeight: 1.2,
+                fontWeight: 750,
+                letterSpacing: "-0.8px",
+              }}
+            >
+              Tekrar hoş geldiniz
+            </h1>
+
+            <p
+              style={{
+                margin: "9px 0 0",
+                color: "#6B7280",
+                fontSize: "15px",
+                lineHeight: 1.6,
+              }}
+            >
+              Garajınızı yönetmeye devam etmek için
+              hesabınıza giriş yapın.
+            </p>
+          </div>
+
+          <div
+            style={{
+              padding: "28px",
               backgroundColor: "#FFFFFF",
-              border: "1px solid #E2E8F0",
-              color: "#4285F4",
-              fontSize: "17px",
-              fontWeight: 900,
+              border: "1px solid #E3E7EC",
+              borderRadius: "14px",
+              boxShadow:
+                "0 1px 2px rgba(15, 23, 42, 0.03)",
             }}
           >
-            G
-          </span>
-
-          {googleYukleniyor
-            ? "Google'a yönlendiriliyor..."
-            : "Google ile devam et"}
-        </button>
-
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            margin: "24px 0",
-          }}
-        >
-          <div
-            style={{
-              flex: 1,
-              height: "1px",
-              backgroundColor: "#E2E8F0",
-            }}
-          />
-
-          <span
-            style={{
-              color: "#94A3B8",
-              fontSize: "13px",
-              fontWeight: 700,
-            }}
-          >
-            VEYA
-          </span>
-
-          <div
-            style={{
-              flex: 1,
-              height: "1px",
-              backgroundColor: "#E2E8F0",
-            }}
-          />
-        </div>
-
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "18px",
-          }}
-        >
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-              color: "#334155",
-              fontWeight: 700,
-            }}
-          >
-            E-posta
-            <input
-              type="email"
-              required
-              autoComplete="email"
-              value={email}
-              onChange={(event) =>
-                setEmail(event.target.value)
+            <button
+              type="button"
+              onClick={googleIleGirisYap}
+              disabled={
+                googleYukleniyor || yukleniyor
               }
-              placeholder="ornek@email.com"
               style={{
-                padding: "14px",
-                borderRadius: "10px",
-                border: "1px solid #CBD5E1",
+                width: "100%",
+                height: "48px",
+                padding: "0 16px",
+                border: "1px solid #D7DCE3",
+                borderRadius: "9px",
                 backgroundColor: "#FFFFFF",
-                color: "#0F172A",
-                fontSize: "16px",
+                color: "#1F2937",
+                fontSize: "14px",
+                fontWeight: 650,
+                cursor:
+                  googleYukleniyor || yukleniyor
+                    ? "not-allowed"
+                    : "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+                opacity:
+                  googleYukleniyor || yukleniyor
+                    ? 0.65
+                    : 1,
               }}
-            />
-          </label>
+            >
+              <GoogleIcon />
 
-          <label
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-              color: "#334155",
-              fontWeight: 700,
-            }}
-          >
-            Şifre
-            <input
-              type="password"
-              required
-              autoComplete="current-password"
-              value={sifre}
-              onChange={(event) =>
-                setSifre(event.target.value)
-              }
-              placeholder="Şifrenizi yazın"
-              style={{
-                padding: "14px",
-                borderRadius: "10px",
-                border: "1px solid #CBD5E1",
-                backgroundColor: "#FFFFFF",
-                color: "#0F172A",
-                fontSize: "16px",
-              }}
-            />
-          </label>
+              {googleYukleniyor
+                ? "Google'a yönlendiriliyor..."
+                : "Google ile devam et"}
+            </button>
 
-          {hcaptchaSiteKey && (
             <div
               style={{
                 display: "flex",
-                justifyContent: "center",
-                overflow: "hidden",
+                alignItems: "center",
+                gap: "12px",
+                margin: "24px 0",
               }}
             >
-              <HCaptcha
-                ref={captchaRef}
-                sitekey={hcaptchaSiteKey}
-                onVerify={(token) => {
-                  setCaptchaToken(token);
-                  setHata("");
+              <div
+                style={{
+                  flex: 1,
+                  height: "1px",
+                  backgroundColor: "#E8EBEF",
                 }}
-                onExpire={() => {
-                  setCaptchaToken("");
+              />
+
+              <span
+                style={{
+                  color: "#9CA3AF",
+                  fontSize: "11px",
+                  fontWeight: 650,
+                  letterSpacing: "0.06em",
                 }}
-                onError={() => {
-                  setCaptchaToken("");
-                  setHata(
-                    "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
-                  );
+              >
+                VEYA
+              </span>
+
+              <div
+                style={{
+                  flex: 1,
+                  height: "1px",
+                  backgroundColor: "#E8EBEF",
                 }}
               />
             </div>
-          )}
 
-          {hata && (
-            <div
-              role="alert"
+            <form
+              onSubmit={handleSubmit}
               style={{
-                padding: "12px",
-                borderRadius: "10px",
-                border: "1px solid #FECACA",
-                backgroundColor: "#FEF2F2",
-                color: "#B91C1C",
-                fontSize: "14px",
-                lineHeight: 1.5,
+                display: "flex",
+                flexDirection: "column",
+                gap: "17px",
               }}
             >
-              {hata}
-            </div>
-          )}
+              <label style={labelStyle}>
+                E-posta adresi
 
-          <button
-            type="submit"
-            disabled={
-              yukleniyor ||
-              googleYukleniyor ||
-              !captchaToken
-            }
+                <input
+                  type="email"
+                  required
+                  autoComplete="email"
+                  value={email}
+                  onChange={(event) =>
+                    setEmail(event.target.value)
+                  }
+                  placeholder="ornek@email.com"
+                  style={inputStyle}
+                />
+              </label>
+
+              <label style={labelStyle}>
+                Şifre
+
+                <input
+                  type="password"
+                  required
+                  autoComplete="current-password"
+                  value={sifre}
+                  onChange={(event) =>
+                    setSifre(event.target.value)
+                  }
+                  placeholder="Şifrenizi girin"
+                  style={inputStyle}
+                />
+              </label>
+
+              {hcaptchaSiteKey && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    paddingTop: "2px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <HCaptcha
+                    ref={captchaRef}
+                    sitekey={hcaptchaSiteKey}
+                    onVerify={(token) => {
+                      setCaptchaToken(token);
+                      setHata("");
+                    }}
+                    onExpire={() => {
+                      setCaptchaToken("");
+                    }}
+                    onError={() => {
+                      setCaptchaToken("");
+                      setHata(
+                        "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
+                      );
+                    }}
+                  />
+                </div>
+              )}
+
+              {hata && (
+                <div
+                  role="alert"
+                  style={{
+                    padding: "12px 13px",
+                    borderRadius: "8px",
+                    border:
+                      "1px solid #F1C7C7",
+                    backgroundColor: "#FFF7F7",
+                    color: "#A93838",
+                    fontSize: "13px",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {hata}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={isDisabled}
+                style={{
+                  width: "100%",
+                  height: "48px",
+                  marginTop: "2px",
+                  border: "none",
+                  borderRadius: "9px",
+                  backgroundColor: isDisabled
+                    ? "#AAB2BD"
+                    : "#1D4ED8",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  cursor: isDisabled
+                    ? "not-allowed"
+                    : "pointer",
+                }}
+              >
+                {yukleniyor
+                  ? "Giriş yapılıyor..."
+                  : "Giriş Yap"}
+              </button>
+            </form>
+
+            <div
+              style={{
+                height: "1px",
+                backgroundColor: "#EEF0F2",
+                margin: "26px 0 22px",
+              }}
+            />
+
+            <p
+              style={{
+                margin: 0,
+                textAlign: "center",
+                color: "#6B7280",
+                fontSize: "14px",
+              }}
+            >
+              Henüz hesabınız yok mu?{" "}
+              <Link
+                href="/kayit"
+                style={{
+                  color: "#1D4ED8",
+                  fontWeight: 700,
+                  textDecoration: "none",
+                }}
+              >
+                Hesap oluşturun
+              </Link>
+            </p>
+          </div>
+
+          <p
             style={{
-              marginTop: "6px",
-              padding: "15px",
-              border: "none",
-              borderRadius: "11px",
-              backgroundColor:
-                yukleniyor || !captchaToken
-                  ? "#94A3B8"
-                  : "#2563EB",
-              color: "#FFFFFF",
-              fontSize: "16px",
-              fontWeight: 800,
-              cursor:
-                yukleniyor ||
-                googleYukleniyor ||
-                !captchaToken
-                  ? "not-allowed"
-                  : "pointer",
+              margin: "22px 0 0",
+              textAlign: "center",
             }}
           >
-            {yukleniyor
-              ? "Giriş yapılıyor..."
-              : "Giriş Yap"}
-          </button>
-        </form>
-
-        <p
-          style={{
-            margin: "24px 0 0",
-            textAlign: "center",
-            color: "#64748B",
-          }}
-        >
-          Hesabınız yok mu?{" "}
-          <Link
-            href="/kayit"
-            style={{
-              color: "#1D4ED8",
-              fontWeight: 800,
-              textDecoration: "none",
-            }}
-          >
-            Kayıt Ol
-          </Link>
-        </p>
-
-        <p
-          style={{
-            margin: "16px 0 0",
-            textAlign: "center",
-          }}
-        >
-          <Link
-            href="/"
-            style={{
-              color: "#64748B",
-              textDecoration: "none",
-              fontSize: "14px",
-            }}
-          >
-            ← Ana sayfaya dön
-          </Link>
-        </p>
-      </section>
+            <Link
+              href="/"
+              style={{
+                color: "#7B8492",
+                textDecoration: "none",
+                fontSize: "13px",
+                fontWeight: 500,
+              }}
+            >
+              Ana sayfaya dön
+            </Link>
+          </p>
+        </section>
+      </div>
     </main>
   );
 }
