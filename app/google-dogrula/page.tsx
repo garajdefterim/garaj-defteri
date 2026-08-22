@@ -1,25 +1,44 @@
 "use client";
 
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type FormEvent,
+} from "react";
 import { useRouter } from "next/navigation";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { supabase } from "../../lib/supabase";
 
 export default function GoogleDogrulaPage() {
   const router = useRouter();
-
-  const ilkKodGonderildi = useRef(false);
+  const captchaRef = useRef<HCaptcha>(null);
 
   const [email, setEmail] = useState("");
   const [kod, setKod] = useState("");
+  const [captchaToken, setCaptchaToken] = useState("");
 
-  const [sayfaYukleniyor, setSayfaYukleniyor] = useState(true);
-  const [kodGonderiliyor, setKodGonderiliyor] = useState(false);
-  const [dogrulaniyor, setDogrulaniyor] = useState(false);
+  const [sayfaYukleniyor, setSayfaYukleniyor] =
+    useState(true);
+
+  const [kodGonderildi, setKodGonderildi] =
+    useState(false);
+
+  const [kodGonderiliyor, setKodGonderiliyor] =
+    useState(false);
+
+  const [dogrulaniyor, setDogrulaniyor] =
+    useState(false);
 
   const [hata, setHata] = useState("");
   const [mesaj, setMesaj] = useState("");
 
-  const [beklemeSuresi, setBeklemeSuresi] = useState(0);
+  const [beklemeSuresi, setBeklemeSuresi] =
+    useState(0);
+
+  const hcaptchaSiteKey =
+    process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ||
+    "be4a5a44-94a0-459a-a750-caaa23900666";
 
   useEffect(() => {
     async function googleKullanicisiniHazirla() {
@@ -34,10 +53,8 @@ export default function GoogleDogrulaPage() {
 
         if (error || !user) {
           setHata(
-            "Google oturumu bulunamadı. Lütfen tekrar Google ile giriş yapın."
+            "Google oturumu bulunamadı. Lütfen tekrar Google ile devam edin."
           );
-
-          await supabase.auth.signOut();
 
           setTimeout(() => {
             router.replace("/kayit");
@@ -46,7 +63,8 @@ export default function GoogleDogrulaPage() {
           return;
         }
 
-        const googleEmail = user.email?.trim().toLowerCase() ?? "";
+        const googleEmail =
+          user.email?.trim().toLowerCase() ?? "";
 
         if (!googleEmail) {
           setHata(
@@ -56,52 +74,16 @@ export default function GoogleDogrulaPage() {
         }
 
         setEmail(googleEmail);
-
-        if (ilkKodGonderildi.current) {
-          return;
-        }
-
-        ilkKodGonderildi.current = true;
-
-        setKodGonderiliyor(true);
-
-        const { error: otpError } =
-          await supabase.auth.signInWithOtp({
-            email: googleEmail,
-            options: {
-              shouldCreateUser: false,
-            },
-          });
-
-        if (otpError) {
-          console.error(
-            "Google OTP gönderme hatası:",
-            otpError
-          );
-
-          setHata(
-            `Doğrulama kodu gönderilemedi: ${otpError.message}`
-          );
-
-          return;
-        }
-
-        setMesaj(
-          "Google hesabınıza bağlı e-posta adresine 6 haneli doğrulama kodu gönderildi."
-        );
-
-        setBeklemeSuresi(60);
       } catch (error) {
         console.error(
-          "Google doğrulama hazırlama hatası:",
+          "Google kullanıcı kontrolü hatası:",
           error
         );
 
         setHata(
-          "Doğrulama hazırlanırken beklenmeyen bir hata oluştu."
+          "Google hesabınız kontrol edilirken bir hata oluştu."
         );
       } finally {
-        setKodGonderiliyor(false);
         setSayfaYukleniyor(false);
       }
     }
@@ -130,6 +112,97 @@ export default function GoogleDogrulaPage() {
     };
   }, [beklemeSuresi]);
 
+  async function kodGonder() {
+    if (!email) {
+      setHata(
+        "Doğrulanacak e-posta adresi bulunamadı."
+      );
+      return;
+    }
+
+    if (!captchaToken) {
+      setHata(
+        "Lütfen önce güvenlik doğrulamasını tamamlayın."
+      );
+      return;
+    }
+
+    if (kodGonderiliyor) {
+      return;
+    }
+
+    setHata("");
+    setMesaj("");
+    setKodGonderiliyor(true);
+
+    try {
+      const { error } =
+        await supabase.auth.signInWithOtp({
+          email: email.trim().toLowerCase(),
+          options: {
+            shouldCreateUser: false,
+            captchaToken,
+          },
+        });
+
+      // hCaptcha token tek kullanımlıktır.
+      captchaRef.current?.resetCaptcha();
+      setCaptchaToken("");
+
+      if (error) {
+        console.error(
+          "Google OTP gönderme hatası:",
+          error
+        );
+
+        const hataMesaji =
+          error.message.toLowerCase();
+
+        if (hataMesaji.includes("captcha")) {
+          setHata(
+            "Güvenlik doğrulaması kabul edilmedi. Lütfen CAPTCHA'yı tekrar tamamlayın."
+          );
+        } else if (
+          hataMesaji.includes("rate") ||
+          hataMesaji.includes("limit")
+        ) {
+          setHata(
+            "Çok fazla kod isteği yapıldı. Lütfen biraz bekleyip tekrar deneyin."
+          );
+        } else {
+          setHata(
+            `Doğrulama kodu gönderilemedi: ${error.message}`
+          );
+        }
+
+        return;
+      }
+
+      setKodGonderildi(true);
+      setKod("");
+
+      setMesaj(
+        "6 haneli doğrulama kodu e-posta adresinize gönderildi."
+      );
+
+      setBeklemeSuresi(60);
+    } catch (error) {
+      console.error(
+        "OTP gönderme hatası:",
+        error
+      );
+
+      captchaRef.current?.resetCaptcha();
+      setCaptchaToken("");
+
+      setHata(
+        "Doğrulama kodu gönderilirken beklenmeyen bir hata oluştu."
+      );
+    } finally {
+      setKodGonderiliyor(false);
+    }
+  }
+
   async function koduDogrula(
     event: FormEvent<HTMLFormElement>
   ) {
@@ -138,8 +211,11 @@ export default function GoogleDogrulaPage() {
     setHata("");
     setMesaj("");
 
-    const temizEmail = email.trim().toLowerCase();
-    const temizKod = kod.replace(/\D/g, "");
+    const temizEmail =
+      email.trim().toLowerCase();
+
+    const temizKod =
+      kod.replace(/\D/g, "");
 
     if (!temizEmail) {
       setHata(
@@ -180,7 +256,7 @@ export default function GoogleDogrulaPage() {
           hataMesaji.includes("token")
         ) {
           setHata(
-            "Doğrulama kodu geçersiz veya süresi dolmuş. Yeni kod isteyin."
+            "Doğrulama kodu geçersiz veya süresi dolmuş. Yeni bir kod isteyin."
           );
         } else {
           setHata(
@@ -213,56 +289,19 @@ export default function GoogleDogrulaPage() {
     }
   }
 
-  async function koduTekrarGonder() {
-    if (
-      !email ||
-      kodGonderiliyor ||
-      dogrulaniyor ||
-      beklemeSuresi > 0
-    ) {
+  function yeniKodIste() {
+    if (beklemeSuresi > 0) {
       return;
     }
 
     setHata("");
     setMesaj("");
-    setKodGonderiliyor(true);
+    setKod("");
+    setCaptchaToken("");
 
-    try {
-      const { error } =
-        await supabase.auth.signInWithOtp({
-          email: email.trim().toLowerCase(),
-          options: {
-            shouldCreateUser: false,
-          },
-        });
+    captchaRef.current?.resetCaptcha();
 
-      if (error) {
-        console.error(
-          "OTP tekrar gönderme hatası:",
-          error
-        );
-
-        setHata(
-          `Yeni kod gönderilemedi: ${error.message}`
-        );
-
-        return;
-      }
-
-      setKod("");
-
-      setMesaj(
-        "Yeni doğrulama kodu e-posta adresinize gönderildi."
-      );
-
-      setBeklemeSuresi(60);
-    } catch {
-      setHata(
-        "Kod tekrar gönderilirken beklenmeyen bir hata oluştu."
-      );
-    } finally {
-      setKodGonderiliyor(false);
-    }
+    setKodGonderildi(false);
   }
 
   if (sayfaYukleniyor) {
@@ -274,11 +313,16 @@ export default function GoogleDogrulaPage() {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "#F8FAFC",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          fontFamily:
+            "Arial, Helvetica, sans-serif",
           color: "#0F172A",
         }}
       >
-        <p style={{ fontWeight: 700 }}>
+        <p
+          style={{
+            fontWeight: 700,
+          }}
+        >
           Google hesabınız kontrol ediliyor...
         </p>
       </main>
@@ -297,7 +341,8 @@ export default function GoogleDogrulaPage() {
         justifyContent: "center",
         padding: "24px",
         backgroundColor: "#F8FAFC",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily:
+          "Arial, Helvetica, sans-serif",
         color: "#0F172A",
       }}
     >
@@ -344,8 +389,9 @@ export default function GoogleDogrulaPage() {
               lineHeight: 1.6,
             }}
           >
-            Google hesabınıza bağlı e-posta adresine
-            gönderilen 6 haneli kodu girin.
+            Google hesabınıza bağlı e-posta
+            adresinizi 6 haneli kod ile
+            doğrulayın.
           </p>
         </div>
 
@@ -355,7 +401,8 @@ export default function GoogleDogrulaPage() {
               marginBottom: "22px",
               padding: "13px",
               borderRadius: "10px",
-              border: "1px solid #DBEAFE",
+              border:
+                "1px solid #DBEAFE",
               backgroundColor: "#EFF6FF",
               color: "#1E3A8A",
               textAlign: "center",
@@ -363,185 +410,350 @@ export default function GoogleDogrulaPage() {
               wordBreak: "break-word",
             }}
           >
-            Kod şu adrese gönderildi:
+            Doğrulanacak adres:
             <br />
             <strong>{email}</strong>
           </div>
         )}
 
-        <form
-          onSubmit={koduDogrula}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "18px",
-          }}
-        >
-          <label
+        {!kodGonderildi && (
+          <div
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "8px",
-              fontWeight: 700,
-              color: "#334155",
+              gap: "18px",
             }}
           >
-            Doğrulama kodu
-
-            <input
-              type="text"
-              inputMode="numeric"
-              autoComplete="one-time-code"
-              maxLength={6}
-              required
-              disabled={
-                dogrulaniyor ||
-                kodGonderiliyor ||
-                !email
-              }
-              value={kod}
-              onChange={(event) => {
-                setKod(
-                  event.target.value
-                    .replace(/\D/g, "")
-                    .slice(0, 6)
-                );
-
-                setHata("");
-              }}
-              placeholder="123456"
+            <div
               style={{
-                padding: "16px",
-                borderRadius: "10px",
-                border: "1px solid #CBD5E1",
-                backgroundColor: "#FFFFFF",
-                color: "#0F172A",
-                fontSize: "24px",
-                fontWeight: 800,
                 textAlign: "center",
-                letterSpacing: "8px",
-              }}
-            />
-          </label>
-
-          {hata && (
-            <div
-              role="alert"
-              style={{
-                padding: "13px",
-                borderRadius: "10px",
-                border: "1px solid #FECACA",
-                backgroundColor: "#FEF2F2",
-                color: "#B91C1C",
-                fontSize: "14px",
-                lineHeight: 1.5,
               }}
             >
-              {hata}
-            </div>
-          )}
+              <p
+                style={{
+                  margin:
+                    "0 0 14px",
+                  color: "#475569",
+                  lineHeight: 1.5,
+                  fontSize: "14px",
+                }}
+              >
+                Doğrulama kodunu göndermeden
+                önce güvenlik kontrolünü
+                tamamlayın.
+              </p>
 
-          {mesaj && (
-            <div
-              role="status"
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent:
+                    "center",
+                  overflow: "hidden",
+                }}
+              >
+                <HCaptcha
+                  ref={captchaRef}
+                  sitekey={hcaptchaSiteKey}
+                  onVerify={(token) => {
+                    setCaptchaToken(
+                      token
+                    );
+                    setHata("");
+                  }}
+                  onExpire={() => {
+                    setCaptchaToken("");
+                  }}
+                  onError={() => {
+                    setCaptchaToken("");
+
+                    setHata(
+                      "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
+                    );
+                  }}
+                />
+              </div>
+            </div>
+
+            {hata && (
+              <div
+                role="alert"
+                style={{
+                  padding: "13px",
+                  borderRadius: "10px",
+                  border:
+                    "1px solid #FECACA",
+                  backgroundColor:
+                    "#FEF2F2",
+                  color: "#B91C1C",
+                  fontSize: "14px",
+                  lineHeight: 1.5,
+                }}
+              >
+                {hata}
+              </div>
+            )}
+
+            {mesaj && (
+              <div
+                role="status"
+                style={{
+                  padding: "13px",
+                  borderRadius: "10px",
+                  border:
+                    "1px solid #BBF7D0",
+                  backgroundColor:
+                    "#F0FDF4",
+                  color: "#166534",
+                  fontSize: "14px",
+                  lineHeight: 1.5,
+                }}
+              >
+                {mesaj}
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={kodGonder}
+              disabled={
+                !email ||
+                !captchaToken ||
+                kodGonderiliyor
+              }
               style={{
-                padding: "13px",
-                borderRadius: "10px",
-                border: "1px solid #BBF7D0",
-                backgroundColor: "#F0FDF4",
-                color: "#166534",
-                fontSize: "14px",
-                lineHeight: 1.5,
+                padding: "15px",
+                border: "none",
+                borderRadius: "11px",
+                backgroundColor:
+                  !email ||
+                  !captchaToken ||
+                  kodGonderiliyor
+                    ? "#94A3B8"
+                    : "#2563EB",
+                color: "#FFFFFF",
+                fontSize: "16px",
+                fontWeight: 800,
+                cursor:
+                  !email ||
+                  !captchaToken ||
+                  kodGonderiliyor
+                    ? "not-allowed"
+                    : "pointer",
               }}
             >
-              {mesaj}
+              {kodGonderiliyor
+                ? "Kod gönderiliyor..."
+                : "Doğrulama Kodunu Gönder"}
+            </button>
+          </div>
+        )}
+
+        {kodGonderildi && (
+          <>
+            <form
+              onSubmit={koduDogrula}
+              style={{
+                display: "flex",
+                flexDirection:
+                  "column",
+                gap: "18px",
+              }}
+            >
+              <label
+                style={{
+                  display: "flex",
+                  flexDirection:
+                    "column",
+                  gap: "8px",
+                  fontWeight: 700,
+                  color: "#334155",
+                }}
+              >
+                Doğrulama kodu
+
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  maxLength={6}
+                  required
+                  disabled={
+                    dogrulaniyor
+                  }
+                  value={kod}
+                  onChange={(
+                    event
+                  ) => {
+                    setKod(
+                      event.target.value
+                        .replace(
+                          /\D/g,
+                          ""
+                        )
+                        .slice(0, 6)
+                    );
+
+                    setHata("");
+                  }}
+                  placeholder="123456"
+                  style={{
+                    padding: "16px",
+                    borderRadius:
+                      "10px",
+                    border:
+                      "1px solid #CBD5E1",
+                    backgroundColor:
+                      "#FFFFFF",
+                    color: "#0F172A",
+                    fontSize: "24px",
+                    fontWeight: 800,
+                    textAlign:
+                      "center",
+                    letterSpacing:
+                      "8px",
+                  }}
+                />
+              </label>
+
+              {hata && (
+                <div
+                  role="alert"
+                  style={{
+                    padding: "13px",
+                    borderRadius:
+                      "10px",
+                    border:
+                      "1px solid #FECACA",
+                    backgroundColor:
+                      "#FEF2F2",
+                    color:
+                      "#B91C1C",
+                    fontSize:
+                      "14px",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {hata}
+                </div>
+              )}
+
+              {mesaj && (
+                <div
+                  role="status"
+                  style={{
+                    padding: "13px",
+                    borderRadius:
+                      "10px",
+                    border:
+                      "1px solid #BBF7D0",
+                    backgroundColor:
+                      "#F0FDF4",
+                    color:
+                      "#166534",
+                    fontSize:
+                      "14px",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  {mesaj}
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={
+                  !kodHazir ||
+                  dogrulaniyor
+                }
+                style={{
+                  padding: "15px",
+                  border: "none",
+                  borderRadius:
+                    "11px",
+                  backgroundColor:
+                    !kodHazir ||
+                    dogrulaniyor
+                      ? "#94A3B8"
+                      : "#2563EB",
+                  color: "#FFFFFF",
+                  fontSize: "16px",
+                  fontWeight: 800,
+                  cursor:
+                    !kodHazir ||
+                    dogrulaniyor
+                      ? "not-allowed"
+                      : "pointer",
+                }}
+              >
+                {dogrulaniyor
+                  ? "Doğrulanıyor..."
+                  : "Kodu Doğrula"}
+              </button>
+            </form>
+
+            <div
+              style={{
+                marginTop: "20px",
+                textAlign: "center",
+              }}
+            >
+              <p
+                style={{
+                  margin:
+                    "0 0 10px",
+                  color: "#64748B",
+                  fontSize: "14px",
+                }}
+              >
+                Kod gelmedi mi?
+              </p>
+
+              <button
+                type="button"
+                onClick={yeniKodIste}
+                disabled={
+                  dogrulaniyor ||
+                  beklemeSuresi > 0
+                }
+                style={{
+                  border: "none",
+                  backgroundColor:
+                    "transparent",
+                  padding: 0,
+                  color:
+                    beklemeSuresi > 0
+                      ? "#94A3B8"
+                      : "#2563EB",
+                  fontWeight: 800,
+                  cursor:
+                    dogrulaniyor ||
+                    beklemeSuresi >
+                      0
+                      ? "not-allowed"
+                      : "pointer",
+                }}
+              >
+                {beklemeSuresi > 0
+                  ? `Tekrar gönder (${beklemeSuresi})`
+                  : "Yeni kod iste"}
+              </button>
+
+              <p
+                style={{
+                  margin:
+                    "12px 0 0",
+                  color: "#94A3B8",
+                  fontSize: "12px",
+                  lineHeight: 1.5,
+                }}
+              >
+                Yeni kod gönderirken
+                güvenlik nedeniyle CAPTCHA
+                tekrar doğrulanacaktır.
+              </p>
             </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={
-              !email ||
-              !kodHazir ||
-              dogrulaniyor ||
-              kodGonderiliyor
-            }
-            style={{
-              padding: "15px",
-              border: "none",
-              borderRadius: "11px",
-              backgroundColor:
-                !email ||
-                !kodHazir ||
-                dogrulaniyor ||
-                kodGonderiliyor
-                  ? "#94A3B8"
-                  : "#2563EB",
-              color: "#FFFFFF",
-              fontSize: "16px",
-              fontWeight: 800,
-              cursor:
-                !email ||
-                !kodHazir ||
-                dogrulaniyor ||
-                kodGonderiliyor
-                  ? "not-allowed"
-                  : "pointer",
-            }}
-          >
-            {dogrulaniyor
-              ? "Doğrulanıyor..."
-              : "Kodu Doğrula"}
-          </button>
-        </form>
-
-        <div
-          style={{
-            marginTop: "20px",
-            textAlign: "center",
-          }}
-        >
-          <p
-            style={{
-              margin: "0 0 10px",
-              color: "#64748B",
-              fontSize: "14px",
-            }}
-          >
-            Kod gelmedi mi?
-          </p>
-
-          <button
-            type="button"
-            onClick={koduTekrarGonder}
-            disabled={
-              !email ||
-              kodGonderiliyor ||
-              dogrulaniyor ||
-              beklemeSuresi > 0
-            }
-            style={{
-              border: "none",
-              backgroundColor: "transparent",
-              padding: 0,
-              color:
-                beklemeSuresi > 0
-                  ? "#94A3B8"
-                  : "#2563EB",
-              fontWeight: 800,
-              cursor:
-                beklemeSuresi > 0
-                  ? "not-allowed"
-                  : "pointer",
-            }}
-          >
-            {kodGonderiliyor
-              ? "Kod gönderiliyor..."
-              : beklemeSuresi > 0
-                ? `Tekrar gönder (${beklemeSuresi})`
-                : "Kodu tekrar gönder"}
-          </button>
-        </div>
+          </>
+        )}
       </section>
     </main>
   );
