@@ -90,7 +90,39 @@ export default function DashboardPage() {
       } = await supabase.auth.getUser();
 
       if (userError || !user) {
-        router.push("/giris");
+        router.replace("/giris");
+        router.refresh();
+        return;
+      }
+
+      /*
+       * Google OAuth ile açılan oturumlarda kullanıcıyı ikinci
+       * e-posta kodu doğrulamasından geçirmeden dashboard'a almıyoruz.
+       *
+       * Google dönüşündeki ilk oturumun auth yöntemi "oauth" olur.
+       * /google-dogrula sayfasında e-posta OTP'si doğrulandıktan sonra
+       * Supabase yeni oturumu "otp" yöntemiyle oluşturur.
+       */
+      const { data: aalData, error: aalError } =
+        await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+
+      if (aalError) {
+        setHata(
+          "Oturum güvenlik bilgileri kontrol edilemedi. Lütfen tekrar giriş yapın."
+        );
+        setYukleniyor(false);
+        return;
+      }
+
+      const dogrulamaYontemleri: string[] =
+        (aalData?.currentAuthenticationMethods ?? []) as string[];
+
+      const oauthIleAcildi = dogrulamaYontemleri.includes("oauth");
+
+      const otpIleDogrulandi = dogrulamaYontemleri.includes("otp");
+
+      if (oauthIleAcildi && !otpIleDogrulandi) {
+        router.replace("/google-dogrula");
         router.refresh();
         return;
       }

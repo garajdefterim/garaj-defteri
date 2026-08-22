@@ -82,10 +82,7 @@ export default function KayitPage() {
     setKayitYukleniyor(true);
 
     try {
-      /*
-       * Tarayıcıda eski bir kullanıcı oturumu kaldıysa
-       * kayıt işleminden önce temizliyoruz.
-       */
+      // Tarayıcıda eski oturum varsa temizle.
       await supabase.auth.signOut();
 
       const { data, error } =
@@ -157,10 +154,8 @@ export default function KayitPage() {
       }
 
       /*
-       * E-posta/şifre kaydında kullanıcıyı ASLA
-       * doğrudan dashboard'a göndermiyoruz.
-       *
-       * Kullanıcı önce 6 haneli kodu doğrulayacak.
+       * E-posta/şifre kaydında dashboard'a gitmiyoruz.
+       * Önce 6 haneli doğrulama kodu girilecek.
        */
       if (data.session) {
         await supabase.auth.signOut();
@@ -174,7 +169,10 @@ export default function KayitPage() {
 
       router.refresh();
     } catch (error) {
-      console.error("Beklenmeyen kayıt hatası:", error);
+      console.error(
+        "Beklenmeyen kayıt hatası:",
+        error
+      );
 
       captchaRef.current?.resetCaptcha();
       setCaptchaToken("");
@@ -193,12 +191,17 @@ export default function KayitPage() {
     setGoogleYukleniyor(true);
 
     try {
+      /*
+       * ÖNEMLİ:
+       * Google OAuth artık doğrudan dashboard'a gitmiyor.
+       * Önce /google-dogrula sayfasına dönecek.
+       */
       const { error } =
         await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
             redirectTo:
-              `${window.location.origin}/dashboard`,
+              `${window.location.origin}/google-dogrula`,
             queryParams: {
               prompt: "select_account",
             },
