@@ -29,12 +29,25 @@ html[data-theme="koyu"] {
   --card-soft: #0f172a;
 
   --border: #293241;
-  --border-strong: #374151;
+  --border-strong: #3a4657;
 
   --muted: #9ca3af;
   --muted-strong: #d1d5db;
 
   --input-bg: #0b1220;
+
+  --dark-button-bg: #182235;
+  --dark-button-bg-hover: #223049;
+  --dark-button-border: #3d4b60;
+  --dark-button-text: #f3f4f6;
+
+  --dark-blue: #2f5eea;
+  --dark-blue-hover: #3b6df6;
+
+  --dark-danger-bg: #3a171a;
+  --dark-danger-bg-hover: #4a1d21;
+  --dark-danger-border: #7f3037;
+  --dark-danger-text: #fca5a5;
 
   color-scheme: dark;
 }
@@ -127,7 +140,7 @@ select:focus {
 
 button:focus-visible,
 a:focus-visible {
-  outline: 3px solid rgba(37, 99, 235, 0.24);
+  outline: 3px solid rgba(59, 109, 246, 0.34);
   outline-offset: 2px;
 }
 
@@ -135,7 +148,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Koyu tema — inline stillerle yazılmış eski ekranlar için uyumluluk */
+/* Koyu tema — genel */
 
 html[data-theme="koyu"] body,
 html[data-theme="koyu"] main {
@@ -266,37 +279,126 @@ html[data-theme="koyu"] input:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
 }
 
-/* Beyaz nötr buton/link */
+/* ==================================================
+   KOYU TEMA BUTON SİSTEMİ
+   ================================================== */
 
+/* Nötr / ikincil butonlar */
 html[data-theme="koyu"] a[style*="background-color: #FFFFFF"],
 html[data-theme="koyu"] button[style*="background-color: #FFFFFF"],
 html[data-theme="koyu"] a[style*="background-color: #ffffff"],
 html[data-theme="koyu"] button[style*="background-color: #ffffff"],
 html[data-theme="koyu"] a[style*="background-color: rgb(255, 255, 255)"],
 html[data-theme="koyu"] button[style*="background-color: rgb(255, 255, 255)"] {
-  background-color: var(--card) !important;
-  color: var(--foreground) !important;
-  border-color: var(--border-strong) !important;
+  background-color: var(--dark-button-bg) !important;
+  color: var(--dark-button-text) !important;
+  border-color: var(--dark-button-border) !important;
 }
 
-/* Aksiyon butonlarının rengi korunur */
+/* Inline koyu/nötr butonlar da arka plandan ayrışsın */
+html[data-theme="koyu"] a[style*="background-color: #111827"],
+html[data-theme="koyu"] button[style*="background-color: #111827"],
+html[data-theme="koyu"] a[style*="background-color: #0F172A"],
+html[data-theme="koyu"] button[style*="background-color: #0F172A"],
+html[data-theme="koyu"] a[style*="background-color: #0f172a"],
+html[data-theme="koyu"] button[style*="background-color: #0f172a"] {
+  background-color: var(--dark-button-bg) !important;
+  color: var(--dark-button-text) !important;
+  border-color: var(--dark-button-border) !important;
+}
 
+/* Özellikle üst navigasyon ve nötr aksiyonlar */
+html[data-theme="koyu"] a[href="/profil"],
+html[data-theme="koyu"] a[href="/bildirim-ayarlari"],
+html[data-theme="koyu"] a[href="/bildirim-gecmisi"],
+html[data-theme="koyu"] a[href="/dashboard"],
+html[data-theme="koyu"] a[href^="/arac/"],
+html[data-theme="koyu"] a[href^="/bakim-gecmisi/"] {
+  border-color: var(--dark-button-border) !important;
+}
+
+/* Hover — nötr */
+html[data-theme="koyu"] a[style*="background-color: #FFFFFF"]:hover,
+html[data-theme="koyu"] button[style*="background-color: #FFFFFF"]:hover,
+html[data-theme="koyu"] a[style*="background-color: #ffffff"]:hover,
+html[data-theme="koyu"] button[style*="background-color: #ffffff"]:hover,
+html[data-theme="koyu"] a[style*="background-color: #111827"]:hover,
+html[data-theme="koyu"] button[style*="background-color: #111827"]:hover,
+html[data-theme="koyu"] a[style*="background-color: #0F172A"]:hover,
+html[data-theme="koyu"] button[style*="background-color: #0F172A"]:hover {
+  background-color: var(--dark-button-bg-hover) !important;
+  border-color: #53627a !important;
+  color: #ffffff !important;
+}
+
+/* Birincil mavi aksiyonlar */
 html[data-theme="koyu"] a[style*="background-color: #1D4ED8"],
 html[data-theme="koyu"] button[style*="background-color: #1D4ED8"],
 html[data-theme="koyu"] a[style*="background-color: #1d4ed8"],
 html[data-theme="koyu"] button[style*="background-color: #1d4ed8"],
 html[data-theme="koyu"] a[style*="background-color: #2563EB"],
-html[data-theme="koyu"] button[style*="background-color: #2563EB"] {
-  background-color: #1d4ed8 !important;
+html[data-theme="koyu"] button[style*="background-color: #2563EB"],
+html[data-theme="koyu"] a[style*="background-color: #2563eb"],
+html[data-theme="koyu"] button[style*="background-color: #2563eb"] {
+  background-color: var(--dark-blue) !important;
   color: #ffffff !important;
+  border-color: var(--dark-blue) !important;
 }
 
+/* Hover — mavi */
+html[data-theme="koyu"] a[style*="background-color: #1D4ED8"]:hover,
+html[data-theme="koyu"] button[style*="background-color: #1D4ED8"]:hover,
+html[data-theme="koyu"] a[style*="background-color: #2563EB"]:hover,
+html[data-theme="koyu"] button[style*="background-color: #2563EB"]:hover {
+  background-color: var(--dark-blue-hover) !important;
+  border-color: var(--dark-blue-hover) !important;
+}
+
+/* Kırmızı / tehlikeli aksiyonlar */
 html[data-theme="koyu"] a[style*="background-color: #B42318"],
 html[data-theme="koyu"] button[style*="background-color: #B42318"],
 html[data-theme="koyu"] a[style*="background-color: #DC2626"],
 html[data-theme="koyu"] button[style*="background-color: #DC2626"] {
   background-color: #b42318 !important;
   color: #ffffff !important;
+  border-color: #b42318 !important;
+}
+
+/* Beyaz zeminli kırmızı aksiyonlar */
+html[data-theme="koyu"] button[style*="color: #B42318"],
+html[data-theme="koyu"] a[style*="color: #B42318"] {
+  background-color: var(--dark-danger-bg) !important;
+  color: var(--dark-danger-text) !important;
+  border-color: var(--dark-danger-border) !important;
+}
+
+html[data-theme="koyu"] button[style*="color: #B42318"]:hover,
+html[data-theme="koyu"] a[style*="color: #B42318"]:hover {
+  background-color: var(--dark-danger-bg-hover) !important;
+}
+
+/* Profil ve Çıkış gibi dashboard üst butonlarını belirginleştir */
+html[data-theme="koyu"] a[href="/profil"] {
+  background-color: #182235 !important;
+  color: #f3f4f6 !important;
+  border-color: #46556d !important;
+}
+
+html[data-theme="koyu"] a[href="/profil"]:hover {
+  background-color: #223049 !important;
+  border-color: #60708a !important;
+}
+
+/* Dashboard içindeki düz/nötr butonlar */
+html[data-theme="koyu"] main button:not(:disabled) {
+  border-color: var(--dark-button-border);
+}
+
+/* Disabled */
+html[data-theme="koyu"] button:disabled,
+html[data-theme="koyu"] a[aria-disabled="true"] {
+  opacity: 0.48 !important;
+  filter: saturate(0.7);
 }
 
 /* Modal */
@@ -342,7 +444,8 @@ a {
     background-color 0.18s ease,
     color 0.18s ease,
     border-color 0.18s ease,
-    box-shadow 0.18s ease;
+    box-shadow 0.18s ease,
+    transform 0.18s ease;
 }
 
 /* Mobil */
