@@ -11,26 +11,48 @@ import { useRouter } from "next/navigation";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { supabase } from "../../lib/supabase";
 
-function BrandMark() {
+function Brand() {
   return (
-    <div
-      aria-hidden="true"
+    <Link
+      href="/"
       style={{
-        width: "42px",
-        height: "42px",
-        borderRadius: "11px",
-        backgroundColor: "#0F172A",
-        color: "#FFFFFF",
-        display: "flex",
+        display: "inline-flex",
         alignItems: "center",
-        justifyContent: "center",
-        fontSize: "15px",
-        fontWeight: 800,
-        letterSpacing: "-0.5px",
+        gap: "11px",
+        textDecoration: "none",
+        color: "#111827",
       }}
     >
-      GD
-    </div>
+      <div
+        aria-hidden="true"
+        style={{
+          width: "42px",
+          height: "42px",
+          borderRadius: "11px",
+          backgroundColor: "#0F172A",
+          color: "#FFFFFF",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "15px",
+          fontWeight: 800,
+          letterSpacing: "-0.5px",
+        }}
+      >
+        GD
+      </div>
+
+      <div
+        style={{
+          fontSize: "17px",
+          lineHeight: 1.2,
+          fontWeight: 750,
+          letterSpacing: "-0.35px",
+        }}
+      >
+        Garaj Defteri
+      </div>
+    </Link>
   );
 }
 
@@ -348,7 +370,43 @@ export default function GoogleDogrulaPage() {
             textAlign: "center",
           }}
         >
-          <BrandMark />
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "11px",
+            }}
+          >
+            <div
+              aria-hidden="true"
+              style={{
+                width: "42px",
+                height: "42px",
+                borderRadius: "11px",
+                backgroundColor: "#0F172A",
+                color: "#FFFFFF",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "15px",
+                fontWeight: 800,
+                letterSpacing: "-0.5px",
+              }}
+            >
+              GD
+            </div>
+
+            <div
+              style={{
+                fontSize: "17px",
+                lineHeight: 1.2,
+                fontWeight: 750,
+                letterSpacing: "-0.35px",
+              }}
+            >
+              Garaj Defteri
+            </div>
+          </div>
 
           <p
             style={{
@@ -389,42 +447,7 @@ export default function GoogleDogrulaPage() {
           padding: "28px 24px",
         }}
       >
-        <Link
-          href="/"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "11px",
-            textDecoration: "none",
-            color: "#111827",
-          }}
-        >
-          <BrandMark />
-
-          <div>
-            <div
-              style={{
-                fontSize: "16px",
-                lineHeight: 1.2,
-                fontWeight: 750,
-                letterSpacing: "-0.3px",
-              }}
-            >
-              Garaj Defteri
-            </div>
-
-            <div
-              style={{
-                marginTop: "2px",
-                fontSize: "11px",
-                color: "#8A94A3",
-                letterSpacing: "0.02em",
-              }}
-            >
-              Araç yönetimi, sadeleştirildi.
-            </div>
-          </div>
-        </Link>
+        <Brand />
       </header>
 
       <div
@@ -468,8 +491,8 @@ export default function GoogleDogrulaPage() {
                 lineHeight: 1.6,
               }}
             >
-              Google hesabınıza bağlı e-posta adresini
-              doğrulayarak devam edin.
+              Google hesabınıza bağlı e-posta
+              adresini doğrulayarak devam edin.
             </p>
           </div>
 
@@ -497,6 +520,7 @@ export default function GoogleDogrulaPage() {
                 }}
               >
                 Google hesabı
+
                 <div
                   style={{
                     marginTop: "3px",
@@ -518,45 +542,43 @@ export default function GoogleDogrulaPage() {
                   gap: "17px",
                 }}
               >
-                <div>
-                  <p
-                    style={{
-                      margin: "0 0 14px",
-                      color: "#6B7280",
-                      fontSize: "13px",
-                      lineHeight: 1.55,
-                    }}
-                  >
-                    Doğrulama kodunu göndermeden önce
-                    güvenlik kontrolünü tamamlayın.
-                  </p>
+                <p
+                  style={{
+                    margin: 0,
+                    color: "#6B7280",
+                    fontSize: "13px",
+                    lineHeight: 1.55,
+                  }}
+                >
+                  Doğrulama kodunu göndermeden önce
+                  güvenlik kontrolünü tamamlayın.
+                </p>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      overflow: "hidden",
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                  }}
+                >
+                  <HCaptcha
+                    ref={captchaRef}
+                    sitekey={hcaptchaSiteKey}
+                    onVerify={(token) => {
+                      setCaptchaToken(token);
+                      setHata("");
                     }}
-                  >
-                    <HCaptcha
-                      ref={captchaRef}
-                      sitekey={hcaptchaSiteKey}
-                      onVerify={(token) => {
-                        setCaptchaToken(token);
-                        setHata("");
-                      }}
-                      onExpire={() => {
-                        setCaptchaToken("");
-                      }}
-                      onError={() => {
-                        setCaptchaToken("");
+                    onExpire={() => {
+                      setCaptchaToken("");
+                    }}
+                    onError={() => {
+                      setCaptchaToken("");
 
-                        setHata(
-                          "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
-                        );
-                      }}
-                    />
-                  </div>
+                      setHata(
+                        "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
+                      );
+                    }}
+                  />
                 </div>
 
                 {hata && (
@@ -565,7 +587,8 @@ export default function GoogleDogrulaPage() {
                     style={{
                       padding: "12px 13px",
                       borderRadius: "8px",
-                      border: "1px solid #F1C7C7",
+                      border:
+                        "1px solid #F1C7C7",
                       backgroundColor: "#FFF7F7",
                       color: "#A93838",
                       fontSize: "13px",
@@ -582,7 +605,8 @@ export default function GoogleDogrulaPage() {
                     style={{
                       padding: "12px 13px",
                       borderRadius: "8px",
-                      border: "1px solid #C6E7D2",
+                      border:
+                        "1px solid #C6E7D2",
                       backgroundColor: "#F7FCF9",
                       color: "#276749",
                       fontSize: "13px",
@@ -694,7 +718,8 @@ export default function GoogleDogrulaPage() {
                       style={{
                         padding: "12px 13px",
                         borderRadius: "8px",
-                        border: "1px solid #F1C7C7",
+                        border:
+                          "1px solid #F1C7C7",
                         backgroundColor: "#FFF7F7",
                         color: "#A93838",
                         fontSize: "13px",
@@ -711,7 +736,8 @@ export default function GoogleDogrulaPage() {
                       style={{
                         padding: "12px 13px",
                         borderRadius: "8px",
-                        border: "1px solid #C6E7D2",
+                        border:
+                          "1px solid #C6E7D2",
                         backgroundColor: "#F7FCF9",
                         color: "#276749",
                         fontSize: "13px",
@@ -815,8 +841,8 @@ export default function GoogleDogrulaPage() {
                       lineHeight: 1.5,
                     }}
                   >
-                    Yeni kod gönderirken güvenlik
-                    kontrolü tekrar istenir.
+                    Yeni kod için güvenlik kontrolü
+                    tekrar istenir.
                   </p>
                 </div>
               </>

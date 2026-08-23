@@ -1,39 +1,20 @@
 @import "tailwindcss";
 
-/* ==================================================
-   GLOBAL TEMA DEĞİŞKENLERİ
-   ================================================== */
+/* Garaj Defteri — global tema */
 
-:root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-
-  --card: #ffffff;
-  --card-soft: #f8fafc;
-
-  --border: #e2e8f0;
-  --border-strong: #cbd5e1;
-
-  --muted: #64748b;
-  --muted-strong: #475569;
-
-  --input-bg: #ffffff;
-
-  color-scheme: light;
-}
-
+:root,
 html[data-theme="acik"] {
-  --background: #f8fafc;
-  --foreground: #0f172a;
+  --background: #f7f8fa;
+  --foreground: #111827;
 
   --card: #ffffff;
   --card-soft: #f8fafc;
 
-  --border: #e2e8f0;
-  --border-strong: #cbd5e1;
+  --border: #e3e7ec;
+  --border-strong: #d1d7df;
 
-  --muted: #64748b;
-  --muted-strong: #475569;
+  --muted: #6b7280;
+  --muted-strong: #4b5563;
 
   --input-bg: #ffffff;
 
@@ -41,49 +22,54 @@ html[data-theme="acik"] {
 }
 
 html[data-theme="koyu"] {
-  --background: #0f172a;
-  --foreground: #f8fafc;
+  --background: #0b1220;
+  --foreground: #f9fafb;
 
-  --card: #1e293b;
-  --card-soft: #111827;
+  --card: #111827;
+  --card-soft: #0f172a;
 
-  --border: #334155;
-  --border-strong: #475569;
+  --border: #293241;
+  --border-strong: #374151;
 
-  --muted: #94a3b8;
-  --muted-strong: #cbd5e1;
+  --muted: #9ca3af;
+  --muted-strong: #d1d5db;
 
-  --input-bg: #0f172a;
+  --input-bg: #0b1220;
 
   color-scheme: dark;
 }
 
-/* ==================================================
-   TEMEL
-   ================================================== */
+/* Temel */
 
 * {
   box-sizing: border-box;
 }
 
-html,
+html {
+  min-height: 100%;
+  background: var(--background);
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
-  padding: 0;
-  min-height: 100%;
-}
-
-html {
-  background-color: var(--background);
-}
-
-body {
-  background-color: var(--background);
+  min-height: 100vh;
+  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
+  color: inherit;
   text-decoration: none;
 }
 
@@ -94,368 +80,254 @@ select {
   font: inherit;
 }
 
-/* ==================================================
-   GLOBAL KOYU TEMA
-   ================================================== */
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  touch-action: manipulation;
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  background: #dbeafe;
+  color: #172554;
+}
+
+html[data-theme="koyu"] ::selection {
+  background: #1e3a8a;
+  color: #ffffff;
+}
+
+/* Formlar */
+
+input,
+textarea,
+select {
+  color: var(--foreground);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  border-color: #2563eb !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  outline: none;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.24);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* Koyu tema — inline stillerle yazılmış eski ekranlar için uyumluluk */
 
 html[data-theme="koyu"] body,
 html[data-theme="koyu"] main {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
+  background-color: var(--background) !important;
+  color: var(--foreground) !important;
 }
 
-/* ==================================================
-   BEYAZ / AÇIK KARTLAR
-   ================================================== */
+/* Açık yüzeyler */
 
-/* HEX */
 html[data-theme="koyu"] [style*="background-color: #FFFFFF"],
-html[data-theme="koyu"] [style*="background-color: #ffffff"] {
-  background-color: #1e293b !important;
-  border-color: #334155 !important;
+html[data-theme="koyu"] [style*="background-color: #ffffff"],
+html[data-theme="koyu"] [style*="background-color: rgb(255, 255, 255)"] {
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
 }
 
-/* Tarayıcının React inline style çıktısı */
-html[data-theme="koyu"]
-  [style*="background-color: rgb(255, 255, 255)"] {
-  background-color: #1e293b !important;
-  border-color: #334155 !important;
-}
-
-/* Açık gri */
 html[data-theme="koyu"] [style*="background-color: #F8FAFC"],
 html[data-theme="koyu"] [style*="background-color: #f8fafc"],
-html[data-theme="koyu"]
-  [style*="background-color: rgb(248, 250, 252)"] {
-  background-color: #111827 !important;
-  border-color: #334155 !important;
+html[data-theme="koyu"] [style*="background-color: rgb(248, 250, 252)"],
+html[data-theme="koyu"] [style*="background-color: #FAFAFA"],
+html[data-theme="koyu"] [style*="background-color: #fafafa"],
+html[data-theme="koyu"] [style*="background-color: rgb(250, 250, 250)"] {
+  background-color: var(--card-soft) !important;
+  border-color: var(--border) !important;
 }
 
 html[data-theme="koyu"] [style*="background-color: #F1F5F9"],
 html[data-theme="koyu"] [style*="background-color: #f1f5f9"],
-html[data-theme="koyu"]
-  [style*="background-color: rgb(241, 245, 249)"] {
-  background-color: #1e293b !important;
-  border-color: #475569 !important;
+html[data-theme="koyu"] [style*="background-color: rgb(241, 245, 249)"],
+html[data-theme="koyu"] [style*="background-color: #F3F4F6"],
+html[data-theme="koyu"] [style*="background-color: #f3f4f6"] {
+  background-color: #1f2937 !important;
+  border-color: var(--border-strong) !important;
 }
 
-/* ==================================================
-   NORMAL YAZILAR
-   ================================================== */
+/* Koyu temada metinler */
 
 html[data-theme="koyu"] [style*="color: #0F172A"],
 html[data-theme="koyu"] [style*="color: #0f172a"],
-html[data-theme="koyu"] [style*="color: rgb(15, 23, 42)"] {
-  color: #f8fafc !important;
+html[data-theme="koyu"] [style*="color: rgb(15, 23, 42)"],
+html[data-theme="koyu"] [style*="color: #111827"],
+html[data-theme="koyu"] [style*="color: rgb(17, 24, 39)"] {
+  color: var(--foreground) !important;
 }
 
+html[data-theme="koyu"] [style*="color: #374151"],
 html[data-theme="koyu"] [style*="color: #334155"],
-html[data-theme="koyu"] [style*="color: rgb(51, 65, 85)"] {
-  color: #e2e8f0 !important;
-}
-
 html[data-theme="koyu"] [style*="color: #475569"],
+html[data-theme="koyu"] [style*="color: rgb(55, 65, 81)"],
+html[data-theme="koyu"] [style*="color: rgb(51, 65, 85)"],
 html[data-theme="koyu"] [style*="color: rgb(71, 85, 105)"] {
-  color: #cbd5e1 !important;
+  color: var(--muted-strong) !important;
 }
 
 html[data-theme="koyu"] [style*="color: #64748B"],
 html[data-theme="koyu"] [style*="color: #64748b"],
-html[data-theme="koyu"] [style*="color: rgb(100, 116, 139)"] {
-  color: #94a3b8 !important;
-}
-
+html[data-theme="koyu"] [style*="color: #6B7280"],
+html[data-theme="koyu"] [style*="color: #6b7280"],
+html[data-theme="koyu"] [style*="color: rgb(100, 116, 139)"],
+html[data-theme="koyu"] [style*="color: rgb(107, 114, 128)"],
 html[data-theme="koyu"] [style*="color: #94A3B8"],
-html[data-theme="koyu"] [style*="color: #94a3b8"],
-html[data-theme="koyu"] [style*="color: rgb(148, 163, 184)"] {
-  color: #94a3b8 !important;
+html[data-theme="koyu"] [style*="color: #94a3b8"] {
+  color: var(--muted) !important;
 }
 
-/* ==================================================
-   MAVİ ALANLAR
-   ================================================== */
+/* Mavi vurgu */
 
 html[data-theme="koyu"] [style*="background-color: #EFF6FF"],
-html[data-theme="koyu"]
-  [style*="background-color: rgb(239, 246, 255)"] {
+html[data-theme="koyu"] [style*="background-color: rgb(239, 246, 255)"] {
   background-color: #172554 !important;
   border-color: #1d4ed8 !important;
 }
 
 html[data-theme="koyu"] [style*="color: #1D4ED8"],
+html[data-theme="koyu"] [style*="color: #1d4ed8"],
 html[data-theme="koyu"] [style*="color: #2563EB"],
+html[data-theme="koyu"] [style*="color: #2563eb"],
 html[data-theme="koyu"] [style*="color: rgb(29, 78, 216)"],
 html[data-theme="koyu"] [style*="color: rgb(37, 99, 235)"] {
   color: #93c5fd !important;
 }
 
-/* ==================================================
-   MOR ALANLAR
-   ================================================== */
-
-html[data-theme="koyu"] [style*="background-color: #EEF2FF"],
-html[data-theme="koyu"]
-  [style*="background-color: rgb(238, 242, 255)"],
-html[data-theme="koyu"] [style*="background-color: #F5F3FF"],
-html[data-theme="koyu"]
-  [style*="background-color: rgb(245, 243, 255)"] {
-  background-color: #312e81 !important;
-  border-color: #6366f1 !important;
-}
-
-html[data-theme="koyu"] [style*="color: #3730A3"],
-html[data-theme="koyu"] [style*="color: #6D28D9"],
-html[data-theme="koyu"] [style*="color: rgb(55, 48, 163)"],
-html[data-theme="koyu"] [style*="color: rgb(109, 40, 217)"] {
-  color: #c4b5fd !important;
-}
-
-/* ==================================================
-   YEŞİL ALANLAR
-   ================================================== */
-
-html[data-theme="koyu"] [style*="background-color: #F0FDF4"],
-html[data-theme="koyu"]
-  [style*="background-color: rgb(240, 253, 244)"] {
-  background-color: #14532d !important;
-  border-color: #16a34a !important;
-}
-
-html[data-theme="koyu"] [style*="color: #166534"],
-html[data-theme="koyu"] [style*="color: rgb(22, 101, 52)"] {
-  color: #bbf7d0 !important;
-}
-
-/* ==================================================
-   TURUNCU ALANLAR
-   ================================================== */
-
-html[data-theme="koyu"] [style*="background-color: #FFF7ED"],
-html[data-theme="koyu"]
-  [style*="background-color: rgb(255, 247, 237)"] {
-  background-color: #7c2d12 !important;
-  border-color: #ea580c !important;
-}
-
-html[data-theme="koyu"] [style*="color: #C2410C"],
-html[data-theme="koyu"] [style*="color: rgb(194, 65, 12)"] {
-  color: #fdba74 !important;
-}
-
-/* ==================================================
-   KIRMIZI ALANLAR
-   ================================================== */
+/* Durum kutuları */
 
 html[data-theme="koyu"] [style*="background-color: #FEF2F2"],
-html[data-theme="koyu"]
-  [style*="background-color: rgb(254, 242, 242)"] {
-  background-color: #7f1d1d !important;
-  border-color: #dc2626 !important;
+html[data-theme="koyu"] [style*="background-color: #FFF7F7"],
+html[data-theme="koyu"] [style*="background-color: rgb(254, 242, 242)"] {
+  background-color: #2a1215 !important;
+  border-color: #7f1d1d !important;
 }
 
 html[data-theme="koyu"] [style*="color: #B91C1C"],
-html[data-theme="koyu"] [style*="color: rgb(185, 28, 28)"] {
-  color: #fecaca !important;
+html[data-theme="koyu"] [style*="color: #A93838"],
+html[data-theme="koyu"] [style*="color: #B42318"] {
+  color: #fca5a5 !important;
 }
 
-/* ==================================================
-   NÖTR BUTONLAR
-   PROFİLİM / ÇIKIŞ / DETAY VB.
-   ================================================== */
-
-html[data-theme="koyu"]
-  a[style*="background-color: #FFFFFF"],
-html[data-theme="koyu"]
-  button[style*="background-color: #FFFFFF"],
-html[data-theme="koyu"]
-  a[style*="background-color: #ffffff"],
-html[data-theme="koyu"]
-  button[style*="background-color: #ffffff"],
-html[data-theme="koyu"]
-  a[style*="background-color: rgb(255, 255, 255)"],
-html[data-theme="koyu"]
-  button[style*="background-color: rgb(255, 255, 255)"] {
-  background-color: #1e293b !important;
-  color: #f8fafc !important;
-  border-color: #64748b !important;
+html[data-theme="koyu"] [style*="background-color: #F7FCF9"],
+html[data-theme="koyu"] [style*="background-color: #F0FDF4"] {
+  background-color: #10241a !important;
+  border-color: #166534 !important;
 }
 
-/* PROFİLİM özel garanti */
-html[data-theme="koyu"] a[href="/profil"] {
-  background-color: #1e293b !important;
-  color: #f8fafc !important;
-  border-color: #64748b !important;
+html[data-theme="koyu"] [style*="color: #276749"],
+html[data-theme="koyu"] [style*="color: #166534"] {
+  color: #86efac !important;
 }
 
-/* Araç detay butonları */
-html[data-theme="koyu"] a[href^="/arac/"] {
-  color: #f8fafc;
-}
-
-/* ==================================================
-   RENKLİ AKSİYON BUTONLARI
-   ================================================== */
-
-/* Mavi */
-html[data-theme="koyu"]
-  a[style*="background-color: #2563EB"],
-html[data-theme="koyu"]
-  button[style*="background-color: #2563EB"],
-html[data-theme="koyu"]
-  a[style*="background-color: rgb(37, 99, 235)"],
-html[data-theme="koyu"]
-  button[style*="background-color: rgb(37, 99, 235)"] {
-  background-color: #2563eb !important;
-  color: #ffffff !important;
-}
-
-/* Yeşil */
-html[data-theme="koyu"]
-  a[style*="background-color: #059669"],
-html[data-theme="koyu"]
-  button[style*="background-color: #059669"],
-html[data-theme="koyu"]
-  a[style*="background-color: rgb(5, 150, 105)"],
-html[data-theme="koyu"]
-  button[style*="background-color: rgb(5, 150, 105)"] {
-  background-color: #059669 !important;
-  color: #ffffff !important;
-}
-
-/* Kırmızı */
-html[data-theme="koyu"]
-  a[style*="background-color: #DC2626"],
-html[data-theme="koyu"]
-  button[style*="background-color: #DC2626"],
-html[data-theme="koyu"]
-  a[style*="background-color: rgb(220, 38, 38)"],
-html[data-theme="koyu"]
-  button[style*="background-color: rgb(220, 38, 38)"] {
-  background-color: #dc2626 !important;
-  color: #ffffff !important;
-}
-
-/* ==================================================
-   AÇIK RENKLİ NAVİGASYON BUTONLARI
-   ================================================== */
-
-html[data-theme="koyu"]
-  a[style*="background-color: #EEF2FF"],
-html[data-theme="koyu"]
-  a[style*="background-color: #EFF6FF"],
-html[data-theme="koyu"]
-  a[style*="background-color: #F0FDF4"] {
-  color: #f8fafc !important;
-}
-
-/* ==================================================
-   FORM ALANLARI
-   ================================================== */
+/* Form alanları */
 
 html[data-theme="koyu"] input,
 html[data-theme="koyu"] textarea,
 html[data-theme="koyu"] select {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
-  border-color: #475569 !important;
+  background-color: var(--input-bg) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border-strong) !important;
 }
 
 html[data-theme="koyu"] input::placeholder,
 html[data-theme="koyu"] textarea::placeholder {
-  color: #94a3b8 !important;
+  color: var(--muted) !important;
 }
 
 html[data-theme="koyu"] input:-webkit-autofill,
 html[data-theme="koyu"] input:-webkit-autofill:hover,
 html[data-theme="koyu"] input:-webkit-autofill:focus {
-  -webkit-text-fill-color: #f8fafc !important;
-  -webkit-box-shadow: 0 0 0 1000px #0f172a inset !important;
+  -webkit-text-fill-color: var(--foreground) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--input-bg) inset !important;
 }
 
-/* ==================================================
-   BORDER DÜZELTMELERİ
-   ================================================== */
+/* Beyaz nötr buton/link */
 
-html[data-theme="koyu"]
-  [style*="border: 1px solid #E2E8F0"],
-html[data-theme="koyu"]
-  [style*="border: 1px solid rgb(226, 232, 240)"] {
-  border-color: #334155 !important;
+html[data-theme="koyu"] a[style*="background-color: #FFFFFF"],
+html[data-theme="koyu"] button[style*="background-color: #FFFFFF"],
+html[data-theme="koyu"] a[style*="background-color: #ffffff"],
+html[data-theme="koyu"] button[style*="background-color: #ffffff"],
+html[data-theme="koyu"] a[style*="background-color: rgb(255, 255, 255)"],
+html[data-theme="koyu"] button[style*="background-color: rgb(255, 255, 255)"] {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border-strong) !important;
 }
 
-html[data-theme="koyu"]
-  [style*="border: 1px solid #CBD5E1"],
-html[data-theme="koyu"]
-  [style*="border: 1px solid rgb(203, 213, 225)"] {
-  border-color: #475569 !important;
+/* Aksiyon butonlarının rengi korunur */
+
+html[data-theme="koyu"] a[style*="background-color: #1D4ED8"],
+html[data-theme="koyu"] button[style*="background-color: #1D4ED8"],
+html[data-theme="koyu"] a[style*="background-color: #1d4ed8"],
+html[data-theme="koyu"] button[style*="background-color: #1d4ed8"],
+html[data-theme="koyu"] a[style*="background-color: #2563EB"],
+html[data-theme="koyu"] button[style*="background-color: #2563EB"] {
+  background-color: #1d4ed8 !important;
+  color: #ffffff !important;
 }
 
-/* ==================================================
-   DASHBOARD İSTATİSTİK KARTLARI
-   ================================================== */
+html[data-theme="koyu"] a[style*="background-color: #B42318"],
+html[data-theme="koyu"] button[style*="background-color: #B42318"],
+html[data-theme="koyu"] a[style*="background-color: #DC2626"],
+html[data-theme="koyu"] button[style*="background-color: #DC2626"] {
+  background-color: #b42318 !important;
+  color: #ffffff !important;
+}
+
+/* Modal */
+
+html[data-theme="koyu"] [role="dialog"] {
+  background-color: var(--card) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border-strong) !important;
+}
+
+/* Dashboard */
 
 html[data-theme="koyu"] .dashboard-stat-value {
   opacity: 1 !important;
   text-shadow: none !important;
 }
 
-/*
-  İstatistik değerinin kendi inline rengine
-  dokunmuyoruz.
-*/
-
-/* ==================================================
-   MODALLAR
-   ================================================== */
-
-html[data-theme="koyu"] [role="dialog"] {
-  background-color: #1e293b !important;
-  color: #f8fafc !important;
-  border-color: #475569 !important;
-}
-
-html[data-theme="koyu"]
-  [role="dialog"]
-  [style*="background-color: #F8FAFC"],
-html[data-theme="koyu"]
-  [role="dialog"]
-  [style*="background-color: rgb(248, 250, 252)"] {
-  background-color: #0f172a !important;
-}
-
-/* ==================================================
-   DISABLED BUTONLAR
-   ================================================== */
-
-html[data-theme="koyu"] button:not(:disabled) {
-  opacity: 1;
-}
-
-html[data-theme="koyu"] button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-/* ==================================================
-   GÖLGELER
-   ================================================== */
+/* Koyu temada gölgeleri sadeleştir */
 
 html[data-theme="koyu"] section,
 html[data-theme="koyu"] article {
   box-shadow: none !important;
 }
 
-/* ==================================================
-   SCROLLBAR
-   ================================================== */
+/* Scrollbar */
 
 html[data-theme="koyu"] {
-  scrollbar-color: #475569 #0f172a;
+  scrollbar-color: #475569 #0b1220;
 }
 
-/* ==================================================
-   GEÇİŞLER
-   ================================================== */
+/* Geçişler */
 
 body,
 main,
@@ -467,7 +339,42 @@ select,
 button,
 a {
   transition:
-    background-color 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease;
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+/* Mobil */
+
+@media (max-width: 640px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  main {
+    width: 100%;
+  }
+
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Hareket azaltma tercihi */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
 }

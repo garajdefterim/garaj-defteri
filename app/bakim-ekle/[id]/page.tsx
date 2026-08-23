@@ -102,6 +102,25 @@ export default function BakimEklePage() {
         return;
       }
 
+      const kilometreDegeri = kilometre ? Number(kilometre) : null;
+      const tutarDegeri = tutar ? Number(tutar.replace(",", ".")) : null;
+
+      if (
+        kilometreDegeri !== null &&
+        (!Number.isFinite(kilometreDegeri) || kilometreDegeri < 0)
+      ) {
+        setHata("Geçerli bir kilometre değeri yazın.");
+        return;
+      }
+
+      if (
+        tutarDegeri !== null &&
+        (!Number.isFinite(tutarDegeri) || tutarDegeri < 0)
+      ) {
+        setHata("Geçerli bir tutar yazın.");
+        return;
+      }
+
       const { error: bakimError } = await supabase
         .from("maintenance_records")
         .insert({
@@ -110,8 +129,8 @@ export default function BakimEklePage() {
           baslik: temizBaslik,
           aciklama: aciklama.trim() || null,
           tarih,
-          kilometre: kilometre ? Number(kilometre) : null,
-          tutar: tutar ? Number(tutar.replace(",", ".")) : null,
+          kilometre: kilometreDegeri,
+          tutar: tutarDegeri,
         });
 
       if (bakimError) {
@@ -123,7 +142,7 @@ export default function BakimEklePage() {
         .from("vehicles")
         .update({
           son_bakim_tarihi: tarih,
-          kilometre: kilometre ? Number(kilometre) : null,
+          kilometre: kilometreDegeri,
         })
         .eq("id", aracId)
         .eq("user_id", user.id);
@@ -147,20 +166,24 @@ export default function BakimEklePage() {
 
   const inputStyle = {
     width: "100%",
-    padding: "13px 14px",
-    border: "1px solid #CBD5E1",
-    borderRadius: "10px",
+    minHeight: "48px",
+    padding: "0 14px",
+    border: "1px solid #D7DCE3",
+    borderRadius: "9px",
     backgroundColor: "#FFFFFF",
-    color: "#0F172A",
-    fontSize: "16px",
+    color: "#111827",
+    fontSize: "15px",
+    boxSizing: "border-box" as const,
+    outline: "none",
   };
 
   const labelStyle = {
     display: "flex",
     flexDirection: "column" as const,
-    gap: "8px",
-    color: "#334155",
-    fontWeight: 700,
+    gap: "7px",
+    color: "#374151",
+    fontSize: "14px",
+    fontWeight: 600,
   };
 
   if (sayfaYukleniyor) {
@@ -171,12 +194,80 @@ export default function BakimEklePage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#F8FAFC",
-          color: "#0F172A",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          padding: "24px",
+          backgroundColor: "#F7F8FA",
+          color: "#111827",
+          fontFamily:
+            'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
         }}
       >
         Araç bilgileri yükleniyor...
+      </main>
+    );
+  }
+
+  if (hata && !arac) {
+    return (
+      <main
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "24px",
+          backgroundColor: "#F7F8FA",
+          color: "#111827",
+          fontFamily:
+            'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        }}
+      >
+        <section
+          style={{
+            width: "100%",
+            maxWidth: "520px",
+            padding: "28px",
+            border: "1px solid #F1C7C7",
+            borderRadius: "14px",
+            backgroundColor: "#FFFFFF",
+            boxShadow: "0 1px 2px rgba(15, 23, 42, 0.03)",
+          }}
+        >
+          <h1
+            style={{
+              margin: 0,
+              color: "#111827",
+              fontSize: "24px",
+              letterSpacing: "-0.5px",
+            }}
+          >
+            Araç açılamadı
+          </h1>
+
+          <p
+            style={{
+              margin: "10px 0 0",
+              color: "#6B7280",
+              fontSize: "14px",
+              lineHeight: 1.6,
+            }}
+          >
+            {hata}
+          </p>
+
+          <Link
+            href="/dashboard"
+            style={{
+              display: "inline-flex",
+              marginTop: "18px",
+              color: "#1D4ED8",
+              fontSize: "14px",
+              fontWeight: 650,
+              textDecoration: "none",
+            }}
+          >
+            ← Dashboard
+          </Link>
+        </section>
       </main>
     );
   }
@@ -185,188 +276,262 @@ export default function BakimEklePage() {
     <main
       style={{
         minHeight: "100vh",
-        padding: "40px 24px",
-        backgroundColor: "#F8FAFC",
-        color: "#0F172A",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        padding: "32px 24px 64px",
+        backgroundColor: "#F7F8FA",
+        color: "#111827",
+        fontFamily:
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
-      <section
+      <div
         style={{
           width: "100%",
-          maxWidth: "760px",
+          maxWidth: "960px",
           margin: "0 auto",
-          padding: "32px",
-          border: "1px solid #E2E8F0",
-          borderRadius: "18px",
-          backgroundColor: "#FFFFFF",
-          boxShadow: "0 10px 30px rgba(15, 23, 42, 0.08)",
         }}
       >
-        <Link
-          href="/dashboard"
-          style={{
-            color: "#2563EB",
-            fontWeight: 700,
-            textDecoration: "none",
-          }}
-        >
-          ← Panele dön
-        </Link>
-
-        <h1
-          style={{
-            margin: "24px 0 8px",
-            color: "#0F172A",
-            fontSize: "34px",
-          }}
-        >
-          🔧 Bakım Kaydı Ekle
-        </h1>
-
-        {arac && (
-          <div
+        <header style={{ marginBottom: "32px" }}>
+          <Link
+            href={`/arac/${aracId}`}
             style={{
-              margin: "20px 0 28px",
-              padding: "17px",
-              border: "1px solid #E2E8F0",
-              borderRadius: "12px",
-              backgroundColor: "#F8FAFC",
+              display: "inline-flex",
+              color: "#6B7280",
+              fontSize: "14px",
+              fontWeight: 600,
+              textDecoration: "none",
             }}
           >
-            <strong
+            ← Araç detayına dön
+          </Link>
+
+          <h1
+            style={{
+              margin: "16px 0 0",
+              color: "#111827",
+              fontSize: "clamp(30px, 6vw, 38px)",
+              lineHeight: 1.15,
+              fontWeight: 760,
+              letterSpacing: "-0.9px",
+            }}
+          >
+            Bakım kaydı ekle
+          </h1>
+
+          <p
+            style={{
+              margin: "9px 0 0",
+              color: "#6B7280",
+              fontSize: "15px",
+              lineHeight: 1.6,
+            }}
+          >
+            Yapılan bakım işlemini ve masraf bilgilerini kaydedin.
+          </p>
+        </header>
+
+        <section
+          style={{
+            width: "100%",
+            padding: "28px",
+            border: "1px solid #E3E7EC",
+            borderRadius: "14px",
+            backgroundColor: "#FFFFFF",
+            boxShadow: "0 1px 2px rgba(15, 23, 42, 0.03)",
+            boxSizing: "border-box",
+          }}
+        >
+          {arac && (
+            <div
               style={{
-                display: "block",
-                color: "#0F172A",
-                fontSize: "18px",
+                marginBottom: "24px",
+                padding: "14px 15px",
+                border: "1px solid #E3E7EC",
+                borderRadius: "10px",
+                backgroundColor: "#F8FAFC",
               }}
             >
-              {arac.marka} {arac.model}
-            </strong>
+              <strong
+                style={{
+                  display: "block",
+                  color: "#111827",
+                  fontSize: "15px",
+                  fontWeight: 650,
+                }}
+              >
+                {arac.marka} {arac.model}
+              </strong>
 
-            <span
+              <span
+                style={{
+                  display: "block",
+                  marginTop: "4px",
+                  color: "#6B7280",
+                  fontSize: "13px",
+                  fontWeight: 650,
+                  letterSpacing: "0.04em",
+                }}
+              >
+                {arac.plaka}
+              </span>
+            </div>
+          )}
+
+          {hata && (
+            <div
+              role="alert"
               style={{
-                display: "block",
-                marginTop: "5px",
-                color: "#2563EB",
-                fontWeight: 800,
+                marginBottom: "20px",
+                padding: "12px 13px",
+                border: "1px solid #F1C7C7",
+                borderRadius: "8px",
+                backgroundColor: "#FFF7F7",
+                color: "#A93838",
+                fontSize: "13px",
+                lineHeight: 1.5,
               }}
             >
-              {arac.plaka}
-            </span>
-          </div>
-        )}
+              {hata}
+            </div>
+          )}
 
-        {hata && (
-          <div
-            role="alert"
+          <form
+            onSubmit={handleSubmit}
             style={{
-              marginBottom: "20px",
-              padding: "13px",
-              border: "1px solid #FECACA",
-              borderRadius: "10px",
-              backgroundColor: "#FEF2F2",
-              color: "#B91C1C",
+              display: "grid",
+              gridTemplateColumns:
+                "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "20px",
             }}
           >
-            {hata}
-          </div>
-        )}
+            <label style={labelStyle}>
+              Bakım başlığı
+              <input
+                type="text"
+                required
+                value={baslik}
+                onChange={(event) => setBaslik(event.target.value)}
+                placeholder="Örnek: Motor yağı ve filtre değişimi"
+                style={inputStyle}
+              />
+            </label>
 
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "20px",
-          }}
-        >
-          <label style={labelStyle}>
-            Bakım başlığı
-            <input
-              type="text"
-              required
-              value={baslik}
-              onChange={(event) => setBaslik(event.target.value)}
-              placeholder="Örnek: Motor yağı ve filtre değişimi"
-              style={inputStyle}
-            />
-          </label>
+            <label style={labelStyle}>
+              Bakım tarihi
+              <input
+                type="date"
+                required
+                value={tarih}
+                onChange={(event) => setTarih(event.target.value)}
+                style={inputStyle}
+              />
+            </label>
 
-          <label style={labelStyle}>
-            Bakım tarihi
-            <input
-              type="date"
-              required
-              value={tarih}
-              onChange={(event) => setTarih(event.target.value)}
-              style={inputStyle}
-            />
-          </label>
+            <label style={labelStyle}>
+              Bakım anındaki kilometre
+              <input
+                type="number"
+                min="0"
+                value={kilometre}
+                onChange={(event) => setKilometre(event.target.value)}
+                placeholder="Örnek: 85000"
+                style={inputStyle}
+              />
+            </label>
 
-          <label style={labelStyle}>
-            Bakım anındaki kilometre
-            <input
-              type="number"
-              min="0"
-              value={kilometre}
-              onChange={(event) => setKilometre(event.target.value)}
-              placeholder="Örnek: 85000"
-              style={inputStyle}
-            />
-          </label>
+            <label style={labelStyle}>
+              Tutar
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={tutar}
+                onChange={(event) => setTutar(event.target.value)}
+                placeholder="Örnek: 2500"
+                style={inputStyle}
+              />
+            </label>
 
-          <label style={labelStyle}>
-            Tutar
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={tutar}
-              onChange={(event) => setTutar(event.target.value)}
-              placeholder="Örnek: 2500"
-              style={inputStyle}
-            />
-          </label>
-
-          <label
-            style={{
-              ...labelStyle,
-              gridColumn: "1 / -1",
-            }}
-          >
-            Açıklama
-            <textarea
-              value={aciklama}
-              onChange={(event) => setAciklama(event.target.value)}
-              placeholder="Değiştirilen parçaları veya yapılan işlemleri yazın."
-              rows={5}
+            <label
               style={{
-                ...inputStyle,
-                resize: "vertical",
+                ...labelStyle,
+                gridColumn: "1 / -1",
               }}
-            />
-          </label>
+            >
+              Açıklama
+              <textarea
+                value={aciklama}
+                onChange={(event) => setAciklama(event.target.value)}
+                placeholder="Değiştirilen parçaları veya yapılan işlemleri yazın."
+                rows={5}
+                style={{
+                  ...inputStyle,
+                  height: "auto",
+                  minHeight: "130px",
+                  padding: "13px 14px",
+                  resize: "vertical",
+                  lineHeight: 1.55,
+                  fontFamily: "inherit",
+                }}
+              />
+            </label>
 
-          <button
-            type="submit"
-            disabled={kaydediliyor}
-            style={{
-              gridColumn: "1 / -1",
-              padding: "15px",
-              border: "none",
-              borderRadius: "11px",
-              backgroundColor: kaydediliyor ? "#94A3B8" : "#059669",
-              color: "#FFFFFF",
-              fontSize: "16px",
-              fontWeight: 800,
-              cursor: kaydediliyor ? "not-allowed" : "pointer",
-            }}
-          >
-            {kaydediliyor ? "Bakım kaydediliyor..." : "Bakımı Kaydet"}
-          </button>
-        </form>
-      </section>
+            <div
+              style={{
+                gridColumn: "1 / -1",
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "10px",
+                flexWrap: "wrap",
+                paddingTop: "4px",
+              }}
+            >
+              <Link
+                href={`/arac/${aracId}`}
+                style={{
+                  minHeight: "46px",
+                  padding: "0 16px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid #D7DCE3",
+                  borderRadius: "9px",
+                  backgroundColor: "#FFFFFF",
+                  color: "#374151",
+                  fontSize: "14px",
+                  fontWeight: 650,
+                  textDecoration: "none",
+                  boxSizing: "border-box",
+                }}
+              >
+                Vazgeç
+              </Link>
+
+              <button
+                type="submit"
+                disabled={kaydediliyor}
+                style={{
+                  minWidth: "160px",
+                  height: "46px",
+                  padding: "0 18px",
+                  border: "none",
+                  borderRadius: "9px",
+                  backgroundColor: kaydediliyor
+                    ? "#AAB2BD"
+                    : "#1D4ED8",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  cursor: kaydediliyor ? "not-allowed" : "pointer",
+                }}
+              >
+                {kaydediliyor
+                  ? "Kaydediliyor..."
+                  : "Bakımı Kaydet"}
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
     </main>
   );
 }

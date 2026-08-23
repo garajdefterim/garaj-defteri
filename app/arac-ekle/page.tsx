@@ -163,21 +163,24 @@ export default function AracEklePage() {
 
   const inputStyle = {
     width: "100%",
-    padding: "13px 14px",
-    border: "1px solid #CBD5E1",
-    borderRadius: "10px",
+    height: "48px",
+    padding: "0 14px",
+    border: "1px solid #D7DCE3",
+    borderRadius: "9px",
     backgroundColor: "#FFFFFF",
-    color: "#0F172A",
-    fontSize: "16px",
+    color: "#111827",
+    fontSize: "15px",
     boxSizing: "border-box" as const,
+    outline: "none",
   };
 
   const labelStyle = {
     display: "flex",
     flexDirection: "column" as const,
-    gap: "8px",
-    color: "#334155",
-    fontWeight: 700,
+    gap: "7px",
+    color: "#374151",
+    fontSize: "14px",
+    fontWeight: 600,
   };
 
   const seciliKategori = aracKategorileri.find(
@@ -188,343 +191,416 @@ export default function AracEklePage() {
     <main
       style={{
         minHeight: "100vh",
-        backgroundColor: "#F8FAFC",
-        padding: "40px 24px",
+        backgroundColor: "#F7F8FA",
+        color: "#111827",
         fontFamily:
-          "Arial, Helvetica, sans-serif",
-        color: "#0F172A",
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        padding: "32px 24px 64px",
       }}
     >
-      <section
+      <div
         style={{
           width: "100%",
-          maxWidth: "760px",
+          maxWidth: "960px",
           margin: "0 auto",
-          backgroundColor: "#FFFFFF",
-          border: "1px solid #E2E8F0",
-          borderRadius: "18px",
-          padding: "32px",
-          boxShadow:
-            "0 10px 30px rgba(15, 23, 42, 0.08)",
-          boxSizing: "border-box",
         }}
       >
-        <Link
-          href="/dashboard"
+        <header
           style={{
-            color: "#2563EB",
-            fontWeight: 700,
-            textDecoration: "none",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            gap: "16px",
+            flexWrap: "wrap",
+            marginBottom: "32px",
           }}
         >
-          ← Panele dön
-        </Link>
-
-        <h1
-          style={{
-            margin: "24px 0 8px",
-            fontSize: "34px",
-            color: "#0F172A",
-          }}
-        >
-          🚗 Araç Ekle
-        </h1>
-
-        <p
-          style={{
-            margin: "0 0 28px",
-            color: "#64748B",
-            lineHeight: 1.6,
-          }}
-        >
-          Aracınızın bilgilerini kaydedin. Resmî
-          muayene dönemi plaka ve araç kategorisine
-          göre otomatik olarak bulunacaktır.
-        </p>
-
-        <form
-          onSubmit={handleSubmit}
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit, minmax(250px, 1fr))",
-            gap: "20px",
-          }}
-        >
-          <label style={labelStyle}>
-            Plaka
-            <input
-              type="text"
-              required
-              value={plaka}
-              onChange={(event) =>
-                setPlaka(event.target.value)
-              }
-              placeholder="Örnek: UM 590"
-              autoCapitalize="characters"
-              style={inputStyle}
-            />
-          </label>
-
-          <label style={labelStyle}>
-            Araç kategorisi
-            <select
-              required
-              value={aracKategorisi}
-              onChange={(event) =>
-                setAracKategorisi(
-                  event.target.value as VehicleCategory
-                )
-              }
+          <div>
+            <Link
+              href="/dashboard"
               style={{
-                ...inputStyle,
-                cursor: "pointer",
-              }}
-            >
-              {aracKategorileri.map((kategori) => (
-                <option
-                  key={kategori.value}
-                  value={kategori.value}
-                >
-                  {kategori.value} — {kategori.baslik}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <div
-            style={{
-              gridColumn: "1 / -1",
-              padding: "15px",
-              border: "1px solid #BFDBFE",
-              borderRadius: "12px",
-              backgroundColor: "#EFF6FF",
-            }}
-          >
-            <strong
-              style={{
-                display: "block",
-                color: "#1D4ED8",
-              }}
-            >
-              Seçilen kategori: {aracKategorisi} —{" "}
-              {seciliKategori?.baslik}
-            </strong>
-
-            <span
-              style={{
-                display: "block",
-                marginTop: "6px",
-                color: "#475569",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                color: "#6B7280",
                 fontSize: "14px",
-                lineHeight: 1.5,
+                fontWeight: 600,
+                textDecoration: "none",
               }}
             >
-              {seciliKategori?.aciklama}
-            </span>
-          </div>
+              ← Dashboard
+            </Link>
 
-          <label style={labelStyle}>
-            Marka
-            <input
-              type="text"
-              required
-              value={marka}
-              onChange={(event) =>
-                setMarka(event.target.value)
-              }
-              placeholder="Örnek: Toyota"
-              style={inputStyle}
-            />
-          </label>
-
-          <label style={labelStyle}>
-            Model
-            <input
-              type="text"
-              required
-              value={model}
-              onChange={(event) =>
-                setModel(event.target.value)
-              }
-              placeholder="Örnek: Corolla"
-              style={inputStyle}
-            />
-          </label>
-
-          <label style={labelStyle}>
-            Yıl
-            <input
-              type="number"
-              min="1900"
-              max="2100"
-              value={yil}
-              onChange={(event) =>
-                setYil(event.target.value)
-              }
-              placeholder="Örnek: 2020"
-              style={inputStyle}
-            />
-          </label>
-
-          <label style={labelStyle}>
-            Kilometre
-            <input
-              type="number"
-              min="0"
-              value={kilometre}
-              onChange={(event) =>
-                setKilometre(event.target.value)
-              }
-              placeholder="Örnek: 85000"
-              style={inputStyle}
-            />
-          </label>
-
-          <div
-            style={{
-              gridColumn: "1 / -1",
-              padding: "17px",
-              border: "1px solid #E2E8F0",
-              borderRadius: "13px",
-              backgroundColor: "#F8FAFC",
-            }}
-          >
-            <strong
+            <h1
               style={{
-                display: "block",
-                color: "#0F172A",
+                margin: "16px 0 0",
+                fontSize: "clamp(30px, 6vw, 38px)",
+                lineHeight: 1.15,
+                fontWeight: 760,
+                letterSpacing: "-0.9px",
               }}
             >
-              📅 Muayene tarihi otomatik belirlenecek
-            </strong>
+              Araç ekle
+            </h1>
 
             <p
               style={{
-                margin: "7px 0 0",
-                color: "#64748B",
-                fontSize: "14px",
+                margin: "9px 0 0",
+                maxWidth: "680px",
+                color: "#6B7280",
+                fontSize: "15px",
                 lineHeight: 1.6,
               }}
             >
-              Aracın resmî muayene dönemi, plaka ve
-              seçtiğiniz araç kategorisi kullanılarak
-              yıllık KKTC muayene takviminden bulunur.
+              Araç bilgilerini ekleyin. Muayene dönemi plaka ve araç
+              kategorisine göre otomatik olarak eşleştirilir.
             </p>
           </div>
+        </header>
 
-          <label style={labelStyle}>
-            Sigorta bitiş tarihi
-            <input
-              type="date"
-              value={sigortaTarihi}
-              onChange={(event) =>
-                setSigortaTarihi(event.target.value)
-              }
-              style={inputStyle}
-            />
-          </label>
-
-          <label style={labelStyle}>
-            Seyrüsefer bitiş tarihi
-            <input
-              type="date"
-              value={seyruseferTarihi}
-              onChange={(event) =>
-                setSeyruseferTarihi(
-                  event.target.value
-                )
-              }
-              style={inputStyle}
-            />
-          </label>
-
-          <label style={labelStyle}>
-            Son bakım tarihi
-            <input
-              type="date"
-              value={sonBakimTarihi}
-              onChange={(event) =>
-                setSonBakimTarihi(event.target.value)
-              }
-              style={inputStyle}
-            />
-          </label>
-
-          <div
+        <section
+          style={{
+            width: "100%",
+            backgroundColor: "#FFFFFF",
+            border: "1px solid #E3E7EC",
+            borderRadius: "14px",
+            padding: "28px",
+            boxShadow:
+              "0 1px 2px rgba(15, 23, 42, 0.03)",
+            boxSizing: "border-box",
+          }}
+        >
+          <form
+            onSubmit={handleSubmit}
             style={{
-              padding: "15px",
-              border: "1px solid #BBF7D0",
-              borderRadius: "12px",
-              backgroundColor: "#F0FDF4",
-              alignSelf: "end",
+              display: "grid",
+              gridTemplateColumns:
+                "repeat(auto-fit, minmax(260px, 1fr))",
+              gap: "20px",
             }}
           >
-            <strong
-              style={{
-                display: "block",
-                color: "#166534",
-                fontSize: "14px",
-              }}
-            >
-              🔧 Bakım hatırlatması
-            </strong>
+            <label style={labelStyle}>
+              Plaka
 
-            <span
-              style={{
-                display: "block",
-                marginTop: "5px",
-                color: "#475569",
-                fontSize: "13px",
-                lineHeight: 1.5,
-              }}
-            >
-              Son bakım tarihinden 6 ay sonrası otomatik
-              olarak hesaplanır.
-            </span>
-          </div>
+              <input
+                type="text"
+                required
+                value={plaka}
+                onChange={(event) =>
+                  setPlaka(event.target.value)
+                }
+                placeholder="Örnek: UM 590"
+                autoCapitalize="characters"
+                style={inputStyle}
+              />
+            </label>
 
-          {hata && (
+            <label style={labelStyle}>
+              Araç kategorisi
+
+              <select
+                required
+                value={aracKategorisi}
+                onChange={(event) =>
+                  setAracKategorisi(
+                    event.target.value as VehicleCategory
+                  )
+                }
+                style={{
+                  ...inputStyle,
+                  cursor: "pointer",
+                }}
+              >
+                {aracKategorileri.map((kategori) => (
+                  <option
+                    key={kategori.value}
+                    value={kategori.value}
+                  >
+                    {kategori.value} — {kategori.baslik}
+                  </option>
+                ))}
+              </select>
+            </label>
+
             <div
-              role="alert"
               style={{
                 gridColumn: "1 / -1",
-                padding: "13px",
+                padding: "14px 15px",
+                border: "1px solid #E3E7EC",
                 borderRadius: "10px",
-                border: "1px solid #FECACA",
-                backgroundColor: "#FEF2F2",
-                color: "#B91C1C",
+                backgroundColor: "#F8FAFC",
               }}
             >
-              {hata}
-            </div>
-          )}
+              <strong
+                style={{
+                  display: "block",
+                  color: "#111827",
+                  fontSize: "14px",
+                  fontWeight: 650,
+                }}
+              >
+                {aracKategorisi} — {seciliKategori?.baslik}
+              </strong>
 
-          <button
-            type="submit"
-            disabled={yukleniyor}
-            style={{
-              gridColumn: "1 / -1",
-              padding: "15px",
-              border: "none",
-              borderRadius: "11px",
-              backgroundColor: yukleniyor
-                ? "#94A3B8"
-                : "#2563EB",
-              color: "#FFFFFF",
-              fontSize: "16px",
-              fontWeight: 800,
-              cursor: yukleniyor
-                ? "not-allowed"
-                : "pointer",
-            }}
-          >
-            {yukleniyor
-              ? "Araç kaydediliyor..."
-              : "Aracı Kaydet"}
-          </button>
-        </form>
-      </section>
+              <span
+                style={{
+                  display: "block",
+                  marginTop: "5px",
+                  color: "#6B7280",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
+                }}
+              >
+                {seciliKategori?.aciklama}
+              </span>
+            </div>
+
+            <label style={labelStyle}>
+              Marka
+
+              <input
+                type="text"
+                required
+                value={marka}
+                onChange={(event) =>
+                  setMarka(event.target.value)
+                }
+                placeholder="Örnek: Toyota"
+                style={inputStyle}
+              />
+            </label>
+
+            <label style={labelStyle}>
+              Model
+
+              <input
+                type="text"
+                required
+                value={model}
+                onChange={(event) =>
+                  setModel(event.target.value)
+                }
+                placeholder="Örnek: Corolla"
+                style={inputStyle}
+              />
+            </label>
+
+            <label style={labelStyle}>
+              Yıl
+
+              <input
+                type="number"
+                min="1900"
+                max="2100"
+                value={yil}
+                onChange={(event) =>
+                  setYil(event.target.value)
+                }
+                placeholder="Örnek: 2020"
+                style={inputStyle}
+              />
+            </label>
+
+            <label style={labelStyle}>
+              Kilometre
+
+              <input
+                type="number"
+                min="0"
+                value={kilometre}
+                onChange={(event) =>
+                  setKilometre(event.target.value)
+                }
+                placeholder="Örnek: 85000"
+                style={inputStyle}
+              />
+            </label>
+
+            <div
+              style={{
+                gridColumn: "1 / -1",
+                padding: "15px",
+                border: "1px solid #E3E7EC",
+                borderRadius: "10px",
+                backgroundColor: "#FAFAFA",
+              }}
+            >
+              <strong
+                style={{
+                  display: "block",
+                  color: "#111827",
+                  fontSize: "14px",
+                  fontWeight: 650,
+                }}
+              >
+                Muayene tarihi otomatik belirlenir
+              </strong>
+
+              <p
+                style={{
+                  margin: "6px 0 0",
+                  color: "#6B7280",
+                  fontSize: "13px",
+                  lineHeight: 1.55,
+                }}
+              >
+                Resmî muayene dönemi, plaka ve seçilen araç kategorisi
+                kullanılarak yıllık KKTC muayene takviminden eşleştirilir.
+              </p>
+            </div>
+
+            <label style={labelStyle}>
+              Sigorta bitiş tarihi
+
+              <input
+                type="date"
+                value={sigortaTarihi}
+                onChange={(event) =>
+                  setSigortaTarihi(event.target.value)
+                }
+                style={inputStyle}
+              />
+            </label>
+
+            <label style={labelStyle}>
+              Seyrüsefer bitiş tarihi
+
+              <input
+                type="date"
+                value={seyruseferTarihi}
+                onChange={(event) =>
+                  setSeyruseferTarihi(
+                    event.target.value
+                  )
+                }
+                style={inputStyle}
+              />
+            </label>
+
+            <label style={labelStyle}>
+              Son bakım tarihi
+
+              <input
+                type="date"
+                value={sonBakimTarihi}
+                onChange={(event) =>
+                  setSonBakimTarihi(event.target.value)
+                }
+                style={inputStyle}
+              />
+            </label>
+
+            <div
+              style={{
+                padding: "14px 15px",
+                border: "1px solid #DDE3EA",
+                borderRadius: "10px",
+                backgroundColor: "#F8FAFC",
+                alignSelf: "end",
+              }}
+            >
+              <strong
+                style={{
+                  display: "block",
+                  color: "#374151",
+                  fontSize: "13px",
+                  fontWeight: 650,
+                }}
+              >
+                Bakım hatırlatması
+              </strong>
+
+              <span
+                style={{
+                  display: "block",
+                  marginTop: "5px",
+                  color: "#6B7280",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
+                }}
+              >
+                Son bakım tarihinden 6 ay sonrası otomatik olarak
+                hesaplanır.
+              </span>
+            </div>
+
+            {hata && (
+              <div
+                role="alert"
+                style={{
+                  gridColumn: "1 / -1",
+                  padding: "12px 13px",
+                  borderRadius: "8px",
+                  border: "1px solid #F1C7C7",
+                  backgroundColor: "#FFF7F7",
+                  color: "#A93838",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
+                }}
+              >
+                {hata}
+              </div>
+            )}
+
+            <div
+              style={{
+                gridColumn: "1 / -1",
+                display: "flex",
+                justifyContent: "flex-end",
+                gap: "10px",
+                flexWrap: "wrap",
+                paddingTop: "4px",
+              }}
+            >
+              <Link
+                href="/dashboard"
+                style={{
+                  minHeight: "46px",
+                  padding: "0 16px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  border: "1px solid #D7DCE3",
+                  borderRadius: "9px",
+                  backgroundColor: "#FFFFFF",
+                  color: "#374151",
+                  fontSize: "14px",
+                  fontWeight: 650,
+                  textDecoration: "none",
+                  boxSizing: "border-box",
+                }}
+              >
+                Vazgeç
+              </Link>
+
+              <button
+                type="submit"
+                disabled={yukleniyor}
+                style={{
+                  minWidth: "150px",
+                  height: "46px",
+                  padding: "0 18px",
+                  border: "none",
+                  borderRadius: "9px",
+                  backgroundColor: yukleniyor
+                    ? "#AAB2BD"
+                    : "#1D4ED8",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  cursor: yukleniyor
+                    ? "not-allowed"
+                    : "pointer",
+                }}
+              >
+                {yukleniyor
+                  ? "Kaydediliyor..."
+                  : "Aracı Kaydet"}
+              </button>
+            </div>
+          </form>
+        </section>
+      </div>
     </main>
   );
 }

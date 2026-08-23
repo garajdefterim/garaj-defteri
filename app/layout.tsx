@@ -5,16 +5,38 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Garaj Defteri",
-  description: "Araçlarınızı, bakımlarınızı ve önemli tarihlerinizi yönetin.",
+  title: {
+    default: "Garaj Defteri",
+    template: "%s | Garaj Defteri",
+  },
+  description:
+    "Araçlarınızı, bakım kayıtlarınızı ve önemli tarihlerinizi tek panelden yönetin.",
+  applicationName: "Garaj Defteri",
+  keywords: [
+    "araç takibi",
+    "bakım takibi",
+    "muayene",
+    "sigorta",
+    "seyrüsefer",
+    "Garaj Defteri",
+  ],
+  authors: [{ name: "Garaj Defteri" }],
+  creator: "Garaj Defteri",
+  publisher: "Garaj Defteri",
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 const temaScripti = `
@@ -52,7 +74,14 @@ export default function RootLayout({
         />
       </head>
 
-      <body>{children}</body>
+      <body
+        style={{
+          fontFamily:
+            "var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif",
+        }}
+      >
+        {children}
+      </body>
     </html>
   );
 }

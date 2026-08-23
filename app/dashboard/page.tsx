@@ -58,10 +58,10 @@ type TarihDurumu = {
 };
 
 const kart = {
-  backgroundColor: "var(--card)",
-  border: "1px solid var(--border)",
-  borderRadius: "18px",
-  boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
+  backgroundColor: "#FFFFFF",
+  border: "1px solid #E3E7EC",
+  borderRadius: "14px",
+  boxShadow: "0 1px 2px rgba(15, 23, 42, 0.03)",
 };
 
 export default function DashboardPage() {
@@ -690,7 +690,7 @@ export default function DashboardPage() {
       <div
         style={{
           padding: "13px",
-          borderRadius: "12px",
+          borderRadius: "9px",
           backgroundColor: "#F8FAFC",
           border: "1px solid #E2E8F0",
         }}
@@ -709,7 +709,7 @@ export default function DashboardPage() {
               {baslik}
             </strong>
 
-            <span style={{ color: "#64748B", fontSize: "14px" }}>
+            <span style={{ color: "#6B7280", fontSize: "14px" }}>
               {tarihFormatla(tarih)}
             </span>
 
@@ -735,7 +735,7 @@ export default function DashboardPage() {
               color: durum.renk,
               border: `1px solid ${durum.kenarlik}`,
               fontSize: "13px",
-              fontWeight: 800,
+              fontWeight: 700,
               whiteSpace: "nowrap",
             }}
           >
@@ -756,7 +756,7 @@ export default function DashboardPage() {
         <div
           style={{
             padding: "13px",
-            borderRadius: "12px",
+            borderRadius: "9px",
             backgroundColor: "#F8FAFC",
             border: "1px solid #E2E8F0",
           }}
@@ -769,7 +769,7 @@ export default function DashboardPage() {
             style={{
               display: "block",
               marginTop: "6px",
-              color: "#64748B",
+              color: "#6B7280",
               fontSize: "14px",
             }}
           >
@@ -785,7 +785,7 @@ export default function DashboardPage() {
       <div
         style={{
           padding: "13px",
-          borderRadius: "12px",
+          borderRadius: "9px",
           backgroundColor: "#F8FAFC",
           border: "1px solid #E2E8F0",
         }}
@@ -807,7 +807,7 @@ export default function DashboardPage() {
             <span
               style={{
                 display: "block",
-                color: "#64748B",
+                color: "#6B7280",
                 fontSize: "14px",
               }}
             >
@@ -835,7 +835,7 @@ export default function DashboardPage() {
               color: durum.renk,
               border: `1px solid ${durum.kenarlik}`,
               fontSize: "13px",
-              fontWeight: 800,
+              fontWeight: 700,
               whiteSpace: "nowrap",
             }}
           >
@@ -850,16 +850,17 @@ export default function DashboardPage() {
     <main
       style={{
         minHeight: "100vh",
-        padding: "40px 24px",
-        backgroundColor: "var(--background)",
-        color: "var(--foreground)",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        padding: "32px 24px 64px",
+        backgroundColor: "#F7F8FA",
+        color: "#111827",
+        fontFamily:
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: "1100px",
+          maxWidth: "1180px",
           margin: "0 auto",
         }}
       >
@@ -874,22 +875,24 @@ export default function DashboardPage() {
             <h1
               style={{
                 margin: 0,
-                fontSize: "clamp(30px, 8vw, 38px)",
+                fontSize: "clamp(30px, 6vw, 40px)",
                 lineHeight: 1.1,
+                fontWeight: 760,
+                letterSpacing: "-1px",
               }}
             >
-              🚗 Garaj Defteri
+              Garaj Defteri
             </h1>
 
             <p
               style={{
                 margin: "10px 0 0",
-                color: "#64748B",
+                color: "#6B7280",
                 fontSize: "clamp(15px, 4vw, 18px)",
                 lineHeight: 1.5,
               }}
             >
-              Araçlarınızı ve önemli tarihlerinizi yönetin.
+              Araçlarınız, bakım kayıtlarınız ve yaklaşan tarihleriniz tek ekranda.
             </p>
           </div>
 
@@ -906,14 +909,14 @@ export default function DashboardPage() {
               href="/profil"
               style={{
                 ...ustButonStili(
-                  "var(--card)",
-                  "var(--foreground)",
-                  "var(--border-strong)"
+                  "#FFFFFF",
+                  "#111827",
+                  "#D7DCE3"
                 ),
                 textAlign: "center",
               }}
             >
-              👤 Profilim
+              Profil
             </Link>
 
             <Link
@@ -927,7 +930,7 @@ export default function DashboardPage() {
                 textAlign: "center",
               }}
             >
-              🔔 Bildirim Ayarları
+              Bildirim Ayarları
             </Link>
 
             <Link
@@ -941,31 +944,31 @@ export default function DashboardPage() {
                 textAlign: "center",
               }}
             >
-              📨 Gönderilenler
+              Gönderilenler
             </Link>
 
             <Link
               href="/arac-ekle"
               style={{
                 ...ustButonStili(
-                  "#2563EB",
+                  "#1D4ED8",
                   "#FFFFFF"
                 ),
                 textAlign: "center",
               }}
             >
-              + Araç Ekle
+              Araç Ekle
             </Link>
 
             <button
               type="button"
               onClick={cikisYap}
               style={{
-                padding: "13px 18px",
-                borderRadius: "10px",
+                padding: "11px 14px",
+                borderRadius: "9px",
                 border: "1px solid var(--border-strong)",
-                backgroundColor: "var(--card)",
-                color: "var(--foreground)",
+                backgroundColor: "#FFFFFF",
+                color: "#111827",
                 fontWeight: 700,
                 cursor: "pointer",
                 textAlign: "center",
@@ -982,7 +985,7 @@ export default function DashboardPage() {
             style={{
               padding: "14px",
               marginBottom: "24px",
-              borderRadius: "10px",
+              borderRadius: "9px",
               border: "1px solid #FECACA",
               backgroundColor: "#FEF2F2",
               color: "#B91C1C",
@@ -1003,55 +1006,26 @@ export default function DashboardPage() {
             }}
           >
             {[
-              [
-                "🚗 Toplam araç",
-                araclar.length,
-                "#EFF6FF",
-                "#DBEAFE",
-                "#1D4ED8",
-              ],
-              [
-                "⏳ Yaklaşan işlem",
-                yaklasanIslemSayisi,
-                "#FFF7ED",
-                "#FED7AA",
-                "#C2410C",
-              ],
-              [
-                "⚠️ Geciken işlem",
-                gecikenIslemSayisi,
-                "#FEF2F2",
-                "#FECACA",
-                "#B91C1C",
-              ],
-              [
-                "📨 Gönderilen e-posta",
-                gonderilenBildirimSayisi,
-                "#F5F3FF",
-                "#DDD6FE",
-                "#6D28D9",
-              ],
-              [
-                "💳 Toplam bakım masrafı",
-                paraFormatla(toplamBakimMasrafi),
-                "#F0FDF4",
-                "#BBF7D0",
-                "#166534",
-              ],
-            ].map(([baslik, deger, bg, border, color]) => (
+              ["Toplam araç", araclar.length],
+              ["Yaklaşan işlem", yaklasanIslemSayisi],
+              ["Geciken işlem", gecikenIslemSayisi],
+              ["Gönderilen e-posta", gonderilenBildirimSayisi],
+              ["Toplam bakım masrafı", paraFormatla(toplamBakimMasrafi)],
+            ].map(([baslik, deger]) => (
               <div
                 key={String(baslik)}
                 style={{
                   padding: "21px",
-                  border: `1px solid ${border}`,
-                  borderRadius: "16px",
-                  backgroundColor: String(bg),
+                  border: "1px solid #E3E7EC",
+                  borderRadius: "14px",
+                  backgroundColor: "#FFFFFF",
+                  boxShadow: "0 1px 2px rgba(15, 23, 42, 0.03)",
                 }}
               >
                 <span
                   style={{
                     display: "block",
-                    color: String(color),
+                    color: "#6B7280",
                     fontSize: "14px",
                     fontWeight: 700,
                   }}
@@ -1068,8 +1042,9 @@ export default function DashboardPage() {
                       typeof deger === "number"
                         ? "29px"
                         : "22px",
-                    color: String(color),
-                    fontWeight: 800,
+                    color: "#111827",
+                    fontWeight: 700,
+                    letterSpacing: "-0.5px",
                   }}
                 >
                   {deger}
@@ -1085,9 +1060,7 @@ export default function DashboardPage() {
               ...kart,
               marginBottom: "24px",
               padding: "18px",
-              border: emailBildirimiAcik
-                ? "1px solid #BBF7D0"
-                : "1px solid #FECACA",
+              border: "1px solid #E3E7EC",
             }}
           >
             <div
@@ -1120,7 +1093,7 @@ export default function DashboardPage() {
                       lineHeight: 1.25,
                     }}
                   >
-                    📧 E-posta hatırlatmaları
+                    E-posta hatırlatmaları
                   </h2>
 
                   <span
@@ -1137,7 +1110,7 @@ export default function DashboardPage() {
                         ? "1px solid #BBF7D0"
                         : "1px solid #FECACA",
                       fontSize: "12px",
-                      fontWeight: 800,
+                      fontWeight: 700,
                     }}
                   >
                     {emailBildirimiAcik ? "Açık" : "Kapalı"}
@@ -1149,7 +1122,7 @@ export default function DashboardPage() {
                   style={{
                     padding: "9px 13px",
                     borderRadius: "9px",
-                    backgroundColor: "#2563EB",
+                    backgroundColor: "#1D4ED8",
                     color: "#FFFFFF",
                     textDecoration: "none",
                     fontSize: "14px",
@@ -1164,7 +1137,7 @@ export default function DashboardPage() {
               <p
                 style={{
                   margin: 0,
-                  color: "#64748B",
+                  color: "#6B7280",
                   fontSize: "14px",
                   lineHeight: 1.55,
                 }}
@@ -1190,7 +1163,7 @@ export default function DashboardPage() {
                     key={String(baslik)}
                     style={{
                       padding: "10px 11px",
-                      borderRadius: "10px",
+                      borderRadius: "9px",
                       backgroundColor: "#F8FAFC",
                       border: "1px solid #E2E8F0",
                     }}
@@ -1198,7 +1171,7 @@ export default function DashboardPage() {
                     <span
                       style={{
                         display: "block",
-                        color: "#64748B",
+                        color: "#6B7280",
                         fontSize: "12px",
                         fontWeight: 700,
                       }}
@@ -1222,7 +1195,7 @@ export default function DashboardPage() {
               <div
                 style={{
                   paddingTop: "2px",
-                  color: "#64748B",
+                  color: "#6B7280",
                   fontSize: "12px",
                   lineHeight: 1.5,
                   overflowWrap: "anywhere",
@@ -1258,13 +1231,13 @@ export default function DashboardPage() {
                     fontSize: "25px",
                   }}
                 >
-                  🔔 Bildirim Merkezi
+                  Bildirim Merkezi
                 </h2>
 
                 <p
                   style={{
                     margin: "8px 0 0",
-                    color: "#64748B",
+                    color: "#6B7280",
                   }}
                 >
                   Yaklaşan ve geciken işlemleriniz.
@@ -1280,7 +1253,7 @@ export default function DashboardPage() {
                     color: "#B91C1C",
                     border: "1px solid #FECACA",
                     fontSize: "14px",
-                    fontWeight: 800,
+                    fontWeight: 700,
                   }}
                 >
                   {bildirimler.length} uyarı
@@ -1294,13 +1267,13 @@ export default function DashboardPage() {
                   marginTop: "20px",
                   padding: "17px",
                   border: "1px solid #BBF7D0",
-                  borderRadius: "12px",
+                  borderRadius: "9px",
                   backgroundColor: "#F0FDF4",
                   color: "#166534",
                   fontWeight: 700,
                 }}
               >
-                ✅ Şu anda yaklaşan veya geciken bir işleminiz yok.
+                Şu anda yaklaşan veya geciken bir işleminiz yok.
               </div>
             ) : (
               <div
@@ -1326,7 +1299,7 @@ export default function DashboardPage() {
                         border: kritik
                           ? "1px solid #FECACA"
                           : "1px solid #FED7AA",
-                        borderRadius: "13px",
+                        borderRadius: "9px",
                         backgroundColor: kritik
                           ? "#FEF2F2"
                           : "#FFF7ED",
@@ -1370,7 +1343,7 @@ export default function DashboardPage() {
                       <span
                         aria-hidden="true"
                         style={{
-                          color: "#64748B",
+                          color: "#6B7280",
                         }}
                       >
                         →
@@ -1409,7 +1382,7 @@ export default function DashboardPage() {
             <p
               style={{
                 marginBottom: "22px",
-                color: "#64748B",
+                color: "#6B7280",
                 lineHeight: 1.6,
               }}
             >
@@ -1423,14 +1396,14 @@ export default function DashboardPage() {
               style={{
                 display: "inline-block",
                 padding: "13px 20px",
-                borderRadius: "10px",
-                backgroundColor: "#2563EB",
+                borderRadius: "9px",
+                backgroundColor: "#1D4ED8",
                 color: "#FFFFFF",
                 fontWeight: 700,
                 textDecoration: "none",
               }}
             >
-              + İlk Aracımı Ekle
+              İlk Aracımı Ekle
             </Link>
           </section>
         )}
@@ -1487,9 +1460,9 @@ export default function DashboardPage() {
                         <p
                           style={{
                             margin: "8px 0 0",
-                            color: "#2563EB",
+                            color: "#1D4ED8",
                             fontSize: "18px",
-                            fontWeight: 800,
+                            fontWeight: 700,
                           }}
                         >
                           {arac.plaka}
@@ -1514,10 +1487,21 @@ export default function DashboardPage() {
                       <span
                         aria-hidden="true"
                         style={{
-                          fontSize: "30px",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          width: "38px",
+                          height: "38px",
+                          borderRadius: "9px",
+                          border: "1px solid #E5E7EB",
+                          backgroundColor: "#F8FAFC",
+                          color: "#6B7280",
+                          fontSize: "12px",
+                          fontWeight: 700,
+                          letterSpacing: "0.04em",
                         }}
                       >
-                        🚘
+                        ARAÇ
                       </span>
                     </div>
 
@@ -1533,7 +1517,7 @@ export default function DashboardPage() {
                         style={{
                           padding: "12px",
                           border: "1px solid #E2E8F0",
-                          borderRadius: "11px",
+                          borderRadius: "9px",
                           backgroundColor: "#F8FAFC",
                         }}
                       >
@@ -1548,7 +1532,7 @@ export default function DashboardPage() {
 
                         <span
                           style={{
-                            color: "#64748B",
+                            color: "#6B7280",
                           }}
                         >
                           {arac.yil ?? "Belirtilmedi"}
@@ -1559,7 +1543,7 @@ export default function DashboardPage() {
                         style={{
                           padding: "12px",
                           border: "1px solid #E2E8F0",
-                          borderRadius: "11px",
+                          borderRadius: "9px",
                           backgroundColor: "#F8FAFC",
                         }}
                       >
@@ -1574,7 +1558,7 @@ export default function DashboardPage() {
 
                         <span
                           style={{
-                            color: "#64748B",
+                            color: "#6B7280",
                           }}
                         >
                           {kilometreFormatla(arac.kilometre)}
@@ -1622,7 +1606,7 @@ export default function DashboardPage() {
                       style={{
                         marginTop: "14px",
                         padding: "12px",
-                        borderRadius: "11px",
+                        borderRadius: "9px",
                         backgroundColor: emailBildirimiAcik
                           ? "#F0FDF4"
                           : "#FEF2F2",
@@ -1653,43 +1637,43 @@ export default function DashboardPage() {
                       <Link
                         href={`/arac/${arac.id}`}
                         style={butonStili(
-                          "var(--card)",
-                          "var(--foreground)",
-                          "var(--border-strong)"
+                          "#FFFFFF",
+                          "#111827",
+                          "#D7DCE3"
                         )}
                       >
-                        🚘 Detay
+                        Detay
                       </Link>
 
                       <Link
                         href={`/bakim-ekle/${arac.id}`}
                         style={butonStili(
-                          "#059669",
+                          "#111827",
                           "#FFFFFF"
                         )}
                       >
-                        🔧 Bakım Ekle
+                        Bakım Ekle
                       </Link>
 
                       <Link
                         href={`/bakim-gecmisi/${arac.id}`}
                         style={butonStili(
-                          "#EEF2FF",
-                          "#3730A3",
-                          "#A5B4FC"
+                          "#F8FAFC",
+                          "#374151",
+                          "#D7DCE3"
                         )}
                       >
-                        📋 Bakım Geçmişi
+                        Bakım Geçmişi
                       </Link>
 
                       <Link
                         href={`/arac-duzenle/${arac.id}`}
                         style={butonStili(
-                          "#2563EB",
+                          "#1D4ED8",
                           "#FFFFFF"
                         )}
                       >
-                        ✏️ Düzenle
+                        Düzenle
                       </Link>
 
                       <button
@@ -1698,13 +1682,16 @@ export default function DashboardPage() {
                         disabled={silinenAracId === arac.id}
                         style={{
                           padding: "11px 14px",
-                          border: "none",
-                          borderRadius: "10px",
+                          border: "1px solid #F1C7C7",
+                          borderRadius: "9px",
                           backgroundColor:
                             silinenAracId === arac.id
-                              ? "#94A3B8"
-                              : "#DC2626",
-                          color: "#FFFFFF",
+                              ? "#AAB2BD"
+                              : "#FFFFFF",
+                          color:
+                            silinenAracId === arac.id
+                              ? "#FFFFFF"
+                              : "#B42318",
                           fontWeight: 700,
                           cursor:
                             silinenAracId === arac.id
@@ -1714,7 +1701,7 @@ export default function DashboardPage() {
                       >
                         {silinenAracId === arac.id
                           ? "Siliniyor..."
-                          : "🗑️ Sil"}
+                          : "Sil"}
                       </button>
                     </div>
                   </article>
@@ -1755,10 +1742,10 @@ export default function DashboardPage() {
               maxWidth: "460px",
               padding: "30px",
               border: "1px solid #E2E8F0",
-              borderRadius: "20px",
-              backgroundColor: "var(--card)",
+              borderRadius: "14px",
+              backgroundColor: "#FFFFFF",
               boxShadow:
-                "0 30px 80px rgba(15, 23, 42, 0.35)",
+                "0 18px 50px rgba(15, 23, 42, 0.16)",
             }}
           >
             <div
@@ -1768,12 +1755,12 @@ export default function DashboardPage() {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                borderRadius: "16px",
+                borderRadius: "14px",
                 backgroundColor: "#FEF2F2",
                 fontSize: "27px",
               }}
             >
-              🗑️
+              Sil
             </div>
 
             <h2
@@ -1789,7 +1776,7 @@ export default function DashboardPage() {
             <p
               style={{
                 margin: 0,
-                color: "#64748B",
+                color: "#6B7280",
                 lineHeight: 1.6,
               }}
             >
@@ -1802,7 +1789,7 @@ export default function DashboardPage() {
                 marginTop: "20px",
                 padding: "16px",
                 border: "1px solid #E2E8F0",
-                borderRadius: "12px",
+                borderRadius: "9px",
                 backgroundColor: "#F8FAFC",
               }}
             >
@@ -1819,8 +1806,8 @@ export default function DashboardPage() {
                 style={{
                   display: "block",
                   marginTop: "5px",
-                  color: "#2563EB",
-                  fontWeight: 800,
+                  color: "#1D4ED8",
+                  fontWeight: 700,
                 }}
               >
                 {silinecekArac.plaka}
@@ -1843,9 +1830,9 @@ export default function DashboardPage() {
                 style={{
                   padding: "12px 18px",
                   border: "1px solid var(--border-strong)",
-                  borderRadius: "10px",
-                  backgroundColor: "var(--card)",
-                  color: "var(--foreground)",
+                  borderRadius: "9px",
+                  backgroundColor: "#FFFFFF",
+                  color: "#111827",
                   fontWeight: 700,
                   cursor: silinenAracId
                     ? "not-allowed"
@@ -1862,12 +1849,12 @@ export default function DashboardPage() {
                 style={{
                   padding: "12px 18px",
                   border: "none",
-                  borderRadius: "10px",
+                  borderRadius: "9px",
                   backgroundColor: silinenAracId
                     ? "#94A3B8"
                     : "#DC2626",
                   color: "#FFFFFF",
-                  fontWeight: 800,
+                  fontWeight: 700,
                   cursor: silinenAracId
                     ? "not-allowed"
                     : "pointer",
@@ -1895,12 +1882,13 @@ function butonStili(
     border: borderColor
       ? `1px solid ${borderColor}`
       : "none",
-    borderRadius: "10px",
+    borderRadius: "9px",
     backgroundColor,
     color,
     textAlign: "center" as const,
     textDecoration: "none",
-    fontWeight: 700,
+    fontSize: "14px",
+    fontWeight: 650,
   };
 }
 
@@ -1910,11 +1898,11 @@ function ustButonStili(
   borderColor?: string
 ) {
   return {
-    padding: "13px 18px",
+    padding: "11px 14px",
     border: borderColor
       ? `1px solid ${borderColor}`
       : "none",
-    borderRadius: "10px",
+    borderRadius: "9px",
     backgroundColor,
     color,
     textDecoration: "none",

@@ -209,123 +209,93 @@ export default function BildirimGecmisiPage() {
     <main
       style={{
         minHeight: "100vh",
-        padding: "40px 24px",
+        padding: "32px 24px 64px",
         backgroundColor: "var(--background)",
         color: "var(--foreground)",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily:
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "1000px",
-          margin: "0 auto",
-        }}
-      >
-        <div
+      <div style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}>
+        <header
           style={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center",
-            gap: "14px",
+            alignItems: "flex-end",
+            gap: "16px",
             flexWrap: "wrap",
-            marginBottom: "24px",
+            marginBottom: "28px",
           }}
         >
-          <Link
-            href="/dashboard"
-            style={{
-              color: "#2563EB",
-              fontWeight: 800,
-              textDecoration: "none",
-            }}
-          >
-            ← Panele dön
-          </Link>
+          <div>
+            <Link
+              href="/dashboard"
+              style={{
+                color: "var(--muted)",
+                fontSize: "14px",
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
+            >
+              ← Dashboard
+            </Link>
+            <h1
+              style={{
+                margin: "16px 0 0",
+                fontSize: "clamp(30px, 6vw, 38px)",
+                lineHeight: 1.15,
+                fontWeight: 760,
+                letterSpacing: "-0.9px",
+              }}
+            >
+              Gönderilen bildirimler
+            </h1>
+            <p
+              style={{
+                margin: "9px 0 0",
+                color: "var(--muted)",
+                fontSize: "15px",
+                lineHeight: 1.6,
+              }}
+            >
+              Araçlarınız için gönderilen e-posta hatırlatmalarının geçmişini görüntüleyin.
+            </p>
+          </div>
 
           <Link
             href="/bildirim-ayarlari"
             style={{
-              padding: "11px 16px",
-              borderRadius: "10px",
-              border: "1px solid var(--border)",
+              minHeight: "44px",
+              padding: "0 15px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: "1px solid var(--border-strong)",
+              borderRadius: "9px",
               backgroundColor: "var(--card)",
               color: "var(--foreground)",
+              fontSize: "14px",
+              fontWeight: 650,
               textDecoration: "none",
-              fontWeight: 700,
             }}
           >
-            🔔 Bildirim Ayarları
+            Bildirim Ayarları
           </Link>
-        </div>
-
-        <section
-          style={{
-            padding: "30px",
-            borderRadius: "18px",
-            border: "1px solid var(--border)",
-            backgroundColor: "var(--card)",
-          }}
-        >
-          <h1
-            style={{
-              margin: 0,
-              fontSize: "34px",
-            }}
-          >
-            📨 Gönderilen Bildirimler
-          </h1>
-
-          <p
-            style={{
-              margin: "10px 0 0",
-              color: "var(--muted)",
-              lineHeight: 1.6,
-            }}
-          >
-            Garaj Defteri tarafından gönderilen e-posta hatırlatmalarınızı
-            buradan görebilirsiniz.
-          </p>
-        </section>
+        </header>
 
         {!yukleniyor && (
           <section
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
-              gap: "14px",
-              marginTop: "20px",
+              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+              gap: "12px",
             }}
           >
-            <OzetKart
-              baslik="Toplam"
-              deger={bildirimler.length}
-              ikon="📨"
-            />
-
-            <OzetKart
-              baslik="Muayene"
-              deger={toplamMuayene}
-              ikon="🚗"
-            />
-
-            <OzetKart
-              baslik="Sigorta"
-              deger={toplamSigorta}
-              ikon="🛡️"
-            />
-
-            <OzetKart
-              baslik="Seyrüsefer"
-              deger={toplamSeyrusefer}
-              ikon="📄"
-            />
-
-            <OzetKart
-              baslik="Bakım"
-              deger={toplamBakim}
-              ikon="🔧"
-            />
+            <OzetKart baslik="Toplam" deger={bildirimler.length} />
+            <OzetKart baslik="Muayene" deger={toplamMuayene} />
+            <OzetKart baslik="Sigorta" deger={toplamSigorta} />
+            <OzetKart baslik="Seyrüsefer" deger={toplamSeyrusefer} />
+            <OzetKart baslik="Bakım" deger={toplamBakim} />
           </section>
         )}
 
@@ -333,12 +303,14 @@ export default function BildirimGecmisiPage() {
           <div
             role="alert"
             style={{
-              marginTop: "20px",
-              padding: "14px",
-              borderRadius: "11px",
-              border: "1px solid #FECACA",
-              backgroundColor: "#FEF2F2",
-              color: "#B91C1C",
+              marginTop: "18px",
+              padding: "12px 13px",
+              borderRadius: "8px",
+              border: "1px solid #F1C7C7",
+              backgroundColor: "#FFF7F7",
+              color: "#A93838",
+              fontSize: "13px",
+              lineHeight: 1.5,
             }}
           >
             {hata}
@@ -348,12 +320,13 @@ export default function BildirimGecmisiPage() {
         {yukleniyor && (
           <section
             style={{
-              marginTop: "20px",
-              padding: "28px",
-              borderRadius: "18px",
+              marginTop: "18px",
+              padding: "24px",
+              borderRadius: "14px",
               border: "1px solid var(--border)",
               backgroundColor: "var(--card)",
               color: "var(--muted)",
+              fontSize: "14px",
             }}
           >
             Bildirim geçmişi yükleniyor...
@@ -363,174 +336,114 @@ export default function BildirimGecmisiPage() {
         {!yukleniyor && !hata && bildirimler.length === 0 && (
           <section
             style={{
-              marginTop: "20px",
+              marginTop: "18px",
               padding: "32px",
-              borderRadius: "18px",
+              borderRadius: "14px",
               border: "1px solid var(--border)",
               backgroundColor: "var(--card)",
               textAlign: "center",
             }}
           >
-            <div
-              style={{
-                fontSize: "42px",
-              }}
-            >
-              📨
-            </div>
-
-            <h2
-              style={{
-                margin: "14px 0 8px",
-              }}
-            >
+            <h2 style={{ margin: 0, fontSize: "20px" }}>
               Henüz gönderilen bildirim yok
             </h2>
-
             <p
               style={{
-                margin: 0,
+                margin: "8px 0 0",
                 color: "var(--muted)",
+                fontSize: "14px",
                 lineHeight: 1.6,
               }}
             >
-              Muayene, sigorta, seyrüsefer veya bakım hatırlatması
-              gönderildiğinde burada görünecek.
+              Bir araç hatırlatması gönderildiğinde kayıt burada görünecek.
             </p>
           </section>
         )}
 
         {!yukleniyor && bildirimler.length > 0 && (
-          <section
-            style={{
-              marginTop: "20px",
-              display: "grid",
-              gap: "14px",
-            }}
-          >
+          <section style={{ marginTop: "18px", display: "grid", gap: "12px" }}>
             {bildirimler.map((bildirim) => {
-              const gorunum = bildirimTurunuBul(
-                bildirim.notification_type
-              );
-
-              const arac = aracHaritasi.get(
-                bildirim.vehicle_id
-              );
+              const gorunum = bildirimTurunuBul(bildirim.notification_type);
+              const arac = aracHaritasi.get(bildirim.vehicle_id);
 
               return (
                 <article
                   key={bildirim.id}
                   style={{
                     padding: "20px",
-                    borderRadius: "16px",
+                    borderRadius: "14px",
                     border: "1px solid var(--border)",
                     backgroundColor: "var(--card)",
+                    boxShadow: "0 1px 2px rgba(15,23,42,.03)",
                   }}
                 >
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      gap: "16px",
                       alignItems: "flex-start",
+                      gap: "16px",
                       flexWrap: "wrap",
                     }}
                   >
-                    <div
-                      style={{
-                        display: "flex",
-                        gap: "14px",
-                        alignItems: "flex-start",
-                        flex: "1 1 400px",
-                      }}
-                    >
+                    <div>
                       <div
                         style={{
-                          width: "48px",
-                          height: "48px",
-                          borderRadius: "14px",
                           display: "flex",
                           alignItems: "center",
-                          justifyContent: "center",
-                          backgroundColor: gorunum.arkaPlan,
-                          border: `1px solid ${gorunum.kenarlik}`,
-                          fontSize: "24px",
-                          flexShrink: 0,
+                          gap: "9px",
+                          flexWrap: "wrap",
                         }}
                       >
-                        {gorunum.ikon}
-                      </div>
-
-                      <div>
-                        <div
+                        <h2
                           style={{
-                            display: "flex",
-                            gap: "8px",
-                            alignItems: "center",
-                            flexWrap: "wrap",
+                            margin: 0,
+                            fontSize: "18px",
+                            letterSpacing: "-0.2px",
                           }}
                         >
-                          <h2
-                            style={{
-                              margin: 0,
-                              fontSize: "19px",
-                            }}
-                          >
-                            {gorunum.baslik}
-                          </h2>
-
-                          <span
-                            style={{
-                              padding: "5px 9px",
-                              borderRadius: "999px",
-                              backgroundColor: gorunum.arkaPlan,
-                              border: `1px solid ${gorunum.kenarlik}`,
-                              color: gorunum.renk,
-                              fontSize: "12px",
-                              fontWeight: 800,
-                            }}
-                          >
-                            Gönderildi
-                          </span>
-                        </div>
-
-                        <p
+                          {gorunum.baslik}
+                        </h2>
+                        <span
                           style={{
-                            margin: "7px 0 0",
+                            padding: "4px 8px",
+                            borderRadius: "999px",
+                            border: "1px solid var(--border)",
+                            backgroundColor: "var(--card-soft)",
                             color: "var(--muted)",
-                            lineHeight: 1.5,
+                            fontSize: "11px",
+                            fontWeight: 700,
                           }}
                         >
-                          {arac
-                            ? `${arac.marka} ${arac.model} – ${arac.plaka}`
-                            : "Araç bilgisi bulunamadı"}
-                        </p>
+                          Gönderildi
+                        </span>
                       </div>
-                    </div>
 
-                    <div
-                      style={{
-                        textAlign: "right",
-                      }}
-                    >
-                      <strong
+                      <p
                         style={{
-                          display: "block",
+                          margin: "7px 0 0",
+                          color: "var(--muted)",
                           fontSize: "14px",
                         }}
                       >
+                        {arac
+                          ? `${arac.marka} ${arac.model} – ${arac.plaka}`
+                          : "Araç bilgisi bulunamadı"}
+                      </p>
+                    </div>
+
+                    <div style={{ textAlign: "right" }}>
+                      <strong style={{ display: "block", fontSize: "13px" }}>
                         {tarihSaatFormatla(
-                          bildirim.sent_at ??
-                            bildirim.created_at
+                          bildirim.sent_at ?? bildirim.created_at
                         )}
                       </strong>
-
                       <span
                         style={{
                           display: "block",
-                          marginTop: "5px",
+                          marginTop: "4px",
                           color: "var(--muted)",
-                          fontSize: "12px",
+                          fontSize: "11px",
                         }}
                       >
                         Gönderim zamanı
@@ -541,70 +454,19 @@ export default function BildirimGecmisiPage() {
                   <div
                     style={{
                       display: "grid",
-                      gridTemplateColumns:
-                        "repeat(auto-fit, minmax(220px, 1fr))",
+                      gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
                       gap: "10px",
-                      marginTop: "18px",
+                      marginTop: "16px",
                     }}
                   >
-                    <div
-                      style={{
-                        padding: "12px",
-                        borderRadius: "11px",
-                        backgroundColor: "var(--card-soft)",
-                        border: "1px solid var(--border)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          display: "block",
-                          color: "var(--muted)",
-                          fontSize: "12px",
-                        }}
-                      >
-                        Alıcı
-                      </span>
-
-                      <strong
-                        style={{
-                          display: "block",
-                          marginTop: "5px",
-                          wordBreak: "break-word",
-                        }}
-                      >
-                        {bildirim.recipient_email ??
-                          "E-posta bulunamadı"}
-                      </strong>
-                    </div>
-
-                    <div
-                      style={{
-                        padding: "12px",
-                        borderRadius: "11px",
-                        backgroundColor: "var(--card-soft)",
-                        border: "1px solid var(--border)",
-                      }}
-                    >
-                      <span
-                        style={{
-                          display: "block",
-                          color: "var(--muted)",
-                          fontSize: "12px",
-                        }}
-                      >
-                        Bildirim türü
-                      </span>
-
-                      <strong
-                        style={{
-                          display: "block",
-                          marginTop: "5px",
-                          overflowWrap: "anywhere",
-                        }}
-                      >
-                        {bildirim.notification_type}
-                      </strong>
-                    </div>
+                    <BilgiKutusu
+                      baslik="Alıcı"
+                      deger={bildirim.recipient_email ?? "E-posta bulunamadı"}
+                    />
+                    <BilgiKutusu
+                      baslik="Bildirim türü"
+                      deger={bildirim.notification_type}
+                    />
                   </div>
                 </article>
               );
@@ -619,11 +481,9 @@ export default function BildirimGecmisiPage() {
 function OzetKart({
   baslik,
   deger,
-  ikon,
 }: {
   baslik: string;
   deger: number;
-  ikon: string;
 }) {
   return (
     <div
@@ -632,6 +492,7 @@ function OzetKart({
         borderRadius: "14px",
         border: "1px solid var(--border)",
         backgroundColor: "var(--card)",
+        boxShadow: "0 1px 2px rgba(15,23,42,.03)",
       }}
     >
       <span
@@ -639,18 +500,56 @@ function OzetKart({
           display: "block",
           color: "var(--muted)",
           fontSize: "13px",
-          fontWeight: 700,
+          fontWeight: 600,
         }}
       >
-        {ikon} {baslik}
+        {baslik}
       </span>
-
       <strong
         style={{
           display: "block",
-          marginTop: "7px",
-          fontSize: "26px",
+          marginTop: "6px",
+          fontSize: "24px",
           color: "var(--foreground)",
+        }}
+      >
+        {deger}
+      </strong>
+    </div>
+  );
+}
+
+function BilgiKutusu({
+  baslik,
+  deger,
+}: {
+  baslik: string;
+  deger: string;
+}) {
+  return (
+    <div
+      style={{
+        padding: "12px",
+        borderRadius: "9px",
+        backgroundColor: "var(--card-soft)",
+        border: "1px solid var(--border)",
+      }}
+    >
+      <span
+        style={{
+          display: "block",
+          color: "var(--muted)",
+          fontSize: "12px",
+        }}
+      >
+        {baslik}
+      </span>
+      <strong
+        style={{
+          display: "block",
+          marginTop: "5px",
+          fontSize: "13px",
+          overflowWrap: "anywhere",
         }}
       >
         {deger}

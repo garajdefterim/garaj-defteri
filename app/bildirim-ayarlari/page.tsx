@@ -188,7 +188,8 @@ export default function BildirimAyarlariPage() {
           justifyContent: "center",
           backgroundColor: "var(--background)",
           color: "var(--foreground)",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          fontFamily:
+            'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
         }}
       >
         Bildirim ayarları yükleniyor...
@@ -198,301 +199,205 @@ export default function BildirimAyarlariPage() {
 
   const inputStyle = {
     width: "100%",
-    padding: "13px 14px",
+    height: "48px",
+    padding: "0 14px",
     border: "1px solid var(--border-strong)",
-    borderRadius: "10px",
+    borderRadius: "9px",
     backgroundColor: "var(--input-bg)",
     color: "var(--foreground)",
-    fontSize: "16px",
+    fontSize: "15px",
     boxSizing: "border-box" as const,
+    outline: "none",
   };
 
   return (
     <main
       style={{
         minHeight: "100vh",
-        padding: "40px 24px",
+        padding: "32px 24px 64px",
         backgroundColor: "var(--background)",
         color: "var(--foreground)",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily:
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "900px",
-          margin: "0 auto",
-        }}
-      >
-        <div
+      <div style={{ width: "100%", maxWidth: "960px", margin: "0 auto" }}>
+        <header
           style={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center",
+            alignItems: "flex-end",
             gap: "16px",
             flexWrap: "wrap",
-            marginBottom: "26px",
+            marginBottom: "28px",
           }}
         >
-          <Link
-            href="/dashboard"
-            style={{
-              color: "#2563EB",
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            ← Panele dön
-          </Link>
+          <div>
+            <Link
+              href="/dashboard"
+              style={{
+                color: "var(--muted)",
+                fontSize: "14px",
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
+            >
+              ← Dashboard
+            </Link>
+
+            <h1
+              style={{
+                margin: "16px 0 0",
+                fontSize: "clamp(30px, 6vw, 38px)",
+                lineHeight: 1.15,
+                fontWeight: 760,
+                letterSpacing: "-0.9px",
+              }}
+            >
+              Bildirim ayarları
+            </h1>
+
+            <p
+              style={{
+                margin: "9px 0 0",
+                maxWidth: "650px",
+                color: "var(--muted)",
+                fontSize: "15px",
+                lineHeight: 1.6,
+              }}
+            >
+              Araç tarihleri için gönderilen e-posta hatırlatmalarını yönetin.
+            </p>
+          </div>
 
           <Link
             href="/bildirim-gecmisi"
             style={{
-              padding: "11px 16px",
-              borderRadius: "10px",
+              minHeight: "44px",
+              padding: "0 15px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
               border: "1px solid var(--border-strong)",
+              borderRadius: "9px",
               backgroundColor: "var(--card)",
               color: "var(--foreground)",
-              fontWeight: 700,
+              fontSize: "14px",
+              fontWeight: 650,
               textDecoration: "none",
             }}
           >
-            📨 Gönderilen Bildirimler
+            Gönderilen Bildirimler
           </Link>
-        </div>
-
-        <section
-          style={{
-            padding: "30px",
-            border: "1px solid var(--border)",
-            borderRadius: "18px",
-            backgroundColor: "var(--card)",
-            boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: "18px",
-              alignItems: "flex-start",
-              flexWrap: "wrap",
-            }}
-          >
-            <div>
-              <h1
-                style={{
-                  margin: 0,
-                  fontSize: "34px",
-                  color: "var(--foreground)",
-                }}
-              >
-                🔔 Bildirim Ayarları
-              </h1>
-
-              <p
-                style={{
-                  margin: "10px 0 0",
-                  color: "var(--muted)",
-                  lineHeight: 1.6,
-                }}
-              >
-                Muayene, sigorta, seyrüsefer ve bakım için gönderilecek
-                e-posta hatırlatmalarını buradan yönetebilirsiniz.
-              </p>
-            </div>
-
-            <span
-              style={{
-                padding: "7px 12px",
-                borderRadius: "999px",
-                border: bildirimAcik
-                  ? "1px solid #BBF7D0"
-                  : "1px solid #FECACA",
-                backgroundColor: bildirimAcik
-                  ? "#F0FDF4"
-                  : "#FEF2F2",
-                color: bildirimAcik ? "#166534" : "#B91C1C",
-                fontWeight: 800,
-                fontSize: "14px",
-              }}
-            >
-              {bildirimAcik
-                ? "Bildirimler açık"
-                : "Bildirimler kapalı"}
-            </span>
-          </div>
-        </section>
+        </header>
 
         <section
           style={{
             display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "16px",
-            marginTop: "22px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "12px",
           }}
         >
-          <div
-            style={{
-              padding: "20px",
-              border: "1px solid #DBEAFE",
-              borderRadius: "14px",
-              backgroundColor: "#EFF6FF",
-            }}
-          >
-            <span
+          {[
+            ["Kayıtlı araç", String(kayitliAracSayisi)],
+            ["Muayene hatırlatması", `${hatirlatmaGunu} gün önce`],
+            ["Son gönderim", tarihSaatFormatla(sonGonderimTarihi)],
+          ].map(([baslik, deger]) => (
+            <div
+              key={baslik}
               style={{
-                display: "block",
-                color: "#1D4ED8",
-                fontSize: "14px",
-                fontWeight: 700,
+                padding: "20px",
+                border: "1px solid var(--border)",
+                borderRadius: "14px",
+                backgroundColor: "var(--card)",
+                boxShadow: "0 1px 2px rgba(15, 23, 42, 0.03)",
               }}
             >
-              🚗 Kayıtlı araç
-            </span>
-
-            <strong
-              style={{
-                display: "block",
-                marginTop: "7px",
-                fontSize: "28px",
-              }}
-            >
-              {kayitliAracSayisi}
-            </strong>
-          </div>
-
-          <div
-            style={{
-              padding: "20px",
-              border: "1px solid #FED7AA",
-              borderRadius: "14px",
-              backgroundColor: "#FFF7ED",
-            }}
-          >
-            <span
-              style={{
-                display: "block",
-                color: "#C2410C",
-                fontSize: "14px",
-                fontWeight: 700,
-              }}
-            >
-              ⏰ Muayene hatırlatması
-            </span>
-
-            <strong
-              style={{
-                display: "block",
-                marginTop: "7px",
-                fontSize: "23px",
-              }}
-            >
-              {hatirlatmaGunu} gün önce
-            </strong>
-          </div>
-
-          <div
-            style={{
-              padding: "20px",
-              border: "1px solid #DDD6FE",
-              borderRadius: "14px",
-              backgroundColor: "#F5F3FF",
-            }}
-          >
-            <span
-              style={{
-                display: "block",
-                color: "#6D28D9",
-                fontSize: "14px",
-                fontWeight: 700,
-              }}
-            >
-              📨 Son gönderim
-            </span>
-
-            <strong
-              style={{
-                display: "block",
-                marginTop: "7px",
-                fontSize: "16px",
-                lineHeight: 1.5,
-              }}
-            >
-              {tarihSaatFormatla(sonGonderimTarihi)}
-            </strong>
-          </div>
+              <span
+                style={{
+                  display: "block",
+                  color: "var(--muted)",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                }}
+              >
+                {baslik}
+              </span>
+              <strong
+                style={{
+                  display: "block",
+                  marginTop: "7px",
+                  fontSize: baslik === "Son gönderim" ? "16px" : "23px",
+                  lineHeight: 1.4,
+                  letterSpacing: "-0.3px",
+                }}
+              >
+                {deger}
+              </strong>
+            </div>
+          ))}
         </section>
 
         <section
           style={{
-            marginTop: "22px",
+            marginTop: "16px",
             padding: "24px",
             border: "1px solid var(--border)",
-            borderRadius: "18px",
+            borderRadius: "14px",
             backgroundColor: "var(--card)",
           }}
         >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "22px",
-            }}
-          >
-            📅 Hatırlatma Planı
+          <h2 style={{ margin: 0, fontSize: "20px", letterSpacing: "-0.3px" }}>
+            Hatırlatma planı
           </h2>
-
           <p
             style={{
-              margin: "8px 0 18px",
+              margin: "7px 0 18px",
               color: "var(--muted)",
+              fontSize: "14px",
               lineHeight: 1.6,
             }}
           >
-            Otomatik e-postaların hangi tarihte gönderileceğini burada
-            görebilirsiniz. Muayene süresini siz seçebilirsiniz.
+            Sistemin araç tarihleri için kullandığı mevcut hatırlatma süreleri.
           </p>
 
           <div
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-              gap: "12px",
+              gap: "10px",
             }}
           >
             {[
-              ["🚗 Muayene", `${hatirlatmaGunu} gün önce`, "#EFF6FF", "#BFDBFE", "#1D4ED8"],
-              ["🛡️ Sigorta", "7 gün önce", "#EFF6FF", "#BFDBFE", "#1D4ED8"],
-              ["📄 Seyrüsefer", "14 gün önce", "#F5F3FF", "#DDD6FE", "#6D28D9"],
-              ["🔧 Bakım", "14 gün önce", "#F0FDF4", "#BBF7D0", "#166534"],
-            ].map(([baslik, zaman, arkaPlan, kenarlik, renk]) => (
+              ["Muayene", `${hatirlatmaGunu} gün önce`],
+              ["Sigorta", "7 gün önce"],
+              ["Seyrüsefer", "14 gün önce"],
+              ["Bakım", "14 gün önce"],
+            ].map(([baslik, zaman]) => (
               <div
-                key={String(baslik)}
+                key={baslik}
                 style={{
-                  padding: "16px",
-                  borderRadius: "12px",
-                  border: `1px solid ${kenarlik}`,
-                  backgroundColor: String(arkaPlan),
+                  padding: "15px",
+                  border: "1px solid var(--border)",
+                  borderRadius: "9px",
+                  backgroundColor: "var(--card-soft)",
                 }}
               >
                 <span
                   style={{
                     display: "block",
-                    color: String(renk),
+                    color: "var(--muted)",
                     fontSize: "13px",
-                    fontWeight: 800,
+                    fontWeight: 600,
                   }}
                 >
                   {baslik}
                 </span>
-
                 <strong
                   style={{
                     display: "block",
-                    marginTop: "7px",
-                    color: String(renk),
-                    fontSize: "18px",
+                    marginTop: "6px",
+                    fontSize: "16px",
                   }}
                 >
                   {zaman}
@@ -505,20 +410,28 @@ export default function BildirimAyarlariPage() {
         <form
           onSubmit={ayarlariKaydet}
           style={{
-            marginTop: "22px",
-            padding: "30px",
+            marginTop: "16px",
+            padding: "24px",
             border: "1px solid var(--border)",
-            borderRadius: "18px",
+            borderRadius: "14px",
             backgroundColor: "var(--card)",
-            boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
+            boxShadow: "0 1px 2px rgba(15, 23, 42, 0.03)",
           }}
         >
-          <div
+          <h2 style={{ margin: 0, fontSize: "20px" }}>E-posta bildirimleri</h2>
+          <p
             style={{
-              display: "grid",
-              gap: "22px",
+              margin: "7px 0 20px",
+              color: "var(--muted)",
+              fontSize: "14px",
+              lineHeight: 1.6,
             }}
           >
+            Bildirim durumunu, gönderim adresini ve muayene hatırlatma süresini
+            belirleyin.
+          </p>
+
+          <div style={{ display: "grid", gap: "20px" }}>
             <div
               style={{
                 display: "flex",
@@ -526,33 +439,27 @@ export default function BildirimAyarlariPage() {
                 alignItems: "center",
                 gap: "18px",
                 flexWrap: "wrap",
-                padding: "18px",
+                padding: "16px",
                 border: "1px solid var(--border)",
-                borderRadius: "14px",
+                borderRadius: "10px",
                 backgroundColor: "var(--card-soft)",
               }}
             >
-              <div>
-                <strong
-                  style={{
-                    display: "block",
-                    fontSize: "17px",
-                  }}
-                >
-                  E-posta bildirimleri
+              <div style={{ maxWidth: "650px" }}>
+                <strong style={{ display: "block", fontSize: "15px" }}>
+                  E-posta hatırlatmaları
                 </strong>
-
                 <span
                   style={{
                     display: "block",
-                    marginTop: "6px",
+                    marginTop: "5px",
                     color: "var(--muted)",
-                    fontSize: "14px",
+                    fontSize: "13px",
                     lineHeight: 1.5,
                   }}
                 >
-                  Kapattığınızda muayene, sigorta, seyrüsefer ve bakım
-                  hatırlatma e-postaları gönderilmez.
+                  Kapalı olduğunda araçlarınız için otomatik hatırlatma
+                  e-postaları gönderilmez.
                 </span>
               </div>
 
@@ -560,61 +467,72 @@ export default function BildirimAyarlariPage() {
                 type="button"
                 role="switch"
                 aria-checked={bildirimAcik}
-                onClick={() =>
-                  setBildirimAcik((mevcut) => !mevcut)
-                }
+                aria-label="E-posta bildirimlerini aç veya kapat"
+                onClick={() => setBildirimAcik((mevcut) => !mevcut)}
                 style={{
-                  width: "58px",
-                  height: "32px",
+                  width: "52px",
+                  height: "30px",
                   padding: "3px",
+                  flexShrink: 0,
                   border: "none",
                   borderRadius: "999px",
-                  backgroundColor: bildirimAcik
-                    ? "#16A34A"
-                    : "#CBD5E1",
+                  backgroundColor: bildirimAcik ? "#1D4ED8" : "#9CA3AF",
                   cursor: "pointer",
                 }}
               >
                 <span
                   style={{
                     display: "block",
-                    width: "26px",
-                    height: "26px",
+                    width: "24px",
+                    height: "24px",
                     borderRadius: "50%",
                     backgroundColor: "#FFFFFF",
                     transform: bildirimAcik
-                      ? "translateX(26px)"
+                      ? "translateX(22px)"
                       : "translateX(0)",
                     transition: "transform 0.2s ease",
-                    boxShadow:
-                      "0 2px 5px rgba(15, 23, 42, 0.2)",
+                    boxShadow: "0 1px 3px rgba(15,23,42,.2)",
                   }}
                 />
               </button>
+            </div>
+
+            <div
+              style={{
+                padding: "12px 13px",
+                border: "1px solid var(--border)",
+                borderRadius: "9px",
+                backgroundColor: "var(--card-soft)",
+                color: "var(--muted)",
+                fontSize: "13px",
+                lineHeight: 1.5,
+              }}
+            >
+              Durum:{" "}
+              <strong style={{ color: "var(--foreground)" }}>
+                {bildirimAcik ? "Bildirimler açık" : "Bildirimler kapalı"}
+              </strong>
             </div>
 
             <label
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px",
+                gap: "7px",
                 color: "var(--foreground)",
-                fontWeight: 700,
+                fontSize: "14px",
+                fontWeight: 600,
               }}
             >
               Bildirim e-posta adresi
-
               <input
                 type="email"
                 required
                 value={email}
-                onChange={(event) =>
-                  setEmail(event.target.value)
-                }
+                onChange={(event) => setEmail(event.target.value)}
                 placeholder="ornek@email.com"
                 style={inputStyle}
               />
-
               <span
                 style={{
                   color: "var(--muted)",
@@ -622,8 +540,7 @@ export default function BildirimAyarlariPage() {
                   fontWeight: 400,
                 }}
               >
-                Tüm araç hatırlatma e-postaları bu adrese
-                gönderilir.
+                Tüm araç hatırlatma e-postaları bu adrese gönderilir.
               </span>
             </label>
 
@@ -631,22 +548,17 @@ export default function BildirimAyarlariPage() {
               style={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "8px",
+                gap: "7px",
                 color: "var(--foreground)",
-                fontWeight: 700,
+                fontSize: "14px",
+                fontWeight: 600,
               }}
             >
-              Muayene için kaç gün önce hatırlatılsın?
-
+              Muayene hatırlatma süresi
               <select
                 value={hatirlatmaGunu}
-                onChange={(event) =>
-                  setHatirlatmaGunu(event.target.value)
-                }
-                style={{
-                  ...inputStyle,
-                  cursor: "pointer",
-                }}
+                onChange={(event) => setHatirlatmaGunu(event.target.value)}
+                style={{ ...inputStyle, cursor: "pointer" }}
               >
                 <option value="1">1 gün önce</option>
                 <option value="3">3 gün önce</option>
@@ -654,7 +566,6 @@ export default function BildirimAyarlariPage() {
                 <option value="14">14 gün önce</option>
                 <option value="30">30 gün önce</option>
               </select>
-
               <span
                 style={{
                   color: "var(--muted)",
@@ -663,49 +574,38 @@ export default function BildirimAyarlariPage() {
                   lineHeight: 1.5,
                 }}
               >
-                Bu seçim yalnızca resmî muayene hatırlatmasını değiştirir.
-                Sigorta 7 gün, seyrüsefer 14 gün ve bakım 14 gün önce
-                gönderilir.
+                Bu ayar yalnızca muayene hatırlatmasını değiştirir.
               </span>
             </label>
 
             <div
               style={{
-                padding: "16px",
-                border: "1px solid #BFDBFE",
-                borderRadius: "12px",
-                backgroundColor: "#EFF6FF",
-                color: "#1E3A8A",
+                padding: "15px",
+                border: "1px solid var(--border)",
+                borderRadius: "9px",
+                backgroundColor: "var(--card-soft)",
+                color: "var(--muted)",
+                fontSize: "13px",
                 lineHeight: 1.6,
               }}
             >
-              <strong style={{ display: "block" }}>
-                Sistem nasıl çalışır?
-              </strong>
-
-              <span
-                style={{
-                  display: "block",
-                  marginTop: "5px",
-                  fontSize: "14px",
-                }}
-              >
-                Garaj Defteri her gün araç tarihlerinizi kontrol eder. Muayene için
-                yukarıda seçtiğiniz süre kullanılır. Sigorta 7 gün, seyrüsefer
-                14 gün ve bakım 14 gün önce hatırlatılır. Aynı hatırlatma
-                yalnızca bir kez gönderilir.
-              </span>
+              Garaj Defteri araç tarihlerinizi düzenli olarak kontrol eder.
+              Muayene için seçtiğiniz süre; sigorta için 7 gün, seyrüsefer ve
+              bakım için 14 günlük süre kullanılır. Aynı hatırlatma yalnızca bir
+              kez gönderilir.
             </div>
 
             {hata && (
               <div
                 role="alert"
                 style={{
-                  padding: "13px",
-                  borderRadius: "10px",
-                  border: "1px solid #FECACA",
-                  backgroundColor: "#FEF2F2",
-                  color: "#B91C1C",
+                  padding: "12px 13px",
+                  borderRadius: "8px",
+                  border: "1px solid #F1C7C7",
+                  backgroundColor: "#FFF7F7",
+                  color: "#A93838",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
                 }}
               >
                 {hata}
@@ -716,39 +616,39 @@ export default function BildirimAyarlariPage() {
               <div
                 role="status"
                 style={{
-                  padding: "13px",
-                  borderRadius: "10px",
-                  border: "1px solid #BBF7D0",
-                  backgroundColor: "#F0FDF4",
-                  color: "#166534",
+                  padding: "12px 13px",
+                  borderRadius: "8px",
+                  border: "1px solid #C6E7D2",
+                  backgroundColor: "#F7FCF9",
+                  color: "#276749",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
                 }}
               >
                 {mesaj}
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={kaydediliyor}
-              style={{
-                padding: "15px",
-                border: "none",
-                borderRadius: "11px",
-                backgroundColor: kaydediliyor
-                  ? "#94A3B8"
-                  : "#2563EB",
-                color: "#FFFFFF",
-                fontSize: "16px",
-                fontWeight: 800,
-                cursor: kaydediliyor
-                  ? "not-allowed"
-                  : "pointer",
-              }}
-            >
-              {kaydediliyor
-                ? "Ayarlar kaydediliyor..."
-                : "Ayarları Kaydet"}
-            </button>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button
+                type="submit"
+                disabled={kaydediliyor}
+                style={{
+                  minWidth: "160px",
+                  height: "46px",
+                  padding: "0 18px",
+                  border: "none",
+                  borderRadius: "9px",
+                  backgroundColor: kaydediliyor ? "#AAB2BD" : "#1D4ED8",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  cursor: kaydediliyor ? "not-allowed" : "pointer",
+                }}
+              >
+                {kaydediliyor ? "Kaydediliyor..." : "Ayarları Kaydet"}
+              </button>
+            </div>
           </div>
         </form>
       </div>

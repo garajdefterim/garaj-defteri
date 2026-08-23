@@ -9,26 +9,48 @@ import {
 } from "react";
 import { supabase } from "../../lib/supabase";
 
-function BrandMark() {
+function Brand() {
   return (
-    <div
-      aria-hidden="true"
+    <Link
+      href="/"
       style={{
-        width: "42px",
-        height: "42px",
-        borderRadius: "11px",
-        backgroundColor: "#0F172A",
-        color: "#FFFFFF",
-        display: "flex",
+        display: "inline-flex",
         alignItems: "center",
-        justifyContent: "center",
-        fontSize: "15px",
-        fontWeight: 800,
-        letterSpacing: "-0.5px",
+        gap: "11px",
+        textDecoration: "none",
+        color: "#111827",
       }}
     >
-      GD
-    </div>
+      <div
+        aria-hidden="true"
+        style={{
+          width: "42px",
+          height: "42px",
+          borderRadius: "11px",
+          backgroundColor: "#0F172A",
+          color: "#FFFFFF",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "15px",
+          fontWeight: 800,
+          letterSpacing: "-0.5px",
+        }}
+      >
+        GD
+      </div>
+
+      <div
+        style={{
+          fontSize: "17px",
+          lineHeight: 1.2,
+          fontWeight: 750,
+          letterSpacing: "-0.35px",
+        }}
+      >
+        Garaj Defteri
+      </div>
+    </Link>
   );
 }
 
@@ -37,12 +59,16 @@ export default function DogrulaPage() {
 
   const [email, setEmail] = useState("");
   const [kod, setKod] = useState("");
+
   const [hata, setHata] = useState("");
   const [mesaj, setMesaj] = useState("");
+
   const [yukleniyor, setYukleniyor] =
     useState(false);
+
   const [tekrarGonderiliyor, setTekrarGonderiliyor] =
     useState(false);
+
   const [beklemeSuresi, setBeklemeSuresi] =
     useState(0);
 
@@ -86,8 +112,11 @@ export default function DogrulaPage() {
     setHata("");
     setMesaj("");
 
-    const temizEmail = email.trim().toLowerCase();
-    const temizKod = kod.replace(/\D/g, "");
+    const temizEmail =
+      email.trim().toLowerCase();
+
+    const temizKod =
+      kod.replace(/\D/g, "");
 
     if (!temizEmail) {
       setHata(
@@ -264,42 +293,7 @@ export default function DogrulaPage() {
           padding: "28px 24px",
         }}
       >
-        <Link
-          href="/"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "11px",
-            textDecoration: "none",
-            color: "#111827",
-          }}
-        >
-          <BrandMark />
-
-          <div>
-            <div
-              style={{
-                fontSize: "16px",
-                lineHeight: 1.2,
-                fontWeight: 750,
-                letterSpacing: "-0.3px",
-              }}
-            >
-              Garaj Defteri
-            </div>
-
-            <div
-              style={{
-                marginTop: "2px",
-                fontSize: "11px",
-                color: "#8A94A3",
-                letterSpacing: "0.02em",
-              }}
-            >
-              Araç yönetimi, sadeleştirildi.
-            </div>
-          </div>
-        </Link>
+        <Brand />
       </header>
 
       <div
@@ -468,7 +462,8 @@ export default function DogrulaPage() {
                   style={{
                     padding: "12px 13px",
                     borderRadius: "8px",
-                    border: "1px solid #F1C7C7",
+                    border:
+                      "1px solid #F1C7C7",
                     backgroundColor: "#FFF7F7",
                     color: "#A93838",
                     fontSize: "13px",
@@ -485,7 +480,8 @@ export default function DogrulaPage() {
                   style={{
                     padding: "12px 13px",
                     borderRadius: "8px",
-                    border: "1px solid #C6E7D2",
+                    border:
+                      "1px solid #C6E7D2",
                     backgroundColor: "#F7FCF9",
                     color: "#276749",
                     fontSize: "13px",

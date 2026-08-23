@@ -62,9 +62,9 @@ const kategoriAdlari: Record<string, string> = {
 
 const kartStili = {
   backgroundColor: "#FFFFFF",
-  border: "1px solid #E2E8F0",
-  borderRadius: "18px",
-  boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
+  border: "1px solid #E3E7EC",
+  borderRadius: "9px",
+  boxShadow: "0 1px 2px rgba(15, 23, 42, 0.03)",
 };
 
 export default function AracDetayPage() {
@@ -354,7 +354,7 @@ export default function AracDetayPage() {
       return {
         yazi: "Tarih bulunamadı",
         arkaPlan: "#F1F5F9",
-        renk: "#64748B",
+        renk: "#6B7280",
         kenarlik: "#CBD5E1",
       };
     }
@@ -423,9 +423,10 @@ export default function AracDetayPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#F8FAFC",
-          color: "#0F172A",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          backgroundColor: "#F7F8FA",
+          color: "#111827",
+          fontFamily:
+            'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' ,
         }}
       >
         Araç bilgileri ve resmî muayene takvimi
@@ -443,9 +444,10 @@ export default function AracDetayPage() {
           alignItems: "center",
           justifyContent: "center",
           padding: "24px",
-          backgroundColor: "#F8FAFC",
-          color: "#0F172A",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          backgroundColor: "#F7F8FA",
+          color: "#111827",
+          fontFamily:
+            'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' ,
         }}
       >
         <section
@@ -454,7 +456,7 @@ export default function AracDetayPage() {
             maxWidth: "520px",
             padding: "28px",
             border: "1px solid #FECACA",
-            borderRadius: "18px",
+            borderRadius: "9px",
             backgroundColor: "#FFFFFF",
           }}
         >
@@ -462,7 +464,7 @@ export default function AracDetayPage() {
             style={{
               margin: 0,
               color: "#B91C1C",
-              fontSize: "25px",
+              fontSize: "22px",
             }}
           >
             Araç açılamadı
@@ -470,7 +472,7 @@ export default function AracDetayPage() {
 
           <p
             style={{
-              color: "#64748B",
+              color: "#6B7280",
               lineHeight: 1.6,
             }}
           >
@@ -480,8 +482,8 @@ export default function AracDetayPage() {
           <Link
             href="/dashboard"
             style={{
-              color: "#2563EB",
-              fontWeight: 700,
+              color: "#6B7280",
+              fontWeight: 600,
               textDecoration: "none",
             }}
           >
@@ -518,9 +520,9 @@ export default function AracDetayPage() {
     return (
       <div
         style={{
-          padding: "18px",
-          borderRadius: "14px",
-          backgroundColor: "#F8FAFC",
+          padding: "16px",
+          borderRadius: "9px",
+          backgroundColor: "#F7F8FA",
           border: "1px solid #E2E8F0",
         }}
       >
@@ -537,18 +539,18 @@ export default function AracDetayPage() {
             <strong
               style={{
                 display: "block",
-                color: "#0F172A",
+                color: "#111827",
                 fontSize: "17px",
               }}
             >
-              {ikon} {baslik}
+              {baslik}
             </strong>
 
             <span
               style={{
                 display: "block",
                 marginTop: "8px",
-                color: "#64748B",
+                color: "#6B7280",
               }}
             >
               {tarihFormatla(tarih)}
@@ -559,7 +561,7 @@ export default function AracDetayPage() {
                 style={{
                   display: "block",
                   marginTop: "5px",
-                  color: "#94A3B8",
+                  color: "#9CA3AF",
                   fontSize: "12px",
                   lineHeight: 1.5,
                 }}
@@ -572,12 +574,12 @@ export default function AracDetayPage() {
           <span
             style={{
               padding: "6px 10px",
-              borderRadius: "999px",
+              borderRadius: "8px",
               backgroundColor: durum.arkaPlan,
               color: durum.renk,
               border: `1px solid ${durum.kenarlik}`,
               fontSize: "13px",
-              fontWeight: 800,
+              fontWeight: 700,
               whiteSpace: "nowrap",
             }}
           >
@@ -593,27 +595,27 @@ export default function AracDetayPage() {
       return (
         <div
           style={{
-            padding: "18px",
-            borderRadius: "14px",
-            backgroundColor: "#F8FAFC",
+            padding: "16px",
+            borderRadius: "9px",
+            backgroundColor: "#F7F8FA",
             border: "1px solid #E2E8F0",
           }}
         >
           <strong
             style={{
               display: "block",
-              color: "#0F172A",
+              color: "#111827",
               fontSize: "17px",
             }}
           >
-            🚗 Resmî muayene dönemi
+            Resmî muayene dönemi
           </strong>
 
           <span
             style={{
               display: "block",
               marginTop: "8px",
-              color: "#64748B",
+              color: "#6B7280",
               lineHeight: 1.5,
             }}
           >
@@ -632,9 +634,9 @@ export default function AracDetayPage() {
     return (
       <div
         style={{
-          padding: "18px",
-          borderRadius: "14px",
-          backgroundColor: "#F8FAFC",
+          padding: "16px",
+          borderRadius: "9px",
+          backgroundColor: "#F7F8FA",
           border: "1px solid #E2E8F0",
         }}
       >
@@ -651,18 +653,18 @@ export default function AracDetayPage() {
             <strong
               style={{
                 display: "block",
-                color: "#0F172A",
+                color: "#111827",
                 fontSize: "17px",
               }}
             >
-              🚗 Resmî muayene dönemi
+              Resmî muayene dönemi
             </strong>
 
             <span
               style={{
                 display: "block",
                 marginTop: "8px",
-                color: "#64748B",
+                color: "#6B7280",
                 lineHeight: 1.5,
               }}
             >
@@ -679,7 +681,7 @@ export default function AracDetayPage() {
               style={{
                 display: "block",
                 marginTop: "5px",
-                color: "#94A3B8",
+                color: "#9CA3AF",
                 fontSize: "12px",
               }}
             >
@@ -690,12 +692,12 @@ export default function AracDetayPage() {
           <span
             style={{
               padding: "6px 10px",
-              borderRadius: "999px",
+              borderRadius: "8px",
               backgroundColor: durum.arkaPlan,
               color: durum.renk,
               border: `1px solid ${durum.kenarlik}`,
               fontSize: "13px",
-              fontWeight: 800,
+              fontWeight: 700,
               whiteSpace: "nowrap",
             }}
           >
@@ -710,16 +712,17 @@ export default function AracDetayPage() {
     <main
       style={{
         minHeight: "100vh",
-        padding: "40px 24px",
-        backgroundColor: "#F8FAFC",
-        color: "#0F172A",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        padding: "32px 24px 64px",
+        backgroundColor: "#F7F8FA",
+        color: "#111827",
+        fontFamily:
+            'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' ,
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: "1100px",
+          maxWidth: "1180px",
           margin: "0 auto",
         }}
       >
@@ -736,7 +739,7 @@ export default function AracDetayPage() {
           <Link
             href="/dashboard"
             style={{
-              color: "#2563EB",
+              color: "#1D4ED8",
               fontWeight: 700,
               textDecoration: "none",
             }}
@@ -754,29 +757,39 @@ export default function AracDetayPage() {
             <Link
               href={`/bakim-ekle/${arac.id}`}
               style={{
-                padding: "11px 16px",
-                borderRadius: "10px",
-                backgroundColor: "#059669",
+                minHeight: "46px",
+                padding: "0 16px",
+                borderRadius: "9px",
+                backgroundColor: "#111827",
                 color: "#FFFFFF",
-                fontWeight: 700,
+                fontSize: "14px",
+                fontWeight: 650,
                 textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              🔧 Bakım Ekle
+              Bakım Ekle
             </Link>
 
             <Link
               href={`/arac-duzenle/${arac.id}`}
               style={{
-                padding: "11px 16px",
-                borderRadius: "10px",
-                backgroundColor: "#2563EB",
+                minHeight: "46px",
+                padding: "0 16px",
+                borderRadius: "9px",
+                backgroundColor: "#1D4ED8",
                 color: "#FFFFFF",
-                fontWeight: 700,
+                fontSize: "14px",
+                fontWeight: 650,
                 textDecoration: "none",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
-              ✏️ Düzenle
+              Düzenle
             </Link>
           </div>
         </div>
@@ -784,7 +797,7 @@ export default function AracDetayPage() {
         <section
           style={{
             ...kartStili,
-            padding: "30px",
+            padding: "28px",
           }}
         >
           <div
@@ -800,19 +813,23 @@ export default function AracDetayPage() {
               <h1
                 style={{
                   margin: 0,
-                  color: "#0F172A",
-                  fontSize: "36px",
+                  color: "#111827",
+                  fontSize: "clamp(30px, 5vw, 38px)",
+                  lineHeight: 1.15,
+                  fontWeight: 760,
+                  letterSpacing: "-0.9px",
                 }}
               >
-                🚘 {arac.marka} {arac.model}
+                {arac.marka} {arac.model}
               </h1>
 
               <p
                 style={{
                   margin: "10px 0 0",
-                  color: "#2563EB",
-                  fontSize: "20px",
-                  fontWeight: 800,
+                  color: "#374151",
+                  fontSize: "18px",
+                  fontWeight: 700,
+                  letterSpacing: "0.04em",
                 }}
               >
                 {arac.plaka}
@@ -823,7 +840,7 @@ export default function AracDetayPage() {
                   display: "inline-block",
                   marginTop: "10px",
                   padding: "6px 10px",
-                  borderRadius: "999px",
+                  borderRadius: "8px",
                   backgroundColor: "#F1F5F9",
                   color: "#475569",
                   fontSize: "13px",
@@ -847,15 +864,15 @@ export default function AracDetayPage() {
               <div
                 style={{
                   padding: "14px",
-                  borderRadius: "12px",
-                  backgroundColor: "#F8FAFC",
+                  borderRadius: "9px",
+                  backgroundColor: "#F7F8FA",
                   border: "1px solid #E2E8F0",
                 }}
               >
                 <span
                   style={{
                     display: "block",
-                    color: "#64748B",
+                    color: "#6B7280",
                     fontSize: "13px",
                   }}
                 >
@@ -875,15 +892,15 @@ export default function AracDetayPage() {
               <div
                 style={{
                   padding: "14px",
-                  borderRadius: "12px",
-                  backgroundColor: "#F8FAFC",
+                  borderRadius: "9px",
+                  backgroundColor: "#F7F8FA",
                   border: "1px solid #E2E8F0",
                 }}
               >
                 <span
                   style={{
                     display: "block",
-                    color: "#64748B",
+                    color: "#6B7280",
                     fontSize: "13px",
                   }}
                 >
@@ -955,13 +972,13 @@ export default function AracDetayPage() {
           <div
             style={{
               ...kartStili,
-              padding: "22px",
+              padding: "20px",
             }}
           >
             <span
               style={{
                 display: "block",
-                color: "#64748B",
+                color: "#6B7280",
                 fontSize: "14px",
               }}
             >
@@ -972,8 +989,8 @@ export default function AracDetayPage() {
               style={{
                 display: "block",
                 marginTop: "8px",
-                color: "#0F172A",
-                fontSize: "28px",
+                color: "#111827",
+                fontSize: "26px",
               }}
             >
               {bakimlar.length}
@@ -983,13 +1000,13 @@ export default function AracDetayPage() {
           <div
             style={{
               ...kartStili,
-              padding: "22px",
+              padding: "20px",
             }}
           >
             <span
               style={{
                 display: "block",
-                color: "#64748B",
+                color: "#6B7280",
                 fontSize: "14px",
               }}
             >
@@ -1000,8 +1017,8 @@ export default function AracDetayPage() {
               style={{
                 display: "block",
                 marginTop: "8px",
-                color: "#059669",
-                fontSize: "25px",
+                color: "#111827",
+                fontSize: "22px",
               }}
             >
               {paraFormatla(toplamMasraf)}
@@ -1011,13 +1028,13 @@ export default function AracDetayPage() {
           <div
             style={{
               ...kartStili,
-              padding: "22px",
+              padding: "20px",
             }}
           >
             <span
               style={{
                 display: "block",
-                color: "#64748B",
+                color: "#6B7280",
                 fontSize: "14px",
               }}
             >
@@ -1028,7 +1045,7 @@ export default function AracDetayPage() {
               style={{
                 display: "block",
                 marginTop: "8px",
-                color: "#0F172A",
+                color: "#111827",
                 fontSize: "22px",
               }}
             >
@@ -1039,13 +1056,13 @@ export default function AracDetayPage() {
           <div
             style={{
               ...kartStili,
-              padding: "22px",
+              padding: "20px",
             }}
           >
             <span
               style={{
                 display: "block",
-                color: "#64748B",
+                color: "#6B7280",
                 fontSize: "14px",
               }}
             >
@@ -1056,7 +1073,7 @@ export default function AracDetayPage() {
               style={{
                 display: "block",
                 marginTop: "8px",
-                color: "#C2410C",
+                color: "#111827",
                 fontSize: "22px",
               }}
             >
@@ -1069,7 +1086,7 @@ export default function AracDetayPage() {
           style={{
             ...kartStili,
             marginTop: "22px",
-            padding: "26px",
+            padding: "24px",
           }}
         >
           <div
@@ -1085,8 +1102,8 @@ export default function AracDetayPage() {
               <h2
                 style={{
                   margin: 0,
-                  color: "#0F172A",
-                  fontSize: "25px",
+                  color: "#111827",
+                  fontSize: "22px",
                 }}
               >
                 Son Bakımlar
@@ -1095,7 +1112,7 @@ export default function AracDetayPage() {
               <p
                 style={{
                   margin: "7px 0 0",
-                  color: "#64748B",
+                  color: "#6B7280",
                 }}
               >
                 Bu araca ait en son bakım kayıtları.
@@ -1105,7 +1122,7 @@ export default function AracDetayPage() {
             <Link
               href={`/bakim-gecmisi/${arac.id}`}
               style={{
-                color: "#2563EB",
+                color: "#1D4ED8",
                 fontWeight: 700,
                 textDecoration: "none",
               }}
@@ -1118,10 +1135,10 @@ export default function AracDetayPage() {
             <div
               style={{
                 marginTop: "20px",
-                padding: "18px",
-                borderRadius: "12px",
-                backgroundColor: "#F8FAFC",
-                color: "#64748B",
+                padding: "16px",
+                borderRadius: "9px",
+                backgroundColor: "#F7F8FA",
+                color: "#6B7280",
               }}
             >
               Henüz bakım kaydı bulunmuyor.
@@ -1140,8 +1157,8 @@ export default function AracDetayPage() {
                   style={{
                     padding: "16px",
                     border: "1px solid #E2E8F0",
-                    borderRadius: "12px",
-                    backgroundColor: "#F8FAFC",
+                    borderRadius: "9px",
+                    backgroundColor: "#F7F8FA",
                   }}
                 >
                   <div
@@ -1156,7 +1173,7 @@ export default function AracDetayPage() {
                       <strong
                         style={{
                           display: "block",
-                          color: "#0F172A",
+                          color: "#111827",
                           fontSize: "17px",
                         }}
                       >
@@ -1167,8 +1184,8 @@ export default function AracDetayPage() {
                         style={{
                           display: "block",
                           marginTop: "6px",
-                          color: "#2563EB",
-                          fontWeight: 700,
+                          color: "#6B7280",
+                          fontWeight: 600,
                         }}
                       >
                         {tarihFormatla(bakim.tarih)}
@@ -1183,7 +1200,7 @@ export default function AracDetayPage() {
                       <strong
                         style={{
                           display: "block",
-                          color: "#059669",
+                          color: "#111827",
                         }}
                       >
                         {paraFormatla(
@@ -1195,7 +1212,7 @@ export default function AracDetayPage() {
                         style={{
                           display: "block",
                           marginTop: "6px",
-                          color: "#64748B",
+                          color: "#6B7280",
                           fontSize: "14px",
                         }}
                       >

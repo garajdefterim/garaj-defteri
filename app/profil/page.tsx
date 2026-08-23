@@ -365,9 +365,10 @@ export default function ProfilPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "var(--background)",
-          color: "var(--foreground)",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          backgroundColor: "#F7F8FA",
+          color: "#111827",
+          fontFamily:
+            'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
         }}
       >
         Profil yükleniyor...
@@ -377,112 +378,113 @@ export default function ProfilPage() {
 
   const koyuTema = tema === "koyu";
 
-  const sayfaArkaPlan = koyuTema
-    ? "#0F172A"
-    : "#F8FAFC";
-
-  const kartArkaPlan = koyuTema
-    ? "#1E293B"
-    : "#FFFFFF";
-
-  const anaRenk = koyuTema
-    ? "#F8FAFC"
-    : "#0F172A";
-
-  const ikinciRenk = koyuTema
-    ? "#CBD5E1"
-    : "#64748B";
-
-  const kenarlik = koyuTema
-    ? "#334155"
-    : "#E2E8F0";
-
-  const inputArkaPlan = koyuTema
-    ? "#0F172A"
-    : "#FFFFFF";
+  const sayfaArkaPlan = koyuTema ? "#0B1220" : "#F7F8FA";
+  const kartArkaPlan = koyuTema ? "#111827" : "#FFFFFF";
+  const anaRenk = koyuTema ? "#F9FAFB" : "#111827";
+  const ikinciRenk = koyuTema ? "#9CA3AF" : "#6B7280";
+  const kenarlik = koyuTema ? "#293241" : "#E3E7EC";
+  const inputArkaPlan = koyuTema ? "#0B1220" : "#FFFFFF";
 
   const kartStili = {
-    padding: "26px",
+    padding: "24px",
     border: `1px solid ${kenarlik}`,
-    borderRadius: "18px",
+    borderRadius: "14px",
     backgroundColor: kartArkaPlan,
     boxShadow: koyuTema
       ? "none"
-      : "0 10px 30px rgba(15, 23, 42, 0.06)",
+      : "0 1px 2px rgba(15, 23, 42, 0.03)",
   };
 
   const inputStili = {
     width: "100%",
-    padding: "13px 14px",
-    border: `1px solid ${
-      koyuTema ? "#475569" : "#CBD5E1"
-    }`,
-    borderRadius: "10px",
+    height: "48px",
+    padding: "0 14px",
+    border: `1px solid ${koyuTema ? "#374151" : "#D7DCE3"}`,
+    borderRadius: "9px",
     backgroundColor: inputArkaPlan,
     color: anaRenk,
-    fontSize: "16px",
+    fontSize: "15px",
     boxSizing: "border-box" as const,
+    outline: "none",
   };
 
   return (
     <main
       style={{
         minHeight: "100vh",
-        padding: "40px 24px",
+        padding: "32px 24px 64px",
         backgroundColor: sayfaArkaPlan,
         color: anaRenk,
-        fontFamily: "Arial, Helvetica, sans-serif",
+        fontFamily:
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: "820px",
+          maxWidth: "900px",
           margin: "0 auto",
         }}
       >
-        <div
+        <header
           style={{
             display: "flex",
             justifyContent: "space-between",
-            gap: "14px",
+            gap: "16px",
             flexWrap: "wrap",
             alignItems: "center",
+            marginBottom: "28px",
           }}
         >
-          <Link
-            href="/dashboard"
-            style={{
-              color: "#2563EB",
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            ← Panele dön
-          </Link>
+          <div>
+            <Link
+              href="/dashboard"
+              style={{
+                color: ikinciRenk,
+                fontSize: "14px",
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
+            >
+              ← Dashboard
+            </Link>
 
-          <span
-            style={{
-              color: ikinciRenk,
-              fontSize: "14px",
-            }}
-          >
-            Hesap Ayarları
-          </span>
-        </div>
+            <h1
+              style={{
+                margin: "16px 0 0",
+                fontSize: "clamp(30px, 6vw, 38px)",
+                lineHeight: 1.15,
+                fontWeight: 760,
+                letterSpacing: "-0.9px",
+              }}
+            >
+              Profil
+            </h1>
+
+            <p
+              style={{
+                margin: "8px 0 0",
+                color: ikinciRenk,
+                fontSize: "15px",
+                lineHeight: 1.6,
+              }}
+            >
+              Hesap bilgilerinizi ve tercihlerinizi yönetin.
+            </p>
+          </div>
+        </header>
 
         <section
           style={{
             ...kartStili,
-            marginTop: "24px",
-            padding: "32px",
+            padding: "28px",
           }}
         >
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              gap: "20px",
+              gap: "18px",
               flexWrap: "wrap",
             }}
           >
@@ -492,58 +494,51 @@ export default function ProfilPage() {
                 alt="Profil fotoğrafı"
                 referrerPolicy="no-referrer"
                 style={{
-                  width: "92px",
-                  height: "92px",
+                  width: "76px",
+                  height: "76px",
                   borderRadius: "50%",
                   objectFit: "cover",
-                  border: "3px solid #DBEAFE",
+                  border: `1px solid ${kenarlik}`,
                 }}
               />
             ) : (
               <div
+                aria-hidden="true"
                 style={{
-                  width: "92px",
-                  height: "92px",
+                  width: "76px",
+                  height: "76px",
                   borderRadius: "50%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  backgroundColor: koyuTema
-                    ? "#334155"
-                    : "#EFF6FF",
-                  border: "3px solid #DBEAFE",
-                  fontSize: "36px",
+                  backgroundColor: koyuTema ? "#1F2937" : "#F3F4F6",
+                  border: `1px solid ${kenarlik}`,
+                  color: ikinciRenk,
+                  fontSize: "22px",
+                  fontWeight: 700,
                 }}
               >
-                👤
+                {(profil?.adSoyad || "G").trim().charAt(0).toUpperCase()}
               </div>
             )}
 
             <div>
-              <p
-                style={{
-                  margin: "0 0 5px",
-                  color: ikinciRenk,
-                  fontSize: "13px",
-                  fontWeight: 800,
-                }}
-              >
-                HESABIM
-              </p>
-
-              <h1
+              <h2
                 style={{
                   margin: 0,
-                  fontSize: "30px",
+                  fontSize: "24px",
+                  lineHeight: 1.2,
+                  letterSpacing: "-0.5px",
                 }}
               >
                 {profil?.adSoyad}
-              </h1>
+              </h2>
 
               <p
                 style={{
                   margin: "7px 0 0",
                   color: ikinciRenk,
+                  fontSize: "14px",
                 }}
               >
                 {profil?.email}
@@ -556,50 +551,38 @@ export default function ProfilPage() {
           onSubmit={bilgileriKaydet}
           style={{
             ...kartStili,
-            marginTop: "20px",
+            marginTop: "16px",
           }}
         >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "22px",
-            }}
-          >
-            👤 Kişisel Bilgiler
+          <h2 style={{ margin: 0, fontSize: "20px", letterSpacing: "-0.3px" }}>
+            Kişisel bilgiler
           </h2>
 
           <p
             style={{
-              margin: "8px 0 22px",
+              margin: "7px 0 20px",
               color: ikinciRenk,
-              lineHeight: 1.5,
+              fontSize: "14px",
+              lineHeight: 1.55,
             }}
           >
-            Hesabınızda görünen bilgileri buradan
-            düzenleyebilirsiniz.
+            Hesabınızda kullanılan ad ve e-posta adresini güncelleyin.
           </p>
 
-          <div
-            style={{
-              display: "grid",
-              gap: "18px",
-            }}
-          >
+          <div style={{ display: "grid", gap: "18px" }}>
             <label
               style={{
                 display: "grid",
-                gap: "8px",
-                fontWeight: 700,
+                gap: "7px",
+                fontSize: "14px",
+                fontWeight: 600,
               }}
             >
               Ad Soyad
-
               <input
                 type="text"
                 value={adSoyad}
-                onChange={(event) =>
-                  setAdSoyad(event.target.value)
-                }
+                onChange={(event) => setAdSoyad(event.target.value)}
                 style={inputStili}
               />
             </label>
@@ -607,30 +590,28 @@ export default function ProfilPage() {
             <label
               style={{
                 display: "grid",
-                gap: "8px",
-                fontWeight: 700,
+                gap: "7px",
+                fontSize: "14px",
+                fontWeight: 600,
               }}
             >
               E-posta
-
               <input
                 type="email"
                 value={email}
-                onChange={(event) =>
-                  setEmail(event.target.value)
-                }
+                onChange={(event) => setEmail(event.target.value)}
                 style={inputStili}
               />
-
               <span
                 style={{
                   color: ikinciRenk,
                   fontSize: "12px",
                   fontWeight: 400,
+                  lineHeight: 1.5,
                 }}
               >
-                E-posta adresinizi değiştirirseniz yeni
-                adresi doğrulamanız istenebilir.
+                E-posta adresinizi değiştirirseniz yeni adresi doğrulamanız
+                istenebilir.
               </span>
             </label>
 
@@ -638,11 +619,13 @@ export default function ProfilPage() {
               <div
                 role="alert"
                 style={{
-                  padding: "13px",
-                  borderRadius: "10px",
-                  border: "1px solid #FECACA",
-                  backgroundColor: "#FEF2F2",
-                  color: "#B91C1C",
+                  padding: "12px 13px",
+                  borderRadius: "8px",
+                  border: "1px solid #F1C7C7",
+                  backgroundColor: koyuTema ? "#2A1215" : "#FFF7F7",
+                  color: koyuTema ? "#FCA5A5" : "#A93838",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
                 }}
               >
                 {hata}
@@ -653,62 +636,51 @@ export default function ProfilPage() {
               <div
                 role="status"
                 style={{
-                  padding: "13px",
-                  borderRadius: "10px",
-                  border: "1px solid #BBF7D0",
-                  backgroundColor: "#F0FDF4",
-                  color: "#166534",
+                  padding: "12px 13px",
+                  borderRadius: "8px",
+                  border: "1px solid #C6E7D2",
+                  backgroundColor: koyuTema ? "#10241A" : "#F7FCF9",
+                  color: koyuTema ? "#86EFAC" : "#276749",
+                  fontSize: "13px",
+                  lineHeight: 1.5,
                 }}
               >
                 {mesaj}
               </div>
             )}
 
-            <button
-              type="submit"
-              disabled={kaydediliyor}
-              style={{
-                padding: "14px",
-                border: "none",
-                borderRadius: "10px",
-                backgroundColor: kaydediliyor
-                  ? "#94A3B8"
-                  : "#2563EB",
-                color: "#FFFFFF",
-                fontSize: "16px",
-                fontWeight: 800,
-                cursor: kaydediliyor
-                  ? "not-allowed"
-                  : "pointer",
-              }}
-            >
-              {kaydediliyor
-                ? "Kaydediliyor..."
-                : "Kişisel Bilgileri Kaydet"}
-            </button>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <button
+                type="submit"
+                disabled={kaydediliyor}
+                style={{
+                  minWidth: "190px",
+                  height: "46px",
+                  padding: "0 18px",
+                  border: "none",
+                  borderRadius: "9px",
+                  backgroundColor: kaydediliyor ? "#AAB2BD" : "#1D4ED8",
+                  color: "#FFFFFF",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  cursor: kaydediliyor ? "not-allowed" : "pointer",
+                }}
+              >
+                {kaydediliyor ? "Kaydediliyor..." : "Bilgileri Kaydet"}
+              </button>
+            </div>
           </div>
         </form>
 
-        <section
-          style={{
-            ...kartStili,
-            marginTop: "20px",
-          }}
-        >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "22px",
-            }}
-          >
-            🔐 Hesap Bilgileri
-          </h2>
+        <section style={{ ...kartStili, marginTop: "16px" }}>
+          <h2 style={{ margin: 0, fontSize: "20px" }}>Hesap bilgileri</h2>
 
           <div
             style={{
               display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
               gap: "12px",
-              marginTop: "20px",
+              marginTop: "18px",
             }}
           >
             <BilgiSatiri
@@ -723,46 +695,31 @@ export default function ProfilPage() {
 
             <BilgiSatiri
               baslik="Hesap oluşturulma tarihi"
-              deger={tarihFormatla(
-                profil?.olusturulmaTarihi ?? null
-              )}
+              deger={tarihFormatla(profil?.olusturulmaTarihi ?? null)}
               koyuTema={koyuTema}
             />
           </div>
         </section>
 
-        <section
-          style={{
-            ...kartStili,
-            marginTop: "20px",
-          }}
-        >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "22px",
-            }}
-          >
-            🎨 Görünüm
-          </h2>
+        <section style={{ ...kartStili, marginTop: "16px" }}>
+          <h2 style={{ margin: 0, fontSize: "20px" }}>Görünüm</h2>
 
           <p
             style={{
-              margin: "8px 0 20px",
+              margin: "7px 0 18px",
               color: ikinciRenk,
-              lineHeight: 1.5,
+              fontSize: "14px",
+              lineHeight: 1.55,
             }}
           >
-            Tema tercihiniz hesabınıza kaydedilir ve tekrar
-            giriş yaptığınızda hatırlanır.
+            Tema tercihiniz hesabınıza kaydedilir.
           </p>
 
           <div
             style={{
               display: "grid",
-              gridTemplateColumns:
-                "repeat(2, minmax(0, 1fr))",
-              gap: "12px",
+              gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+              gap: "10px",
             }}
           >
             <button
@@ -770,22 +727,21 @@ export default function ProfilPage() {
               onClick={() => temaDegistir("acik")}
               disabled={temaKaydediliyor}
               style={{
-                padding: "15px",
-                borderRadius: "11px",
+                minHeight: "48px",
+                borderRadius: "9px",
                 border:
                   tema === "acik"
-                    ? "2px solid #2563EB"
+                    ? "2px solid #1D4ED8"
                     : `1px solid ${kenarlik}`,
                 backgroundColor: "#FFFFFF",
-                color: "#0F172A",
-                fontWeight: 800,
-                cursor: temaKaydediliyor
-                  ? "not-allowed"
-                  : "pointer",
+                color: "#111827",
+                fontSize: "14px",
+                fontWeight: 650,
+                cursor: temaKaydediliyor ? "not-allowed" : "pointer",
                 opacity: temaKaydediliyor ? 0.7 : 1,
               }}
             >
-              ☀️ Açık Tema
+              Açık
             </button>
 
             <button
@@ -793,29 +749,28 @@ export default function ProfilPage() {
               onClick={() => temaDegistir("koyu")}
               disabled={temaKaydediliyor}
               style={{
-                padding: "15px",
-                borderRadius: "11px",
+                minHeight: "48px",
+                borderRadius: "9px",
                 border:
                   tema === "koyu"
                     ? "2px solid #60A5FA"
-                    : "1px solid #475569",
-                backgroundColor: "#0F172A",
+                    : "1px solid #374151",
+                backgroundColor: "#111827",
                 color: "#FFFFFF",
-                fontWeight: 800,
-                cursor: temaKaydediliyor
-                  ? "not-allowed"
-                  : "pointer",
+                fontSize: "14px",
+                fontWeight: 650,
+                cursor: temaKaydediliyor ? "not-allowed" : "pointer",
                 opacity: temaKaydediliyor ? 0.7 : 1,
               }}
             >
-              🌙 Koyu Tema
+              Koyu
             </button>
           </div>
 
           {temaKaydediliyor && (
             <p
               style={{
-                margin: "14px 0 0",
+                margin: "12px 0 0",
                 color: ikinciRenk,
                 fontSize: "13px",
               }}
@@ -825,137 +780,108 @@ export default function ProfilPage() {
           )}
         </section>
 
-        <section
-          style={{
-            ...kartStili,
-            marginTop: "20px",
-          }}
-        >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "22px",
-            }}
-          >
-            🔔 Bildirimler
-          </h2>
+        <section style={{ ...kartStili, marginTop: "16px" }}>
+          <h2 style={{ margin: 0, fontSize: "20px" }}>Bildirimler</h2>
 
           <p
             style={{
-              margin: "8px 0 20px",
+              margin: "7px 0 18px",
               color: ikinciRenk,
+              fontSize: "14px",
+              lineHeight: 1.55,
             }}
           >
-            Muayene e-postalarını ve hatırlatma sürelerini
-            yönetin.
+            E-posta hatırlatmalarını ve bildirim sürelerini yönetin.
           </p>
 
           <Link
             href="/bildirim-ayarlari"
             style={{
-              display: "block",
-              padding: "14px",
-              borderRadius: "10px",
-              backgroundColor: "#EFF6FF",
-              border: "1px solid #BFDBFE",
-              color: "#1D4ED8",
-              textAlign: "center",
+              minHeight: "46px",
+              padding: "0 16px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              border: `1px solid ${koyuTema ? "#374151" : "#D7DCE3"}`,
+              borderRadius: "9px",
+              backgroundColor: kartArkaPlan,
+              color: koyuTema ? "#E5E7EB" : "#374151",
+              fontSize: "14px",
+              fontWeight: 650,
               textDecoration: "none",
-              fontWeight: 800,
             }}
           >
-            🔔 Bildirim Ayarlarını Aç
+            Bildirim Ayarları
           </Link>
         </section>
 
-        <section
-          style={{
-            ...kartStili,
-            marginTop: "20px",
-          }}
-        >
-          <h2
-            style={{
-              margin: 0,
-              fontSize: "22px",
-            }}
-          >
-            🚪 Oturum
-          </h2>
+        <section style={{ ...kartStili, marginTop: "16px" }}>
+          <h2 style={{ margin: 0, fontSize: "20px" }}>Oturum</h2>
 
           <button
             type="button"
             onClick={cikisYap}
             disabled={cikisYapiliyor}
             style={{
-              width: "100%",
-              marginTop: "20px",
-              padding: "14px",
-              borderRadius: "10px",
-              border: "1px solid #FECACA",
-              backgroundColor: "#FEF2F2",
-              color: "#B91C1C",
-              fontSize: "16px",
-              fontWeight: 800,
-              cursor: cikisYapiliyor
-                ? "not-allowed"
-                : "pointer",
+              minHeight: "46px",
+              marginTop: "18px",
+              padding: "0 16px",
+              borderRadius: "9px",
+              border: `1px solid ${kenarlik}`,
+              backgroundColor: kartArkaPlan,
+              color: anaRenk,
+              fontSize: "14px",
+              fontWeight: 650,
+              cursor: cikisYapiliyor ? "not-allowed" : "pointer",
             }}
           >
-            {cikisYapiliyor
-              ? "Çıkış yapılıyor..."
-              : "Çıkış Yap"}
+            {cikisYapiliyor ? "Çıkış yapılıyor..." : "Çıkış Yap"}
           </button>
         </section>
 
         <section
           style={{
-            marginTop: "20px",
-            padding: "26px",
-            borderRadius: "18px",
-            border: "1px solid #FECACA",
-            backgroundColor: koyuTema
-              ? "#450A0A"
-              : "#FFF7F7",
+            marginTop: "16px",
+            padding: "24px",
+            borderRadius: "14px",
+            border: "1px solid #F1C7C7",
+            backgroundColor: koyuTema ? "#241114" : "#FFFFFF",
           }}
         >
           <h2
             style={{
               margin: 0,
-              color: koyuTema
-                ? "#FCA5A5"
-                : "#B91C1C",
-              fontSize: "22px",
+              color: koyuTema ? "#FCA5A5" : "#B42318",
+              fontSize: "20px",
             }}
           >
-            ⚠️ Tehlikeli Bölge
+            Hesabı sil
           </h2>
 
           <p
             style={{
-              color: koyuTema
-                ? "#FECACA"
-                : "#64748B",
+              margin: "8px 0 18px",
+              color: ikinciRenk,
+              fontSize: "14px",
               lineHeight: 1.6,
             }}
           >
-            Hesabınızı silerseniz araçlarınız, bakım kayıtlarınız, bildirim
-            ayarlarınız ve hesap bilgileriniz kalıcı olarak silinir. Bu işlem
-            geri alınamaz.
+            Hesabınızı sildiğinizde araçlarınız, bakım kayıtlarınız, bildirim
+            ayarlarınız ve hesap bilgileriniz kalıcı olarak silinir.
           </p>
 
           <button
             type="button"
             onClick={hesapSilmePenceresiniAc}
             style={{
-              width: "100%",
-              padding: "14px",
-              border: "none",
-              borderRadius: "10px",
-              backgroundColor: "#DC2626",
-              color: "#FFFFFF",
-              fontSize: "16px",
-              fontWeight: 800,
+              minHeight: "44px",
+              padding: "0 16px",
+              border: "1px solid #F1C7C7",
+              borderRadius: "9px",
+              backgroundColor: koyuTema ? "#241114" : "#FFFFFF",
+              color: koyuTema ? "#FCA5A5" : "#B42318",
+              fontSize: "14px",
+              fontWeight: 650,
               cursor: "pointer",
             }}
           >
@@ -976,8 +902,8 @@ export default function ProfilPage() {
             alignItems: "center",
             justifyContent: "center",
             padding: "24px",
-            backgroundColor: "rgba(15, 23, 42, 0.72)",
-            backdropFilter: "blur(5px)",
+            backgroundColor: "rgba(15, 23, 42, 0.58)",
+            backdropFilter: "blur(3px)",
           }}
         >
           <section
@@ -987,47 +913,31 @@ export default function ProfilPage() {
             onClick={(event) => event.stopPropagation()}
             style={{
               width: "100%",
-              maxWidth: "500px",
-              padding: "30px",
-              borderRadius: "20px",
-              border: koyuTema
-                ? "1px solid #7F1D1D"
-                : "1px solid #FECACA",
-              backgroundColor: koyuTema ? "#1E293B" : "#FFFFFF",
-              color: koyuTema ? "#F8FAFC" : "#0F172A",
-              boxShadow: "0 30px 80px rgba(15, 23, 42, 0.38)",
+              maxWidth: "480px",
+              padding: "28px",
+              borderRadius: "14px",
+              border: `1px solid ${koyuTema ? "#4B2528" : "#F1C7C7"}`,
+              backgroundColor: kartArkaPlan,
+              color: anaRenk,
+              boxShadow: "0 18px 50px rgba(15, 23, 42, 0.18)",
             }}
           >
-            <div
-              style={{
-                width: "58px",
-                height: "58px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "16px",
-                backgroundColor: koyuTema ? "#450A0A" : "#FEF2F2",
-                fontSize: "28px",
-              }}
-            >
-              ⚠️
-            </div>
-
             <h2
               id="hesap-silme-basligi"
               style={{
-                margin: "20px 0 10px",
-                fontSize: "25px",
-                color: koyuTema ? "#FCA5A5" : "#B91C1C",
+                margin: 0,
+                fontSize: "23px",
+                letterSpacing: "-0.4px",
               }}
             >
-              Hesabınızı silmek istediğinize emin misiniz?
+              Hesabınızı silmek istiyor musunuz?
             </h2>
 
             <p
               style={{
-                margin: 0,
-                color: koyuTema ? "#CBD5E1" : "#64748B",
+                margin: "10px 0 0",
+                color: ikinciRenk,
+                fontSize: "14px",
                 lineHeight: 1.65,
               }}
             >
@@ -1041,11 +951,12 @@ export default function ProfilPage() {
                 role="alert"
                 style={{
                   marginTop: "16px",
-                  padding: "13px",
-                  borderRadius: "10px",
-                  border: "1px solid #FECACA",
-                  backgroundColor: "#FEF2F2",
-                  color: "#B91C1C",
+                  padding: "12px 13px",
+                  borderRadius: "8px",
+                  border: "1px solid #F1C7C7",
+                  backgroundColor: koyuTema ? "#2A1215" : "#FFF7F7",
+                  color: koyuTema ? "#FCA5A5" : "#A93838",
+                  fontSize: "13px",
                   lineHeight: 1.5,
                 }}
               >
@@ -1057,7 +968,7 @@ export default function ProfilPage() {
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
-                gap: "12px",
+                gap: "10px",
                 marginTop: "24px",
                 flexWrap: "wrap",
               }}
@@ -1067,18 +978,18 @@ export default function ProfilPage() {
                 onClick={hesapSilmePenceresiniKapat}
                 disabled={hesapSiliniyor}
                 style={{
-                  padding: "12px 18px",
-                  borderRadius: "10px",
-                  border: koyuTema
-                    ? "1px solid #475569"
-                    : "1px solid #CBD5E1",
-                  backgroundColor: koyuTema ? "#1E293B" : "#FFFFFF",
-                  color: koyuTema ? "#E2E8F0" : "#334155",
-                  fontWeight: 700,
+                  minHeight: "44px",
+                  padding: "0 16px",
+                  borderRadius: "9px",
+                  border: `1px solid ${kenarlik}`,
+                  backgroundColor: kartArkaPlan,
+                  color: anaRenk,
+                  fontSize: "14px",
+                  fontWeight: 650,
                   cursor: hesapSiliniyor ? "not-allowed" : "pointer",
                 }}
               >
-                Hayır, vazgeç
+                Vazgeç
               </button>
 
               <button
@@ -1086,18 +997,18 @@ export default function ProfilPage() {
                 onClick={hesabiKaliciSil}
                 disabled={hesapSiliniyor}
                 style={{
-                  padding: "12px 18px",
+                  minHeight: "44px",
+                  padding: "0 16px",
                   border: "none",
-                  borderRadius: "10px",
-                  backgroundColor: hesapSiliniyor ? "#94A3B8" : "#DC2626",
+                  borderRadius: "9px",
+                  backgroundColor: hesapSiliniyor ? "#AAB2BD" : "#B42318",
                   color: "#FFFFFF",
-                  fontWeight: 800,
+                  fontSize: "14px",
+                  fontWeight: 700,
                   cursor: hesapSiliniyor ? "not-allowed" : "pointer",
                 }}
               >
-                {hesapSiliniyor
-                  ? "Hesap siliniyor..."
-                  : "Evet, Hesabımı Sil"}
+                {hesapSiliniyor ? "Hesap siliniyor..." : "Hesabımı Kalıcı Sil"}
               </button>
             </div>
           </section>
@@ -1119,24 +1030,18 @@ function BilgiSatiri({
   return (
     <div
       style={{
-        padding: "16px",
-        borderRadius: "11px",
-        border: koyuTema
-          ? "1px solid #475569"
-          : "1px solid #E2E8F0",
-        backgroundColor: koyuTema
-          ? "#0F172A"
-          : "#F8FAFC",
+        padding: "15px",
+        borderRadius: "9px",
+        border: koyuTema ? "1px solid #374151" : "1px solid #E3E7EC",
+        backgroundColor: koyuTema ? "#0B1220" : "#FAFAFA",
       }}
     >
       <span
         style={{
           display: "block",
-          color: koyuTema
-            ? "#94A3B8"
-            : "#64748B",
+          color: koyuTema ? "#9CA3AF" : "#6B7280",
           fontSize: "13px",
-          fontWeight: 700,
+          fontWeight: 600,
         }}
       >
         {baslik}
@@ -1146,6 +1051,8 @@ function BilgiSatiri({
         style={{
           display: "block",
           marginTop: "6px",
+          fontSize: "14px",
+          fontWeight: 650,
         }}
       >
         {deger}

@@ -179,9 +179,11 @@ export default function BakimGecmisiPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#F8FAFC",
-          color: "#0F172A",
-          fontFamily: "Arial, Helvetica, sans-serif",
+          padding: "24px",
+          backgroundColor: "#F7F8FA",
+          color: "#111827",
+          fontFamily:
+            'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
         }}
       >
         Bakım kayıtları yükleniyor...
@@ -193,118 +195,119 @@ export default function BakimGecmisiPage() {
     <main
       style={{
         minHeight: "100vh",
-        padding: "40px 24px",
-        backgroundColor: "#F8FAFC",
-        color: "#0F172A",
-        fontFamily: "Arial, Helvetica, sans-serif",
+        padding: "32px 24px 64px",
+        backgroundColor: "#F7F8FA",
+        color: "#111827",
+        fontFamily:
+          'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "1000px",
-          margin: "0 auto",
-        }}
-      >
-        <div
+      <div style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}>
+        <header
           style={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "center",
-            gap: "16px",
+            alignItems: "flex-end",
+            gap: "18px",
             flexWrap: "wrap",
             marginBottom: "28px",
           }}
         >
-          <Link
-            href="/dashboard"
-            style={{
-              color: "#2563EB",
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            ← Panele dön
-          </Link>
+          <div>
+            <Link
+              href={`/arac/${aracId}`}
+              style={{
+                color: "#6B7280",
+                fontSize: "14px",
+                fontWeight: 600,
+                textDecoration: "none",
+              }}
+            >
+              ← Araç detayına dön
+            </Link>
+            <h1
+              style={{
+                margin: "16px 0 0",
+                fontSize: "clamp(30px, 6vw, 38px)",
+                lineHeight: 1.15,
+                fontWeight: 760,
+                letterSpacing: "-0.9px",
+              }}
+            >
+              Bakım geçmişi
+            </h1>
+            <p
+              style={{
+                margin: "9px 0 0",
+                color: "#6B7280",
+                fontSize: "15px",
+                lineHeight: 1.6,
+              }}
+            >
+              Aracınız için kaydedilen bakım işlemlerini ve masrafları görüntüleyin.
+            </p>
+          </div>
 
           <Link
             href={`/bakim-ekle/${aracId}`}
             style={{
-              padding: "12px 18px",
-              borderRadius: "10px",
-              backgroundColor: "#059669",
+              minHeight: "46px",
+              padding: "0 16px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              borderRadius: "9px",
+              backgroundColor: "#1D4ED8",
               color: "#FFFFFF",
+              fontSize: "14px",
               fontWeight: 700,
               textDecoration: "none",
             }}
           >
-            + Yeni Bakım Ekle
+            Yeni Bakım Ekle
           </Link>
-        </div>
+        </header>
 
-        <section
-          style={{
-            padding: "28px",
-            border: "1px solid #E2E8F0",
-            borderRadius: "18px",
-            backgroundColor: "#FFFFFF",
-            boxShadow: "0 10px 30px rgba(15, 23, 42, 0.06)",
-          }}
-        >
-          <h1
+        {arac && (
+          <section
             style={{
-              margin: 0,
-              color: "#0F172A",
-              fontSize: "34px",
+              padding: "18px 20px",
+              border: "1px solid #E3E7EC",
+              borderRadius: "14px",
+              backgroundColor: "#FFFFFF",
+              boxShadow: "0 1px 2px rgba(15,23,42,.03)",
             }}
           >
-            📋 Bakım Geçmişi
-          </h1>
-
-          {arac && (
-            <div
+            <strong style={{ display: "block", fontSize: "16px", fontWeight: 650 }}>
+              {arac.marka} {arac.model}
+            </strong>
+            <span
               style={{
-                marginTop: "18px",
-                padding: "16px",
-                border: "1px solid #E2E8F0",
-                borderRadius: "12px",
-                backgroundColor: "#F8FAFC",
+                display: "block",
+                marginTop: "4px",
+                color: "#6B7280",
+                fontSize: "13px",
+                fontWeight: 650,
+                letterSpacing: "0.04em",
               }}
             >
-              <strong
-                style={{
-                  display: "block",
-                  color: "#0F172A",
-                  fontSize: "19px",
-                }}
-              >
-                {arac.marka} {arac.model}
-              </strong>
-
-              <span
-                style={{
-                  display: "block",
-                  marginTop: "5px",
-                  color: "#2563EB",
-                  fontWeight: 800,
-                }}
-              >
-                {arac.plaka}
-              </span>
-            </div>
-          )}
-        </section>
+              {arac.plaka}
+            </span>
+          </section>
+        )}
 
         {hata && (
           <div
             role="alert"
             style={{
-              marginTop: "22px",
-              padding: "14px",
-              border: "1px solid #FECACA",
-              borderRadius: "10px",
-              backgroundColor: "#FEF2F2",
-              color: "#B91C1C",
+              marginTop: "20px",
+              padding: "12px 13px",
+              border: "1px solid #F1C7C7",
+              borderRadius: "8px",
+              backgroundColor: "#FFF7F7",
+              color: "#A93838",
+              fontSize: "13px",
+              lineHeight: 1.5,
             }}
           >
             {hata}
@@ -314,45 +317,35 @@ export default function BakimGecmisiPage() {
         {!hata && kayitlar.length === 0 && (
           <section
             style={{
-              marginTop: "22px",
+              marginTop: "20px",
               padding: "30px",
-              border: "1px solid #E2E8F0",
-              borderRadius: "18px",
+              border: "1px solid #E3E7EC",
+              borderRadius: "14px",
               backgroundColor: "#FFFFFF",
+              textAlign: "center",
             }}
           >
-            <h2
-              style={{
-                margin: 0,
-                color: "#0F172A",
-              }}
-            >
-              Henüz bakım kaydı yok
-            </h2>
-
-            <p
-              style={{
-                color: "#64748B",
-                lineHeight: 1.6,
-              }}
-            >
+            <h2 style={{ margin: 0, fontSize: "20px" }}>Henüz bakım kaydı yok</h2>
+            <p style={{ margin: "8px 0 18px", color: "#6B7280", lineHeight: 1.6 }}>
               Bu araç için ilk bakım kaydınızı ekleyin.
             </p>
-
             <Link
               href={`/bakim-ekle/${aracId}`}
               style={{
-                display: "inline-block",
-                marginTop: "8px",
-                padding: "12px 18px",
-                borderRadius: "10px",
-                backgroundColor: "#059669",
+                minHeight: "44px",
+                padding: "0 16px",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "9px",
+                backgroundColor: "#1D4ED8",
                 color: "#FFFFFF",
+                fontSize: "14px",
                 fontWeight: 700,
                 textDecoration: "none",
               }}
             >
-              + İlk Bakımı Ekle
+              İlk Bakımı Ekle
             </Link>
           </section>
         )}
@@ -362,89 +355,53 @@ export default function BakimGecmisiPage() {
             <section
               style={{
                 display: "grid",
-                gridTemplateColumns:
-                  "repeat(auto-fit, minmax(220px, 1fr))",
-                gap: "16px",
-                marginTop: "22px",
+                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gap: "14px",
+                marginTop: "20px",
               }}
             >
-              <div
-                style={{
-                  padding: "20px",
-                  border: "1px solid #E2E8F0",
-                  borderRadius: "14px",
-                  backgroundColor: "#FFFFFF",
-                }}
-              >
-                <span
+              {[
+                ["Toplam bakım kaydı", String(kayitlar.length)],
+                ["Toplam bakım masrafı", tutarFormatla(toplamTutar)],
+              ].map(([baslik, deger]) => (
+                <div
+                  key={baslik}
                   style={{
-                    display: "block",
-                    color: "#64748B",
-                    fontSize: "14px",
+                    padding: "20px",
+                    border: "1px solid #E3E7EC",
+                    borderRadius: "14px",
+                    backgroundColor: "#FFFFFF",
+                    boxShadow: "0 1px 2px rgba(15,23,42,.03)",
                   }}
                 >
-                  Toplam bakım kaydı
-                </span>
-
-                <strong
-                  style={{
-                    display: "block",
-                    marginTop: "6px",
-                    color: "#0F172A",
-                    fontSize: "25px",
-                  }}
-                >
-                  {kayitlar.length}
-                </strong>
-              </div>
-
-              <div
-                style={{
-                  padding: "20px",
-                  border: "1px solid #E2E8F0",
-                  borderRadius: "14px",
-                  backgroundColor: "#FFFFFF",
-                }}
-              >
-                <span
-                  style={{
-                    display: "block",
-                    color: "#64748B",
-                    fontSize: "14px",
-                  }}
-                >
-                  Toplam bakım masrafı
-                </span>
-
-                <strong
-                  style={{
-                    display: "block",
-                    marginTop: "6px",
-                    color: "#0F172A",
-                    fontSize: "25px",
-                  }}
-                >
-                  {tutarFormatla(toplamTutar)}
-                </strong>
-              </div>
+                  <span style={{ display: "block", color: "#6B7280", fontSize: "13px" }}>
+                    {baslik}
+                  </span>
+                  <strong
+                    style={{
+                      display: "block",
+                      marginTop: "7px",
+                      color: "#111827",
+                      fontSize: "24px",
+                      letterSpacing: "-0.5px",
+                    }}
+                  >
+                    {deger}
+                  </strong>
+                </div>
+              ))}
             </section>
 
-            <section
-              style={{
-                display: "grid",
-                gap: "16px",
-                marginTop: "22px",
-              }}
-            >
+            <section style={{ display: "grid", gap: "14px", marginTop: "20px" }}>
               {kayitlar.map((kayit) => (
                 <article
                   key={kayit.id}
                   style={{
-                    padding: "24px",
-                    border: "1px solid #E2E8F0",
-                    borderRadius: "16px",
+                    padding: "22px",
+                    border: "1px solid #E3E7EC",
+                    borderRadius: "14px",
                     backgroundColor: "#FFFFFF",
-                    boxShadow: "0 8px 24px rgba(15, 23, 42, 0.05)",
+                    boxShadow: "0 1px 2px rgba(15,23,42,.03)",
                   }}
                 >
                   <div
@@ -457,68 +414,48 @@ export default function BakimGecmisiPage() {
                     }}
                   >
                     <div>
-                      <h2
-                        style={{
-                          margin: 0,
-                          color: "#0F172A",
-                          fontSize: "22px",
-                        }}
-                      >
+                      <h2 style={{ margin: 0, fontSize: "20px", letterSpacing: "-0.3px" }}>
                         {kayit.baslik}
                       </h2>
-
                       <span
                         style={{
                           display: "block",
-                          marginTop: "7px",
-                          color: "#2563EB",
-                          fontWeight: 700,
+                          marginTop: "6px",
+                          color: "#6B7280",
+                          fontSize: "13px",
+                          fontWeight: 600,
                         }}
                       >
                         {tarihFormatla(kayit.tarih)}
                       </span>
                     </div>
-
-                    <strong
-                      style={{
-                        color: "#059669",
-                        fontSize: "18px",
-                      }}
-                    >
+                    <strong style={{ color: "#111827", fontSize: "17px" }}>
                       {tutarFormatla(kayit.tutar)}
                     </strong>
                   </div>
 
                   <div
                     style={{
-                      display: "grid",
-                      gridTemplateColumns:
-                        "repeat(auto-fit, minmax(180px, 1fr))",
-                      gap: "12px",
-                      marginTop: "18px",
+                      marginTop: "16px",
+                      padding: "12px 13px",
+                      border: "1px solid #E5E7EB",
+                      borderRadius: "9px",
+                      backgroundColor: "#FAFAFA",
+                      fontSize: "14px",
                     }}
                   >
-                    <div
-                      style={{
-                        padding: "12px",
-                        borderRadius: "10px",
-                        backgroundColor: "#F8FAFC",
-                      }}
-                    >
-                      <strong style={{ color: "#0F172A" }}>
-                        Kilometre:
-                      </strong>{" "}
-                      <span style={{ color: "#64748B" }}>
-                        {kilometreFormatla(kayit.kilometre)}
-                      </span>
-                    </div>
+                    <strong style={{ color: "#374151" }}>Kilometre: </strong>
+                    <span style={{ color: "#6B7280" }}>
+                      {kilometreFormatla(kayit.kilometre)}
+                    </span>
                   </div>
 
                   {kayit.aciklama && (
                     <p
                       style={{
-                        margin: "18px 0 0",
-                        color: "#475569",
+                        margin: "16px 0 0",
+                        color: "#4B5563",
+                        fontSize: "14px",
                         lineHeight: 1.7,
                         whiteSpace: "pre-wrap",
                       }}
@@ -530,23 +467,28 @@ export default function BakimGecmisiPage() {
                   <div
                     style={{
                       display: "flex",
-                      gap: "12px",
+                      gap: "10px",
                       flexWrap: "wrap",
-                      marginTop: "22px",
+                      marginTop: "20px",
                     }}
                   >
                     <Link
                       href={`/bakim-duzenle/${kayit.id}`}
                       style={{
-                        padding: "10px 17px",
-                        borderRadius: "10px",
-                        backgroundColor: "#2563EB",
+                        minHeight: "42px",
+                        padding: "0 14px",
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderRadius: "9px",
+                        backgroundColor: "#1D4ED8",
                         color: "#FFFFFF",
-                        fontWeight: 700,
+                        fontSize: "14px",
+                        fontWeight: 650,
                         textDecoration: "none",
                       }}
                     >
-                      ✏️ Düzenle
+                      Düzenle
                     </Link>
 
                     <button
@@ -554,24 +496,21 @@ export default function BakimGecmisiPage() {
                       onClick={() => setSilinecekKayit(kayit)}
                       disabled={silinenKayitId === kayit.id}
                       style={{
-                        padding: "10px 17px",
-                        border: "none",
-                        borderRadius: "10px",
+                        minHeight: "42px",
+                        padding: "0 14px",
+                        border: "1px solid #F1C7C7",
+                        borderRadius: "9px",
                         backgroundColor:
-                          silinenKayitId === kayit.id
-                            ? "#94A3B8"
-                            : "#DC2626",
-                        color: "#FFFFFF",
-                        fontWeight: 700,
+                          silinenKayitId === kayit.id ? "#AAB2BD" : "#FFFFFF",
+                        color:
+                          silinenKayitId === kayit.id ? "#FFFFFF" : "#B42318",
+                        fontSize: "14px",
+                        fontWeight: 650,
                         cursor:
-                          silinenKayitId === kayit.id
-                            ? "not-allowed"
-                            : "pointer",
+                          silinenKayitId === kayit.id ? "not-allowed" : "pointer",
                       }}
                     >
-                      {silinenKayitId === kayit.id
-                        ? "Siliniyor..."
-                        : "🗑️ Sil"}
+                      {silinenKayitId === kayit.id ? "Siliniyor..." : "Sil"}
                     </button>
                   </div>
                 </article>
@@ -585,9 +524,7 @@ export default function BakimGecmisiPage() {
         <div
           role="presentation"
           onClick={() => {
-            if (!silinenKayitId) {
-              setSilinecekKayit(null);
-            }
+            if (!silinenKayitId) setSilinecekKayit(null);
           }}
           style={{
             position: "fixed",
@@ -597,8 +534,8 @@ export default function BakimGecmisiPage() {
             alignItems: "center",
             justifyContent: "center",
             padding: "24px",
-            backgroundColor: "rgba(15, 23, 42, 0.65)",
-            backdropFilter: "blur(4px)",
+            backgroundColor: "rgba(15, 23, 42, 0.52)",
+            backdropFilter: "blur(3px)",
           }}
         >
           <section
@@ -609,43 +546,24 @@ export default function BakimGecmisiPage() {
             style={{
               width: "100%",
               maxWidth: "460px",
-              padding: "30px",
-              border: "1px solid #E2E8F0",
-              borderRadius: "20px",
+              padding: "28px",
+              border: "1px solid #E3E7EC",
+              borderRadius: "14px",
               backgroundColor: "#FFFFFF",
-              boxShadow: "0 30px 80px rgba(15, 23, 42, 0.35)",
+              boxShadow: "0 18px 50px rgba(15,23,42,.16)",
             }}
           >
-            <div
-              style={{
-                width: "54px",
-                height: "54px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "16px",
-                backgroundColor: "#FEF2F2",
-                fontSize: "27px",
-              }}
-            >
-              🗑️
-            </div>
-
             <h2
               id="bakim-silme-basligi"
-              style={{
-                margin: "22px 0 10px",
-                color: "#0F172A",
-                fontSize: "25px",
-              }}
+              style={{ margin: 0, fontSize: "23px", letterSpacing: "-0.4px" }}
             >
-              Bakım kaydını silmek istiyor musunuz?
+              Bakım kaydını sil?
             </h2>
-
             <p
               style={{
-                margin: 0,
-                color: "#64748B",
+                margin: "10px 0 0",
+                color: "#6B7280",
+                fontSize: "14px",
                 lineHeight: 1.6,
               }}
             >
@@ -654,29 +572,22 @@ export default function BakimGecmisiPage() {
 
             <div
               style={{
-                marginTop: "20px",
-                padding: "16px",
-                border: "1px solid #E2E8F0",
-                borderRadius: "12px",
+                marginTop: "18px",
+                padding: "14px 15px",
+                border: "1px solid #E3E7EC",
+                borderRadius: "10px",
                 backgroundColor: "#F8FAFC",
               }}
             >
-              <strong
-                style={{
-                  display: "block",
-                  color: "#0F172A",
-                  fontSize: "18px",
-                }}
-              >
+              <strong style={{ display: "block", fontSize: "15px" }}>
                 {silinecekKayit.baslik}
               </strong>
-
               <span
                 style={{
                   display: "block",
-                  marginTop: "5px",
-                  color: "#2563EB",
-                  fontWeight: 700,
+                  marginTop: "4px",
+                  color: "#6B7280",
+                  fontSize: "13px",
                 }}
               >
                 {tarihFormatla(silinecekKayit.tarih)}
@@ -687,9 +598,9 @@ export default function BakimGecmisiPage() {
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
-                gap: "12px",
+                gap: "10px",
                 flexWrap: "wrap",
-                marginTop: "26px",
+                marginTop: "24px",
               }}
             >
               <button
@@ -697,38 +608,37 @@ export default function BakimGecmisiPage() {
                 onClick={() => setSilinecekKayit(null)}
                 disabled={silinenKayitId !== null}
                 style={{
-                  padding: "12px 18px",
-                  border: "1px solid #CBD5E1",
-                  borderRadius: "10px",
+                  minHeight: "44px",
+                  padding: "0 16px",
+                  border: "1px solid #D7DCE3",
+                  borderRadius: "9px",
                   backgroundColor: "#FFFFFF",
-                  color: "#334155",
-                  fontWeight: 700,
-                  cursor:
-                    silinenKayitId !== null ? "not-allowed" : "pointer",
+                  color: "#374151",
+                  fontSize: "14px",
+                  fontWeight: 650,
+                  cursor: silinenKayitId !== null ? "not-allowed" : "pointer",
                 }}
               >
                 Vazgeç
               </button>
-
               <button
                 type="button"
                 onClick={bakimKaydiSil}
                 disabled={silinenKayitId !== null}
                 style={{
-                  padding: "12px 18px",
+                  minHeight: "44px",
+                  padding: "0 16px",
                   border: "none",
-                  borderRadius: "10px",
+                  borderRadius: "9px",
                   backgroundColor:
-                    silinenKayitId !== null ? "#94A3B8" : "#DC2626",
+                    silinenKayitId !== null ? "#AAB2BD" : "#B42318",
                   color: "#FFFFFF",
-                  fontWeight: 800,
-                  cursor:
-                    silinenKayitId !== null ? "not-allowed" : "pointer",
+                  fontSize: "14px",
+                  fontWeight: 700,
+                  cursor: silinenKayitId !== null ? "not-allowed" : "pointer",
                 }}
               >
-                {silinenKayitId !== null
-                  ? "Kayıt siliniyor..."
-                  : "Bakım Kaydını Sil"}
+                {silinenKayitId !== null ? "Kayıt siliniyor..." : "Bakım Kaydını Sil"}
               </button>
             </div>
           </section>

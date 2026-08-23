@@ -38,26 +38,48 @@ function GoogleIcon() {
   );
 }
 
-function BrandMark() {
+function Brand() {
   return (
-    <div
-      aria-hidden="true"
+    <Link
+      href="/"
       style={{
-        width: "42px",
-        height: "42px",
-        borderRadius: "11px",
-        backgroundColor: "#0F172A",
-        color: "#FFFFFF",
-        display: "flex",
+        display: "inline-flex",
         alignItems: "center",
-        justifyContent: "center",
-        fontSize: "15px",
-        fontWeight: 800,
-        letterSpacing: "-0.5px",
+        gap: "11px",
+        textDecoration: "none",
+        color: "#111827",
       }}
     >
-      GD
-    </div>
+      <div
+        aria-hidden="true"
+        style={{
+          width: "42px",
+          height: "42px",
+          borderRadius: "11px",
+          backgroundColor: "#0F172A",
+          color: "#FFFFFF",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: "15px",
+          fontWeight: 800,
+          letterSpacing: "-0.5px",
+        }}
+      >
+        GD
+      </div>
+
+      <div
+        style={{
+          fontSize: "17px",
+          lineHeight: 1.2,
+          fontWeight: 750,
+          letterSpacing: "-0.35px",
+        }}
+      >
+        Garaj Defteri
+      </div>
+    </Link>
   );
 }
 
@@ -65,16 +87,21 @@ export default function KayitPage() {
   const router = useRouter();
   const captchaRef = useRef<HCaptcha>(null);
 
-  const [kullaniciAdi, setKullaniciAdi] = useState("");
+  const [kullaniciAdi, setKullaniciAdi] =
+    useState("");
   const [email, setEmail] = useState("");
   const [sifre, setSifre] = useState("");
-  const [sifreTekrar, setSifreTekrar] = useState("");
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [sifreTekrar, setSifreTekrar] =
+    useState("");
+  const [captchaToken, setCaptchaToken] =
+    useState("");
 
   const [hata, setHata] = useState("");
   const [mesaj, setMesaj] = useState("");
+
   const [kayitYukleniyor, setKayitYukleniyor] =
     useState(false);
+
   const [googleYukleniyor, setGoogleYukleniyor] =
     useState(false);
 
@@ -89,8 +116,11 @@ export default function KayitPage() {
     setHata("");
     setMesaj("");
 
-    const temizKullaniciAdi = kullaniciAdi.trim();
-    const temizEmail = email.trim().toLowerCase();
+    const temizKullaniciAdi =
+      kullaniciAdi.trim();
+
+    const temizEmail =
+      email.trim().toLowerCase();
 
     if (temizKullaniciAdi.length < 3) {
       setHata(
@@ -100,7 +130,9 @@ export default function KayitPage() {
     }
 
     if (!temizEmail) {
-      setHata("Lütfen e-posta adresinizi girin.");
+      setHata(
+        "Lütfen e-posta adresinizi girin."
+      );
       return;
     }
 
@@ -112,7 +144,9 @@ export default function KayitPage() {
     }
 
     if (sifre !== sifreTekrar) {
-      setHata("Şifreler birbiriyle eşleşmiyor.");
+      setHata(
+        "Şifreler birbiriyle eşleşmiyor."
+      );
       return;
     }
 
@@ -151,12 +185,17 @@ export default function KayitPage() {
       setCaptchaToken("");
 
       if (error) {
-        console.error("Kayıt hatası:", error);
+        console.error(
+          "Kayıt hatası:",
+          error
+        );
 
         const hataMesaji =
           error.message.toLowerCase();
 
-        if (hataMesaji.includes("captcha")) {
+        if (
+          hataMesaji.includes("captcha")
+        ) {
           setHata(
             "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
           );
@@ -311,42 +350,7 @@ export default function KayitPage() {
           padding: "28px 24px",
         }}
       >
-        <Link
-          href="/"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "11px",
-            textDecoration: "none",
-            color: "#111827",
-          }}
-        >
-          <BrandMark />
-
-          <div>
-            <div
-              style={{
-                fontSize: "16px",
-                lineHeight: 1.2,
-                fontWeight: 750,
-                letterSpacing: "-0.3px",
-              }}
-            >
-              Garaj Defteri
-            </div>
-
-            <div
-              style={{
-                marginTop: "2px",
-                fontSize: "11px",
-                color: "#8A94A3",
-                letterSpacing: "0.02em",
-              }}
-            >
-              Araç yönetimi, sadeleştirildi.
-            </div>
-          </div>
-        </Link>
+        <Brand />
       </header>
 
       <div
@@ -390,8 +394,8 @@ export default function KayitPage() {
                 lineHeight: 1.6,
               }}
             >
-              Araçlarınızı, bakım kayıtlarınızı ve
-              önemli tarihlerinizi tek yerden yönetin.
+              Garaj Defteri'ni kullanmaya başlamak
+              için hesabınızı oluşturun.
             </p>
           </div>
 
@@ -581,6 +585,7 @@ export default function KayitPage() {
                     }}
                     onError={() => {
                       setCaptchaToken("");
+
                       setHata(
                         "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
                       );
