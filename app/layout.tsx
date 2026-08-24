@@ -16,23 +16,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Garaj Defteri",
-    template: "%s | Garaj Defteri",
+    default: "GARAJ DEFTERİ",
+    template: "%s | GARAJ DEFTERİ",
   },
   description:
     "Araçlarınızı, bakım kayıtlarınızı ve önemli tarihlerinizi tek panelden yönetin.",
-  applicationName: "Garaj Defteri",
+  applicationName: "GARAJ DEFTERİ",
   keywords: [
     "araç takibi",
     "bakım takibi",
     "muayene",
     "sigorta",
     "seyrüsefer",
-    "Garaj Defteri",
+    "GARAJ DEFTERİ",
   ],
-  authors: [{ name: "Garaj Defteri" }],
-  creator: "Garaj Defteri",
-  publisher: "Garaj Defteri",
+  authors: [{ name: "GARAJ DEFTERİ" }],
+  creator: "GARAJ DEFTERİ",
+  publisher: "GARAJ DEFTERİ",
   robots: {
     index: true,
     follow: true,
