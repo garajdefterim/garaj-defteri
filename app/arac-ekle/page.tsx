@@ -188,7 +188,7 @@ export default function AracEklePage() {
   );
 
   return (
-    <main
+    <main className="arac-ekle-page"
       style={{
         minHeight: "100vh",
         backgroundColor: "#F7F8FA",
@@ -199,13 +199,14 @@ export default function AracEklePage() {
       }}
     >
       <div
+        className="arac-ekle-container"
         style={{
           width: "100%",
           maxWidth: "960px",
           margin: "0 auto",
         }}
       >
-        <header
+        <header className="arac-ekle-header"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -259,6 +260,7 @@ export default function AracEklePage() {
         </header>
 
         <section
+          className="arac-ekle-card"
           style={{
             width: "100%",
             backgroundColor: "#FFFFFF",
@@ -271,6 +273,7 @@ export default function AracEklePage() {
           }}
         >
           <form
+            className="arac-ekle-form"
             onSubmit={handleSubmit}
             style={{
               display: "grid",
@@ -323,6 +326,7 @@ export default function AracEklePage() {
             </label>
 
             <div
+              className="arac-ekle-info arac-ekle-full"
               style={{
                 gridColumn: "1 / -1",
                 padding: "14px 15px",
@@ -417,6 +421,7 @@ export default function AracEklePage() {
             </label>
 
             <div
+              className="arac-ekle-info arac-ekle-full"
               style={{
                 gridColumn: "1 / -1",
                 padding: "15px",
@@ -491,6 +496,7 @@ export default function AracEklePage() {
             </label>
 
             <div
+              className="arac-ekle-info arac-ekle-maintenance-info"
               style={{
                 padding: "14px 15px",
                 border: "1px solid #DDE3EA",
@@ -526,6 +532,7 @@ export default function AracEklePage() {
 
             {hata && (
               <div
+                className="arac-ekle-error"
                 role="alert"
                 style={{
                   gridColumn: "1 / -1",
@@ -543,6 +550,7 @@ export default function AracEklePage() {
             )}
 
             <div
+              className="arac-ekle-actions"
               style={{
                 gridColumn: "1 / -1",
                 display: "flex",
@@ -601,6 +609,94 @@ export default function AracEklePage() {
           </form>
         </section>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .arac-ekle-page {
+            padding: 22px 14px 42px !important;
+            overflow-x: hidden;
+          }
+
+          .arac-ekle-container {
+            max-width: 100% !important;
+          }
+
+          .arac-ekle-header {
+            margin-bottom: 22px !important;
+            gap: 10px !important;
+          }
+
+          .arac-ekle-header h1 {
+            margin-top: 12px !important;
+            font-size: 30px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .arac-ekle-header p {
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+          }
+
+          .arac-ekle-card {
+            padding: 18px !important;
+            border-radius: 12px !important;
+          }
+
+          .arac-ekle-form {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 16px !important;
+          }
+
+          .arac-ekle-form > * {
+            min-width: 0;
+          }
+
+          .arac-ekle-full,
+          .arac-ekle-error {
+            grid-column: auto !important;
+          }
+
+          .arac-ekle-info {
+            padding: 13px !important;
+          }
+
+          .arac-ekle-maintenance-info {
+            align-self: stretch !important;
+          }
+
+          .arac-ekle-actions {
+            grid-column: auto !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 9px !important;
+            padding-top: 2px !important;
+          }
+
+          .arac-ekle-actions > a,
+          .arac-ekle-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 46px !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .arac-ekle-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .arac-ekle-card {
+            padding: 15px !important;
+          }
+
+          .arac-ekle-actions {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

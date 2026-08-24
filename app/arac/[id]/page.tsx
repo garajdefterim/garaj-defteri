@@ -710,6 +710,7 @@ export default function AracDetayPage() {
 
   return (
     <main
+      className="arac-detay-page"
       style={{
         minHeight: "100vh",
         padding: "32px 24px 64px",
@@ -720,6 +721,7 @@ export default function AracDetayPage() {
       }}
     >
       <div
+        className="arac-detay-container"
         style={{
           width: "100%",
           maxWidth: "1180px",
@@ -727,6 +729,7 @@ export default function AracDetayPage() {
         }}
       >
         <div
+          className="arac-detay-topbar"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -748,6 +751,7 @@ export default function AracDetayPage() {
           </Link>
 
           <div
+            className="arac-detay-actions"
             style={{
               display: "flex",
               gap: "10px",
@@ -795,6 +799,7 @@ export default function AracDetayPage() {
         </div>
 
         <section
+          className="arac-detay-hero"
           style={{
             ...kartStili,
             padding: "28px",
@@ -854,6 +859,7 @@ export default function AracDetayPage() {
             </div>
 
             <div
+              className="arac-detay-mini-stats"
               style={{
                 display: "grid",
                 gridTemplateColumns:
@@ -921,6 +927,7 @@ export default function AracDetayPage() {
         </section>
 
         <section
+          className="arac-detay-dates"
           style={{
             display: "grid",
             gridTemplateColumns:
@@ -961,6 +968,7 @@ export default function AracDetayPage() {
         </section>
 
         <section
+          className="arac-detay-summary"
           style={{
             display: "grid",
             gridTemplateColumns:
@@ -1083,6 +1091,7 @@ export default function AracDetayPage() {
         </section>
 
         <section
+          className="arac-detay-maintenance"
           style={{
             ...kartStili,
             marginTop: "22px",
@@ -1153,6 +1162,7 @@ export default function AracDetayPage() {
             >
               {sonBakimlar.map((bakim) => (
                 <article
+                  className="arac-detay-maintenance-item"
                   key={bakim.id}
                   style={{
                     padding: "16px",
@@ -1228,6 +1238,111 @@ export default function AracDetayPage() {
           )}
         </section>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .arac-detay-page {
+            padding: 22px 14px 44px !important;
+            overflow-x: hidden;
+          }
+
+          .arac-detay-container {
+            max-width: 100% !important;
+          }
+
+          .arac-detay-topbar {
+            align-items: stretch !important;
+            gap: 14px !important;
+            margin-bottom: 20px !important;
+          }
+
+          .arac-detay-actions {
+            width: 100% !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+          }
+
+          .arac-detay-actions > a {
+            width: 100% !important;
+            min-width: 0 !important;
+            padding: 0 10px !important;
+          }
+
+          .arac-detay-hero {
+            padding: 18px !important;
+          }
+
+          .arac-detay-hero > div {
+            gap: 18px !important;
+          }
+
+          .arac-detay-hero h1 {
+            font-size: 30px !important;
+            overflow-wrap: anywhere;
+          }
+
+          .arac-detay-mini-stats {
+            width: 100% !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 9px !important;
+          }
+
+          .arac-detay-mini-stats > div {
+            min-width: 0;
+            padding: 12px !important;
+          }
+
+          .arac-detay-dates,
+          .arac-detay-summary {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 12px !important;
+            margin-top: 14px !important;
+          }
+
+          .arac-detay-summary > div {
+            padding: 16px !important;
+          }
+
+          .arac-detay-maintenance {
+            margin-top: 14px !important;
+            padding: 18px !important;
+          }
+
+          .arac-detay-maintenance > div:first-child {
+            align-items: flex-start !important;
+          }
+
+          .arac-detay-maintenance-item {
+            padding: 14px !important;
+          }
+
+          .arac-detay-maintenance-item > div {
+            gap: 12px !important;
+          }
+
+          .arac-detay-maintenance-item > div > div:last-child {
+            text-align: left !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .arac-detay-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .arac-detay-actions,
+          .arac-detay-mini-stats {
+            grid-template-columns: 1fr !important;
+          }
+
+          .arac-detay-hero,
+          .arac-detay-maintenance {
+            padding: 15px !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

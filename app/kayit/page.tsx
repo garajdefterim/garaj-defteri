@@ -332,7 +332,7 @@ export default function KayitPage() {
     !captchaToken;
 
   return (
-    <main
+    <main className="kayit-page"
       style={{
         minHeight: "100vh",
         backgroundColor: "#F7F8FA",
@@ -343,7 +343,7 @@ export default function KayitPage() {
         flexDirection: "column",
       }}
     >
-      <header
+      <header className="kayit-header"
         style={{
           width: "100%",
           maxWidth: "1180px",
@@ -356,6 +356,7 @@ export default function KayitPage() {
       </header>
 
       <div
+        className="kayit-shell"
         style={{
           flex: 1,
           display: "flex",
@@ -365,12 +366,14 @@ export default function KayitPage() {
         }}
       >
         <section
+          className="kayit-section"
           style={{
             width: "100%",
             maxWidth: "440px",
           }}
         >
           <div
+            className="kayit-title"
             style={{
               marginBottom: "28px",
             }}
@@ -402,6 +405,7 @@ export default function KayitPage() {
           </div>
 
           <div
+            className="kayit-card"
             style={{
               padding: "28px",
               backgroundColor: "#FFFFFF",
@@ -488,6 +492,7 @@ export default function KayitPage() {
             </div>
 
             <form
+              className="kayit-form"
               onSubmit={emailIleKayitOl}
               style={{
                 display: "flex",
@@ -670,6 +675,7 @@ export default function KayitPage() {
 
               {hcaptchaSiteKey && (
                 <div
+                  className="kayit-captcha"
                   style={{
                     display: "flex",
                     justifyContent: "center",
@@ -810,6 +816,93 @@ export default function KayitPage() {
           </p>
         </section>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .kayit-page {
+            min-height: 100dvh !important;
+            overflow-x: hidden;
+          }
+
+          .kayit-header {
+            padding: 18px 16px !important;
+          }
+
+          .kayit-shell {
+            align-items: flex-start !important;
+            padding: 20px 14px 42px !important;
+          }
+
+          .kayit-section {
+            max-width: 100% !important;
+          }
+
+          .kayit-title {
+            margin-bottom: 20px !important;
+          }
+
+          .kayit-title h1 {
+            font-size: 28px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .kayit-title p {
+            font-size: 14px !important;
+          }
+
+          .kayit-card {
+            padding: 20px !important;
+            border-radius: 12px !important;
+          }
+
+          .kayit-form {
+            gap: 16px !important;
+          }
+
+          .kayit-card input,
+          .kayit-card button {
+            min-width: 0;
+          }
+
+          .kayit-captcha {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .kayit-header {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+          }
+
+          .kayit-shell {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .kayit-card {
+            padding: 16px !important;
+          }
+
+          .kayit-title h1 {
+            font-size: 26px !important;
+          }
+
+          .kayit-captcha {
+            transform: scale(0.92);
+            transform-origin: center top;
+            margin-bottom: -6px;
+          }
+        }
+
+        @media (max-width: 340px) {
+          .kayit-captcha {
+            transform: scale(0.84);
+            margin-bottom: -12px;
+          }
+        }
+      `}</style>
     </main>
   );
 }

@@ -193,6 +193,7 @@ export default function BakimGecmisiPage() {
 
   return (
     <main
+      className="bakim-gecmisi-page"
       style={{
         minHeight: "100vh",
         padding: "32px 24px 64px",
@@ -202,8 +203,9 @@ export default function BakimGecmisiPage() {
           'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
-      <div style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}>
+      <div className="bakim-gecmisi-container" style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}>
         <header
+          className="bakim-gecmisi-header"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -270,6 +272,7 @@ export default function BakimGecmisiPage() {
 
         {arac && (
           <section
+            className="bakim-gecmisi-vehicle"
             style={{
               padding: "18px 20px",
               border: "1px solid #E3E7EC",
@@ -353,6 +356,7 @@ export default function BakimGecmisiPage() {
         {!hata && kayitlar.length > 0 && (
           <>
             <section
+              className="bakim-gecmisi-stats"
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
@@ -392,9 +396,10 @@ export default function BakimGecmisiPage() {
               ))}
             </section>
 
-            <section style={{ display: "grid", gap: "14px", marginTop: "20px" }}>
+            <section className="bakim-gecmisi-list" style={{ display: "grid", gap: "14px", marginTop: "20px" }}>
               {kayitlar.map((kayit) => (
                 <article
+                  className="bakim-gecmisi-item"
                   key={kayit.id}
                   style={{
                     padding: "22px",
@@ -465,6 +470,7 @@ export default function BakimGecmisiPage() {
                   )}
 
                   <div
+                    className="bakim-gecmisi-item-actions"
                     style={{
                       display: "flex",
                       gap: "10px",
@@ -539,6 +545,7 @@ export default function BakimGecmisiPage() {
           }}
         >
           <section
+            className="bakim-gecmisi-dialog"
             role="dialog"
             aria-modal="true"
             aria-labelledby="bakim-silme-basligi"
@@ -595,6 +602,7 @@ export default function BakimGecmisiPage() {
             </div>
 
             <div
+              className="bakim-gecmisi-dialog-actions"
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -644,6 +652,116 @@ export default function BakimGecmisiPage() {
           </section>
         </div>
       )}
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .bakim-gecmisi-page {
+            padding: 22px 14px 44px !important;
+            overflow-x: hidden;
+          }
+
+          .bakim-gecmisi-container {
+            max-width: 100% !important;
+          }
+
+          .bakim-gecmisi-header {
+            align-items: stretch !important;
+            gap: 16px !important;
+            margin-bottom: 20px !important;
+          }
+
+          .bakim-gecmisi-header > div {
+            width: 100%;
+          }
+
+          .bakim-gecmisi-header > a {
+            width: 100% !important;
+            min-height: 46px !important;
+          }
+
+          .bakim-gecmisi-header h1 {
+            font-size: 30px !important;
+          }
+
+          .bakim-gecmisi-header p {
+            font-size: 14px !important;
+          }
+
+          .bakim-gecmisi-vehicle {
+            padding: 15px !important;
+          }
+
+          .bakim-gecmisi-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px !important;
+          }
+
+          .bakim-gecmisi-stats > div {
+            min-width: 0;
+            padding: 16px !important;
+          }
+
+          .bakim-gecmisi-stats strong {
+            font-size: 20px !important;
+            overflow-wrap: anywhere;
+          }
+
+          .bakim-gecmisi-item {
+            padding: 17px !important;
+          }
+
+          .bakim-gecmisi-item h2 {
+            overflow-wrap: anywhere;
+          }
+
+          .bakim-gecmisi-item-actions {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+          }
+
+          .bakim-gecmisi-item-actions > a,
+          .bakim-gecmisi-item-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+
+          .bakim-gecmisi-dialog {
+            padding: 20px !important;
+          }
+
+          .bakim-gecmisi-dialog-actions {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+          }
+
+          .bakim-gecmisi-dialog-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .bakim-gecmisi-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .bakim-gecmisi-stats,
+          .bakim-gecmisi-item-actions,
+          .bakim-gecmisi-dialog-actions {
+            grid-template-columns: 1fr !important;
+          }
+
+          .bakim-gecmisi-item,
+          .bakim-gecmisi-dialog {
+            padding: 15px !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

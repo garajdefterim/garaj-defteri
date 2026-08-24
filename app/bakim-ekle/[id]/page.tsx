@@ -274,6 +274,7 @@ export default function BakimEklePage() {
 
   return (
     <main
+      className="bakim-ekle-page"
       style={{
         minHeight: "100vh",
         padding: "32px 24px 64px",
@@ -284,13 +285,14 @@ export default function BakimEklePage() {
       }}
     >
       <div
+        className="bakim-ekle-container"
         style={{
           width: "100%",
           maxWidth: "960px",
           margin: "0 auto",
         }}
       >
-        <header style={{ marginBottom: "32px" }}>
+        <header className="bakim-ekle-header" style={{ marginBottom: "32px" }}>
           <Link
             href={`/arac/${aracId}`}
             style={{
@@ -330,6 +332,7 @@ export default function BakimEklePage() {
         </header>
 
         <section
+          className="bakim-ekle-card"
           style={{
             width: "100%",
             padding: "28px",
@@ -342,6 +345,7 @@ export default function BakimEklePage() {
         >
           {arac && (
             <div
+              className="bakim-ekle-vehicle"
               style={{
                 marginBottom: "24px",
                 padding: "14px 15px",
@@ -395,6 +399,7 @@ export default function BakimEklePage() {
           )}
 
           <form
+            className="bakim-ekle-form"
             onSubmit={handleSubmit}
             style={{
               display: "grid",
@@ -452,6 +457,7 @@ export default function BakimEklePage() {
             </label>
 
             <label
+              className="bakim-ekle-description"
               style={{
                 ...labelStyle,
                 gridColumn: "1 / -1",
@@ -476,6 +482,7 @@ export default function BakimEklePage() {
             </label>
 
             <div
+              className="bakim-ekle-actions"
               style={{
                 gridColumn: "1 / -1",
                 display: "flex",
@@ -532,6 +539,93 @@ export default function BakimEklePage() {
           </form>
         </section>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .bakim-ekle-page {
+            padding: 22px 14px 42px !important;
+            overflow-x: hidden;
+          }
+
+          .bakim-ekle-container {
+            max-width: 100% !important;
+          }
+
+          .bakim-ekle-header {
+            margin-bottom: 22px !important;
+          }
+
+          .bakim-ekle-header h1 {
+            margin-top: 12px !important;
+            font-size: 30px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .bakim-ekle-header p {
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+          }
+
+          .bakim-ekle-card {
+            padding: 18px !important;
+            border-radius: 12px !important;
+          }
+
+          .bakim-ekle-vehicle {
+            margin-bottom: 18px !important;
+            padding: 13px !important;
+          }
+
+          .bakim-ekle-form {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 16px !important;
+          }
+
+          .bakim-ekle-form > * {
+            min-width: 0;
+          }
+
+          .bakim-ekle-description {
+            grid-column: auto !important;
+          }
+
+          .bakim-ekle-description textarea {
+            min-height: 120px !important;
+          }
+
+          .bakim-ekle-actions {
+            grid-column: auto !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 9px !important;
+            padding-top: 2px !important;
+          }
+
+          .bakim-ekle-actions > a,
+          .bakim-ekle-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 46px !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .bakim-ekle-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .bakim-ekle-card {
+            padding: 15px !important;
+          }
+
+          .bakim-ekle-actions {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

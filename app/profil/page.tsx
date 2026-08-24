@@ -410,6 +410,7 @@ export default function ProfilPage() {
 
   return (
     <main
+      className="profil-page"
       style={{
         minHeight: "100vh",
         padding: "32px 24px 64px",
@@ -420,6 +421,7 @@ export default function ProfilPage() {
       }}
     >
       <div
+        className="profil-container"
         style={{
           width: "100%",
           maxWidth: "900px",
@@ -427,6 +429,7 @@ export default function ProfilPage() {
         }}
       >
         <header
+          className="profil-header"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -475,6 +478,7 @@ export default function ProfilPage() {
         </header>
 
         <section
+          className="profil-hero"
           style={{
             ...kartStili,
             padding: "28px",
@@ -548,6 +552,7 @@ export default function ProfilPage() {
         </section>
 
         <form
+          className="profil-form"
           onSubmit={bilgileriKaydet}
           style={{
             ...kartStili,
@@ -649,7 +654,7 @@ export default function ProfilPage() {
               </div>
             )}
 
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <div className="profil-save-actions" style={{ display: "flex", justifyContent: "flex-end" }}>
               <button
                 type="submit"
                 disabled={kaydediliyor}
@@ -672,7 +677,7 @@ export default function ProfilPage() {
           </div>
         </form>
 
-        <section style={{ ...kartStili, marginTop: "16px" }}>
+        <section className="profil-card profil-account" style={{ ...kartStili, marginTop: "16px" }}>
           <h2 style={{ margin: 0, fontSize: "20px" }}>Hesap bilgileri</h2>
 
           <div
@@ -701,7 +706,7 @@ export default function ProfilPage() {
           </div>
         </section>
 
-        <section style={{ ...kartStili, marginTop: "16px" }}>
+        <section className="profil-card profil-theme" style={{ ...kartStili, marginTop: "16px" }}>
           <h2 style={{ margin: 0, fontSize: "20px" }}>Görünüm</h2>
 
           <p
@@ -716,6 +721,7 @@ export default function ProfilPage() {
           </p>
 
           <div
+            className="profil-theme-actions"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
@@ -780,7 +786,7 @@ export default function ProfilPage() {
           )}
         </section>
 
-        <section style={{ ...kartStili, marginTop: "16px" }}>
+        <section className="profil-card profil-notifications" style={{ ...kartStili, marginTop: "16px" }}>
           <h2 style={{ margin: 0, fontSize: "20px" }}>Bildirimler</h2>
 
           <p
@@ -815,7 +821,7 @@ export default function ProfilPage() {
           </Link>
         </section>
 
-        <section style={{ ...kartStili, marginTop: "16px" }}>
+        <section className="profil-card profil-session" style={{ ...kartStili, marginTop: "16px" }}>
           <h2 style={{ margin: 0, fontSize: "20px" }}>Oturum</h2>
 
           <button
@@ -840,6 +846,7 @@ export default function ProfilPage() {
         </section>
 
         <section
+          className="profil-danger"
           style={{
             marginTop: "16px",
             padding: "24px",
@@ -907,6 +914,7 @@ export default function ProfilPage() {
           }}
         >
           <section
+            className="profil-delete-dialog"
             role="dialog"
             aria-modal="true"
             aria-labelledby="hesap-silme-basligi"
@@ -965,6 +973,7 @@ export default function ProfilPage() {
             )}
 
             <div
+              className="profil-delete-actions"
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -1014,6 +1023,122 @@ export default function ProfilPage() {
           </section>
         </div>
       )}
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .profil-page {
+            padding: 22px 14px 44px !important;
+            overflow-x: hidden;
+          }
+
+          .profil-container {
+            max-width: 100% !important;
+          }
+
+          .profil-header {
+            margin-bottom: 20px !important;
+            align-items: flex-start !important;
+          }
+
+          .profil-header h1 {
+            font-size: 30px !important;
+            margin-top: 12px !important;
+          }
+
+          .profil-header p {
+            font-size: 14px !important;
+          }
+
+          .profil-hero {
+            padding: 18px !important;
+          }
+
+          .profil-hero > div {
+            gap: 14px !important;
+          }
+
+          .profil-hero img,
+          .profil-hero [aria-hidden="true"] {
+            width: 64px !important;
+            height: 64px !important;
+            flex-shrink: 0;
+          }
+
+          .profil-hero h2 {
+            font-size: 21px !important;
+            overflow-wrap: anywhere;
+          }
+
+          .profil-hero p {
+            overflow-wrap: anywhere;
+          }
+
+          .profil-form,
+          .profil-card,
+          .profil-danger {
+            padding: 18px !important;
+          }
+
+          .profil-save-actions {
+            justify-content: stretch !important;
+          }
+
+          .profil-save-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+          }
+
+          .profil-theme-actions {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .profil-notifications > a,
+          .profil-session > button,
+          .profil-danger > button {
+            width: 100% !important;
+          }
+
+          .profil-delete-dialog {
+            padding: 20px !important;
+          }
+
+          .profil-delete-dialog h2 {
+            font-size: 21px !important;
+          }
+
+          .profil-delete-actions {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+          }
+
+          .profil-delete-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+            padding-left: 8px !important;
+            padding-right: 8px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .profil-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .profil-form,
+          .profil-card,
+          .profil-danger,
+          .profil-hero {
+            padding: 15px !important;
+          }
+
+          .profil-theme-actions,
+          .profil-delete-actions {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

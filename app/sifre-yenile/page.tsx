@@ -257,6 +257,7 @@ export default function SifreYenilePage() {
 
   return (
     <main
+      className="sifre-yenile-page"
       style={{
         minHeight: "100vh",
         backgroundColor: "#F7F8FA",
@@ -267,7 +268,7 @@ export default function SifreYenilePage() {
         flexDirection: "column",
       }}
     >
-      <header
+      <header className="sifre-yenile-header"
         style={{
           width: "100%",
           maxWidth: "1180px",
@@ -280,6 +281,7 @@ export default function SifreYenilePage() {
       </header>
 
       <div
+        className="sifre-yenile-shell"
         style={{
           flex: 1,
           display: "flex",
@@ -289,12 +291,14 @@ export default function SifreYenilePage() {
         }}
       >
         <section
+          className="sifre-yenile-section"
           style={{
             width: "100%",
             maxWidth: "420px",
           }}
         >
           <div
+            className="sifre-yenile-title"
             style={{
               marginBottom: "28px",
             }}
@@ -325,6 +329,7 @@ export default function SifreYenilePage() {
           </div>
 
           <div
+            className="sifre-yenile-card"
             style={{
               padding: "28px",
               backgroundColor: "#FFFFFF",
@@ -378,6 +383,7 @@ export default function SifreYenilePage() {
               </>
             ) : (
               <form
+                className="sifre-yenile-form"
                 onSubmit={sifreyiYenile}
                 style={{
                   display: "flex",
@@ -539,6 +545,76 @@ export default function SifreYenilePage() {
           </div>
         </section>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .sifre-yenile-page {
+            min-height: 100dvh !important;
+            overflow-x: hidden;
+          }
+
+          .sifre-yenile-header {
+            padding: 18px 16px !important;
+          }
+
+          .sifre-yenile-shell {
+            align-items: flex-start !important;
+            padding: 20px 14px 42px !important;
+          }
+
+          .sifre-yenile-section {
+            max-width: 100% !important;
+          }
+
+          .sifre-yenile-title {
+            margin-bottom: 20px !important;
+          }
+
+          .sifre-yenile-title h1 {
+            font-size: 28px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .sifre-yenile-title p {
+            font-size: 14px !important;
+          }
+
+          .sifre-yenile-card {
+            padding: 20px !important;
+            border-radius: 12px !important;
+          }
+
+          .sifre-yenile-form {
+            gap: 16px !important;
+          }
+
+          .sifre-yenile-card input,
+          .sifre-yenile-card button,
+          .sifre-yenile-card a {
+            min-width: 0;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .sifre-yenile-header {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+          }
+
+          .sifre-yenile-shell {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .sifre-yenile-card {
+            padding: 16px !important;
+          }
+
+          .sifre-yenile-title h1 {
+            font-size: 26px !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

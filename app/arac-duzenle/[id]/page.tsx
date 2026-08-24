@@ -275,7 +275,7 @@ export default function AracDuzenlePage() {
   }
 
   return (
-    <main
+    <main className="arac-duzenle-page"
       style={{
         minHeight: "100vh",
         backgroundColor: "#F7F8FA",
@@ -286,13 +286,14 @@ export default function AracDuzenlePage() {
       }}
     >
       <div
+        className="arac-duzenle-container"
         style={{
           width: "100%",
           maxWidth: "960px",
           margin: "0 auto",
         }}
       >
-        <header style={{ marginBottom: "32px" }}>
+        <header className="arac-duzenle-header" style={{ marginBottom: "32px" }}>
           <Link
             href={`/arac/${aracId}`}
             style={{
@@ -334,6 +335,7 @@ export default function AracDuzenlePage() {
         </header>
 
         <section
+          className="arac-duzenle-card"
           style={{
             width: "100%",
             backgroundColor: "#FFFFFF",
@@ -345,6 +347,7 @@ export default function AracDuzenlePage() {
           }}
         >
           <form
+            className="arac-duzenle-form"
             onSubmit={handleSubmit}
             style={{
               display: "grid",
@@ -387,6 +390,7 @@ export default function AracDuzenlePage() {
             </label>
 
             <div
+              className="arac-duzenle-info arac-duzenle-full"
               style={{
                 gridColumn: "1 / -1",
                 padding: "14px 15px",
@@ -468,6 +472,7 @@ export default function AracDuzenlePage() {
             </label>
 
             <div
+              className="arac-duzenle-info arac-duzenle-full"
               style={{
                 gridColumn: "1 / -1",
                 padding: "15px",
@@ -534,6 +539,7 @@ export default function AracDuzenlePage() {
             </label>
 
             <div
+              className="arac-duzenle-info arac-duzenle-maintenance-info"
               style={{
                 padding: "14px 15px",
                 border: "1px solid #DDE3EA",
@@ -567,6 +573,7 @@ export default function AracDuzenlePage() {
 
             {hata && (
               <div
+                className="arac-duzenle-feedback"
                 role="alert"
                 style={{
                   gridColumn: "1 / -1",
@@ -585,6 +592,7 @@ export default function AracDuzenlePage() {
 
             {mesaj && (
               <div
+                className="arac-duzenle-feedback"
                 role="status"
                 style={{
                   gridColumn: "1 / -1",
@@ -602,6 +610,7 @@ export default function AracDuzenlePage() {
             )}
 
             <div
+              className="arac-duzenle-actions"
               style={{
                 gridColumn: "1 / -1",
                 display: "flex",
@@ -660,6 +669,93 @@ export default function AracDuzenlePage() {
           </form>
         </section>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .arac-duzenle-page {
+            padding: 22px 14px 42px !important;
+            overflow-x: hidden;
+          }
+
+          .arac-duzenle-container {
+            max-width: 100% !important;
+          }
+
+          .arac-duzenle-header {
+            margin-bottom: 22px !important;
+          }
+
+          .arac-duzenle-header h1 {
+            margin-top: 12px !important;
+            font-size: 30px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .arac-duzenle-header p {
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+          }
+
+          .arac-duzenle-card {
+            padding: 18px !important;
+            border-radius: 12px !important;
+          }
+
+          .arac-duzenle-form {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 16px !important;
+          }
+
+          .arac-duzenle-form > * {
+            min-width: 0;
+          }
+
+          .arac-duzenle-full,
+          .arac-duzenle-feedback {
+            grid-column: auto !important;
+          }
+
+          .arac-duzenle-info {
+            padding: 13px !important;
+          }
+
+          .arac-duzenle-maintenance-info {
+            align-self: stretch !important;
+          }
+
+          .arac-duzenle-actions {
+            grid-column: auto !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 9px !important;
+            padding-top: 2px !important;
+          }
+
+          .arac-duzenle-actions > a,
+          .arac-duzenle-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 46px !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .arac-duzenle-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .arac-duzenle-card {
+            padding: 15px !important;
+          }
+
+          .arac-duzenle-actions {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

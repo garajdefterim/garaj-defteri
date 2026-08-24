@@ -306,6 +306,7 @@ export default function BakimDuzenlePage() {
 
   return (
     <main
+      className="bakim-duzenle-page"
       style={{
         minHeight: "100vh",
         padding: "32px 24px 64px",
@@ -316,13 +317,14 @@ export default function BakimDuzenlePage() {
       }}
     >
       <div
+        className="bakim-duzenle-container"
         style={{
           width: "100%",
           maxWidth: "960px",
           margin: "0 auto",
         }}
       >
-        <header style={{ marginBottom: "32px" }}>
+        <header className="bakim-duzenle-header" style={{ marginBottom: "32px" }}>
           <Link
             href={aracId ? `/bakim-gecmisi/${aracId}` : "/dashboard"}
             style={{
@@ -362,6 +364,7 @@ export default function BakimDuzenlePage() {
         </header>
 
         <section
+          className="bakim-duzenle-card"
           style={{
             width: "100%",
             padding: "28px",
@@ -374,6 +377,7 @@ export default function BakimDuzenlePage() {
         >
           {arac && (
             <div
+              className="bakim-duzenle-vehicle"
               style={{
                 marginBottom: "24px",
                 padding: "14px 15px",
@@ -444,6 +448,7 @@ export default function BakimDuzenlePage() {
           )}
 
           <form
+            className="bakim-duzenle-form"
             onSubmit={handleSubmit}
             style={{
               display: "grid",
@@ -501,6 +506,7 @@ export default function BakimDuzenlePage() {
             </label>
 
             <label
+              className="bakim-duzenle-description"
               style={{
                 ...labelStyle,
                 gridColumn: "1 / -1",
@@ -525,6 +531,7 @@ export default function BakimDuzenlePage() {
             </label>
 
             <div
+              className="bakim-duzenle-actions"
               style={{
                 gridColumn: "1 / -1",
                 display: "flex",
@@ -581,6 +588,93 @@ export default function BakimDuzenlePage() {
           </form>
         </section>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .bakim-duzenle-page {
+            padding: 22px 14px 42px !important;
+            overflow-x: hidden;
+          }
+
+          .bakim-duzenle-container {
+            max-width: 100% !important;
+          }
+
+          .bakim-duzenle-header {
+            margin-bottom: 22px !important;
+          }
+
+          .bakim-duzenle-header h1 {
+            margin-top: 12px !important;
+            font-size: 30px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .bakim-duzenle-header p {
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+          }
+
+          .bakim-duzenle-card {
+            padding: 18px !important;
+            border-radius: 12px !important;
+          }
+
+          .bakim-duzenle-vehicle {
+            margin-bottom: 18px !important;
+            padding: 13px !important;
+          }
+
+          .bakim-duzenle-form {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 16px !important;
+          }
+
+          .bakim-duzenle-form > * {
+            min-width: 0;
+          }
+
+          .bakim-duzenle-description {
+            grid-column: auto !important;
+          }
+
+          .bakim-duzenle-description textarea {
+            min-height: 120px !important;
+          }
+
+          .bakim-duzenle-actions {
+            grid-column: auto !important;
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 9px !important;
+            padding-top: 2px !important;
+          }
+
+          .bakim-duzenle-actions > a,
+          .bakim-duzenle-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 46px !important;
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .bakim-duzenle-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .bakim-duzenle-card {
+            padding: 15px !important;
+          }
+
+          .bakim-duzenle-actions {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

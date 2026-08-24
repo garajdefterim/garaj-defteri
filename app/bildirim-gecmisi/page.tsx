@@ -207,6 +207,7 @@ export default function BildirimGecmisiPage() {
 
   return (
     <main
+      className="bildirim-gecmisi-page"
       style={{
         minHeight: "100vh",
         padding: "32px 24px 64px",
@@ -216,8 +217,9 @@ export default function BildirimGecmisiPage() {
           'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
-      <div style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}>
+      <div className="bildirim-gecmisi-container" style={{ width: "100%", maxWidth: "1000px", margin: "0 auto" }}>
         <header
+          className="bildirim-gecmisi-header"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -285,6 +287,7 @@ export default function BildirimGecmisiPage() {
 
         {!yukleniyor && (
           <section
+            className="bildirim-gecmisi-stats"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
@@ -361,13 +364,14 @@ export default function BildirimGecmisiPage() {
         )}
 
         {!yukleniyor && bildirimler.length > 0 && (
-          <section style={{ marginTop: "18px", display: "grid", gap: "12px" }}>
+          <section className="bildirim-gecmisi-list" style={{ marginTop: "18px", display: "grid", gap: "12px" }}>
             {bildirimler.map((bildirim) => {
               const gorunum = bildirimTurunuBul(bildirim.notification_type);
               const arac = aracHaritasi.get(bildirim.vehicle_id);
 
               return (
                 <article
+                  className="bildirim-gecmisi-item"
                   key={bildirim.id}
                   style={{
                     padding: "20px",
@@ -378,6 +382,7 @@ export default function BildirimGecmisiPage() {
                   }}
                 >
                   <div
+                    className="bildirim-gecmisi-item-head"
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
@@ -432,7 +437,7 @@ export default function BildirimGecmisiPage() {
                       </p>
                     </div>
 
-                    <div style={{ textAlign: "right" }}>
+                    <div className="bildirim-gecmisi-time" style={{ textAlign: "right" }}>
                       <strong style={{ display: "block", fontSize: "13px" }}>
                         {tarihSaatFormatla(
                           bildirim.sent_at ?? bildirim.created_at
@@ -452,6 +457,7 @@ export default function BildirimGecmisiPage() {
                   </div>
 
                   <div
+                    className="bildirim-gecmisi-info-grid"
                     style={{
                       display: "grid",
                       gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
@@ -474,6 +480,109 @@ export default function BildirimGecmisiPage() {
           </section>
         )}
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .bildirim-gecmisi-page {
+            padding: 22px 14px 44px !important;
+            overflow-x: hidden;
+          }
+
+          .bildirim-gecmisi-container {
+            max-width: 100% !important;
+          }
+
+          .bildirim-gecmisi-header {
+            align-items: stretch !important;
+            gap: 14px !important;
+            margin-bottom: 20px !important;
+          }
+
+          .bildirim-gecmisi-header > div,
+          .bildirim-gecmisi-header > a {
+            width: 100% !important;
+          }
+
+          .bildirim-gecmisi-header > a {
+            min-height: 46px !important;
+          }
+
+          .bildirim-gecmisi-header h1 {
+            margin-top: 12px !important;
+            font-size: 30px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .bildirim-gecmisi-header p {
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+          }
+
+          .bildirim-gecmisi-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px !important;
+          }
+
+          .bildirim-gecmisi-stats > div {
+            min-width: 0;
+            padding: 15px !important;
+          }
+
+          .bildirim-gecmisi-stats > div:first-child {
+            grid-column: 1 / -1;
+          }
+
+          .bildirim-gecmisi-item {
+            padding: 16px !important;
+          }
+
+          .bildirim-gecmisi-item-head {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 12px !important;
+          }
+
+          .bildirim-gecmisi-item-head > div {
+            min-width: 0;
+          }
+
+          .bildirim-gecmisi-item h2,
+          .bildirim-gecmisi-item p {
+            overflow-wrap: anywhere;
+          }
+
+          .bildirim-gecmisi-time {
+            text-align: left !important;
+            padding-top: 10px;
+            border-top: 1px solid var(--border);
+          }
+
+          .bildirim-gecmisi-info-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 8px !important;
+            margin-top: 14px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .bildirim-gecmisi-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .bildirim-gecmisi-stats {
+            grid-template-columns: 1fr !important;
+          }
+
+          .bildirim-gecmisi-stats > div:first-child {
+            grid-column: auto;
+          }
+
+          .bildirim-gecmisi-item {
+            padding: 14px !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

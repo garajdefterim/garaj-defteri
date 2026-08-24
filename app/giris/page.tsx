@@ -229,7 +229,7 @@ export default function GirisPage() {
     !captchaToken;
 
   return (
-    <main
+    <main className="giris-page"
       style={{
         minHeight: "100vh",
         backgroundColor: "#F7F8FA",
@@ -240,7 +240,7 @@ export default function GirisPage() {
         flexDirection: "column",
       }}
     >
-      <header
+      <header className="giris-header"
         style={{
           width: "100%",
           maxWidth: "1180px",
@@ -253,6 +253,7 @@ export default function GirisPage() {
       </header>
 
       <div
+        className="giris-shell"
         style={{
           flex: 1,
           display: "flex",
@@ -262,12 +263,14 @@ export default function GirisPage() {
         }}
       >
         <section
+          className="giris-section"
           style={{
             width: "100%",
             maxWidth: "420px",
           }}
         >
           <div
+            className="giris-title"
             style={{
               marginBottom: "28px",
             }}
@@ -298,6 +301,7 @@ export default function GirisPage() {
           </div>
 
           <div
+            className="giris-card"
             style={{
               padding: "28px",
               backgroundColor: "#FFFFFF",
@@ -381,6 +385,7 @@ export default function GirisPage() {
             </div>
 
             <form
+              className="giris-form"
               onSubmit={handleSubmit}
               style={{
                 display: "flex",
@@ -500,6 +505,7 @@ export default function GirisPage() {
 
               {hcaptchaSiteKey && (
                 <div
+                  className="giris-captcha"
                   style={{
                     display: "flex",
                     justifyContent: "center",
@@ -621,6 +627,93 @@ export default function GirisPage() {
           </p>
         </section>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .giris-page {
+            min-height: 100dvh !important;
+            overflow-x: hidden;
+          }
+
+          .giris-header {
+            padding: 18px 16px !important;
+          }
+
+          .giris-shell {
+            align-items: flex-start !important;
+            padding: 20px 14px 42px !important;
+          }
+
+          .giris-section {
+            max-width: 100% !important;
+          }
+
+          .giris-title {
+            margin-bottom: 20px !important;
+          }
+
+          .giris-title h1 {
+            font-size: 28px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .giris-title p {
+            font-size: 14px !important;
+          }
+
+          .giris-card {
+            padding: 20px !important;
+            border-radius: 12px !important;
+          }
+
+          .giris-form {
+            gap: 16px !important;
+          }
+
+          .giris-captcha {
+            width: 100% !important;
+            justify-content: center !important;
+          }
+
+          .giris-card button,
+          .giris-card input {
+            min-width: 0;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .giris-header {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+          }
+
+          .giris-shell {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .giris-card {
+            padding: 16px !important;
+          }
+
+          .giris-title h1 {
+            font-size: 26px !important;
+          }
+
+          .giris-captcha {
+            transform: scale(0.92);
+            transform-origin: center top;
+            margin-bottom: -6px;
+          }
+        }
+
+        @media (max-width: 340px) {
+          .giris-captcha {
+            transform: scale(0.84);
+            margin-bottom: -12px;
+          }
+        }
+      `}</style>
     </main>
   );
 }

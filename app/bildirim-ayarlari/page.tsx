@@ -212,6 +212,7 @@ export default function BildirimAyarlariPage() {
 
   return (
     <main
+      className="bildirim-ayarlari-page"
       style={{
         minHeight: "100vh",
         padding: "32px 24px 64px",
@@ -221,8 +222,9 @@ export default function BildirimAyarlariPage() {
           'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
       }}
     >
-      <div style={{ width: "100%", maxWidth: "960px", margin: "0 auto" }}>
+      <div className="bildirim-ayarlari-container" style={{ width: "100%", maxWidth: "960px", margin: "0 auto" }}>
         <header
+          className="bildirim-ayarlari-header"
           style={{
             display: "flex",
             justifyContent: "space-between",
@@ -292,6 +294,7 @@ export default function BildirimAyarlariPage() {
         </header>
 
         <section
+          className="bildirim-ayarlari-stats"
           style={{
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
@@ -339,6 +342,7 @@ export default function BildirimAyarlariPage() {
         </section>
 
         <section
+          className="bildirim-ayarlari-plan"
           style={{
             marginTop: "16px",
             padding: "24px",
@@ -362,6 +366,7 @@ export default function BildirimAyarlariPage() {
           </p>
 
           <div
+            className="bildirim-ayarlari-plan-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
@@ -408,6 +413,7 @@ export default function BildirimAyarlariPage() {
         </section>
 
         <form
+          className="bildirim-ayarlari-form"
           onSubmit={ayarlariKaydet}
           style={{
             marginTop: "16px",
@@ -433,6 +439,7 @@ export default function BildirimAyarlariPage() {
 
           <div style={{ display: "grid", gap: "20px" }}>
             <div
+              className="bildirim-ayarlari-switch-row"
               style={{
                 display: "flex",
                 justifyContent: "space-between",
@@ -629,7 +636,7 @@ export default function BildirimAyarlariPage() {
               </div>
             )}
 
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <div className="bildirim-ayarlari-save" style={{ display: "flex", justifyContent: "flex-end" }}>
               <button
                 type="submit"
                 disabled={kaydediliyor}
@@ -652,6 +659,125 @@ export default function BildirimAyarlariPage() {
           </div>
         </form>
       </div>
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .bildirim-ayarlari-page {
+            padding: 22px 14px 44px !important;
+            overflow-x: hidden;
+          }
+
+          .bildirim-ayarlari-container {
+            max-width: 100% !important;
+          }
+
+          .bildirim-ayarlari-header {
+            align-items: stretch !important;
+            gap: 14px !important;
+            margin-bottom: 20px !important;
+          }
+
+          .bildirim-ayarlari-header > div {
+            width: 100%;
+          }
+
+          .bildirim-ayarlari-header > a {
+            width: 100% !important;
+            min-height: 46px !important;
+          }
+
+          .bildirim-ayarlari-header h1 {
+            margin-top: 12px !important;
+            font-size: 30px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .bildirim-ayarlari-header p {
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+          }
+
+          .bildirim-ayarlari-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px !important;
+          }
+
+          .bildirim-ayarlari-stats > div {
+            min-width: 0;
+            padding: 16px !important;
+          }
+
+          .bildirim-ayarlari-stats > div:last-child {
+            grid-column: 1 / -1;
+          }
+
+          .bildirim-ayarlari-stats strong {
+            overflow-wrap: anywhere;
+          }
+
+          .bildirim-ayarlari-plan,
+          .bildirim-ayarlari-form {
+            padding: 18px !important;
+          }
+
+          .bildirim-ayarlari-plan-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 9px !important;
+          }
+
+          .bildirim-ayarlari-plan-grid > div {
+            min-width: 0;
+            padding: 13px !important;
+          }
+
+          .bildirim-ayarlari-switch-row {
+            align-items: flex-start !important;
+            flex-wrap: nowrap !important;
+            gap: 12px !important;
+            padding: 14px !important;
+          }
+
+          .bildirim-ayarlari-switch-row > div {
+            min-width: 0;
+            flex: 1;
+          }
+
+          .bildirim-ayarlari-switch-row > button {
+            flex-shrink: 0;
+          }
+
+          .bildirim-ayarlari-save {
+            justify-content: stretch !important;
+          }
+
+          .bildirim-ayarlari-save > button {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 46px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .bildirim-ayarlari-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .bildirim-ayarlari-stats,
+          .bildirim-ayarlari-plan-grid {
+            grid-template-columns: 1fr !important;
+          }
+
+          .bildirim-ayarlari-stats > div:last-child {
+            grid-column: auto;
+          }
+
+          .bildirim-ayarlari-plan,
+          .bildirim-ayarlari-form {
+            padding: 15px !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }
