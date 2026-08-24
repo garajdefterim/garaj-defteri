@@ -847,7 +847,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <main
+    <main className="dashboard-page"
       style={{
         minHeight: "100vh",
         padding: "32px 24px 64px",
@@ -864,7 +864,7 @@ export default function DashboardPage() {
           margin: "0 auto",
         }}
       >
-        <header
+        <header className="dashboard-header"
           style={{
             display: "grid",
             gap: "22px",
@@ -897,6 +897,7 @@ export default function DashboardPage() {
           </div>
 
           <div
+            className="dashboard-top-actions"
             style={{
               display: "grid",
               gridTemplateColumns:
@@ -997,6 +998,7 @@ export default function DashboardPage() {
 
         {!yukleniyor && (
           <section
+            className="dashboard-stats"
             style={{
               display: "grid",
               gridTemplateColumns:
@@ -1056,6 +1058,7 @@ export default function DashboardPage() {
 
         {!yukleniyor && (
           <section
+            className="dashboard-email-card"
             style={{
               ...kart,
               marginBottom: "24px",
@@ -1209,6 +1212,7 @@ export default function DashboardPage() {
 
         {!yukleniyor && araclar.length > 0 && (
           <section
+            className="dashboard-notification-center"
             style={{
               ...kart,
               marginBottom: "30px",
@@ -1409,7 +1413,7 @@ export default function DashboardPage() {
         )}
 
         {!yukleniyor && araclar.length > 0 && (
-          <section>
+          <section className="dashboard-vehicles-section">
             <h2
               style={{
                 margin: "0 0 20px",
@@ -1420,6 +1424,7 @@ export default function DashboardPage() {
             </h2>
 
             <div
+              className="dashboard-vehicles-grid"
               style={{
                 display: "grid",
                 gridTemplateColumns:
@@ -1433,6 +1438,7 @@ export default function DashboardPage() {
 
                 return (
                   <article
+                    className="dashboard-vehicle-card"
                     key={arac.id}
                     style={{
                       ...kart,
@@ -1626,6 +1632,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div
+                      className="dashboard-vehicle-actions"
                       style={{
                         display: "grid",
                         gridTemplateColumns:
@@ -1868,6 +1875,116 @@ export default function DashboardPage() {
           </section>
         </div>
       )}
+
+      <style jsx global>{`
+        @media (max-width: 700px) {
+          .dashboard-page {
+            padding: 22px 14px 44px !important;
+            overflow-x: hidden;
+          }
+
+          .dashboard-header {
+            gap: 18px !important;
+            margin-bottom: 22px !important;
+          }
+
+          .dashboard-top-actions {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+          }
+
+          .dashboard-top-actions > a,
+          .dashboard-top-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+            min-height: 44px;
+            padding: 10px 8px !important;
+            font-size: 12px !important;
+            line-height: 1.25;
+          }
+
+          .dashboard-top-actions > :nth-child(5) {
+            grid-column: 1 / -1;
+          }
+
+          .dashboard-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px !important;
+            margin-bottom: 22px !important;
+          }
+
+          .dashboard-stats > div {
+            min-width: 0;
+            padding: 16px !important;
+          }
+
+          .dashboard-stats > div:last-child {
+            grid-column: 1 / -1;
+          }
+
+          .dashboard-email-card,
+          .dashboard-notification-center {
+            padding: 16px !important;
+          }
+
+          .dashboard-notification-center a {
+            align-items: flex-start !important;
+            gap: 10px !important;
+            padding: 13px !important;
+          }
+
+          .dashboard-vehicles-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 14px !important;
+          }
+
+          .dashboard-vehicle-card {
+            min-width: 0;
+            padding: 17px !important;
+          }
+
+          .dashboard-vehicle-card h3 {
+            overflow-wrap: anywhere;
+          }
+
+          .dashboard-vehicle-actions {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 8px !important;
+            margin-top: 18px !important;
+          }
+
+          .dashboard-vehicle-actions > a,
+          .dashboard-vehicle-actions > button {
+            width: 100% !important;
+            min-width: 0 !important;
+            padding: 11px 7px !important;
+            font-size: 13px !important;
+          }
+
+          .dashboard-vehicle-actions > :last-child {
+            grid-column: 1 / -1;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .dashboard-page {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .dashboard-top-actions,
+          .dashboard-stats,
+          .dashboard-vehicle-actions {
+            grid-template-columns: 1fr !important;
+          }
+
+          .dashboard-top-actions > :nth-child(5),
+          .dashboard-stats > div:last-child,
+          .dashboard-vehicle-actions > :last-child {
+            grid-column: auto;
+          }
+        }
+      `}</style>
     </main>
   );
 }
