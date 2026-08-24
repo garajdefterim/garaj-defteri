@@ -23,7 +23,7 @@ export default function PanelPage() {
             color: "#0F172A",
           }}
         >
-          Garaj Defteri Paneli
+          GARAJ DEFTERİ Paneli
         </h1>
 
         <p

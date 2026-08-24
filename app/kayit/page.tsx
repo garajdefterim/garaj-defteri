@@ -77,7 +77,7 @@ function Brand() {
           letterSpacing: "-0.35px",
         }}
       >
-        Garaj Defteri
+        GARAJ DEFTERİ
       </div>
     </Link>
   );
@@ -394,7 +394,7 @@ export default function KayitPage() {
                 lineHeight: 1.6,
               }}
             >
-              Garaj Defteri'ni kullanmaya başlamak
+              GARAJ DEFTERİ'ni kullanmaya başlamak
               için hesabınızı oluşturun.
             </p>
           </div>
