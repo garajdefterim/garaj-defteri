@@ -1654,9 +1654,11 @@ export default function DashboardPage() {
 
                       <Link
                         href={`/bakim-ekle/${arac.id}`}
+                        className="dashboard-maintenance-add-button"
                         style={butonStili(
                           "#111827",
-                          "#FFFFFF"
+                          "#FFFFFF",
+                          "#374151"
                         )}
                       >
                         Bakım Ekle
@@ -1877,6 +1879,25 @@ export default function DashboardPage() {
       )}
 
       <style jsx global>{`
+
+        .dashboard-maintenance-add-button {
+          background-color: #111827 !important;
+          color: #ffffff !important;
+          border: 1px solid #374151 !important;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          .dashboard-maintenance-add-button {
+            background-color: #334155 !important;
+            color: #ffffff !important;
+            border-color: #64748b !important;
+          }
+
+          .dashboard-maintenance-add-button:hover {
+            background-color: #475569 !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .dashboard-page {
             padding: 22px 14px 44px !important;
