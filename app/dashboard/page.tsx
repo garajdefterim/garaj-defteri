@@ -1898,6 +1898,91 @@ export default function DashboardPage() {
           }
         }
 
+
+        /* Dashboard — koyu tema düzeltmeleri */
+        html[data-theme="koyu"] .dashboard-page {
+          background-color: #080d17 !important;
+          color: #f8fafc !important;
+        }
+
+        html[data-theme="koyu"] .dashboard-stats > div,
+        html[data-theme="koyu"] .dashboard-email-card,
+        html[data-theme="koyu"] .dashboard-notification-center,
+        html[data-theme="koyu"] .dashboard-vehicle-card {
+          background-color: #101827 !important;
+          border-color: #243044 !important;
+          color: #f8fafc !important;
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.10) !important;
+        }
+
+        html[data-theme="koyu"] .dashboard-page h1,
+        html[data-theme="koyu"] .dashboard-page h2,
+        html[data-theme="koyu"] .dashboard-page h3,
+        html[data-theme="koyu"] .dashboard-page strong {
+          color: #f8fafc;
+        }
+
+        html[data-theme="koyu"] .dashboard-page [style*="color: #6B7280"],
+        html[data-theme="koyu"] .dashboard-page [style*="color: #475569"],
+        html[data-theme="koyu"] .dashboard-page [style*="color: #94A3B8"] {
+          color: #9fb2ca !important;
+        }
+
+        html[data-theme="koyu"] .dashboard-page [style*="background-color: #F8FAFC"],
+        html[data-theme="koyu"] .dashboard-page [style*="background-color: #F1F5F9"] {
+          background-color: #0c1422 !important;
+          border-color: #243044 !important;
+        }
+
+        /* Üst menü ve araç aksiyonlarındaki açık butonlar */
+        html[data-theme="koyu"] .dashboard-top-actions > a:not([style*="#1D4ED8"]),
+        html[data-theme="koyu"] .dashboard-top-actions > button,
+        html[data-theme="koyu"] .dashboard-vehicle-actions > a:not([style*="#1D4ED8"]),
+        html[data-theme="koyu"] .dashboard-vehicle-actions > button {
+          background-color: #162033 !important;
+          border-color: #34445d !important;
+          color: #f8fafc !important;
+        }
+
+        /* Başarı / açık / gün kaldı kutuları */
+        html[data-theme="koyu"] .dashboard-page [style*="background-color: #F0FDF4"] {
+          background-color: #0d281c !important;
+          border-color: #245c3d !important;
+          color: #86efac !important;
+        }
+
+        html[data-theme="koyu"] .dashboard-page [style*="color: #166534"] {
+          color: #86efac !important;
+        }
+
+        /* Uyarı ve hata yüzeyleri */
+        html[data-theme="koyu"] .dashboard-page [style*="background-color: #FEF2F2"] {
+          background-color: #321517 !important;
+          border-color: #713238 !important;
+          color: #fca5a5 !important;
+        }
+
+        html[data-theme="koyu"] .dashboard-page [style*="color: #B91C1C"] {
+          color: #fca5a5 !important;
+        }
+
+        html[data-theme="koyu"] .dashboard-page [style*="background-color: #FFF7ED"] {
+          background-color: #33200f !important;
+          border-color: #74451f !important;
+          color: #fdba74 !important;
+        }
+
+        html[data-theme="koyu"] .dashboard-page [style*="color: #C2410C"] {
+          color: #fdba74 !important;
+        }
+
+        /* Silme penceresi */
+        html[data-theme="koyu"] .dashboard-page [role="dialog"] {
+          background-color: #101827 !important;
+          border-color: #243044 !important;
+          color: #f8fafc !important;
+        }
+
         @media (max-width: 700px) {
           .dashboard-page {
             padding: 22px 14px 44px !important;
