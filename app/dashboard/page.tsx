@@ -728,6 +728,15 @@ export default function DashboardPage() {
           </div>
 
           <span
+            className={`dashboard-status-badge ${
+              durum.arkaPlan === "#F0FDF4"
+                ? "dashboard-status-success"
+                : durum.arkaPlan === "#FEF2F2"
+                  ? "dashboard-status-danger"
+                  : durum.arkaPlan === "#FFF7ED"
+                    ? "dashboard-status-warning"
+                    : "dashboard-status-neutral"
+            }`}
             style={{
               padding: "6px 10px",
               borderRadius: "999px",
@@ -828,6 +837,15 @@ export default function DashboardPage() {
           </div>
 
           <span
+            className={`dashboard-status-badge ${
+              durum.arkaPlan === "#F0FDF4"
+                ? "dashboard-status-success"
+                : durum.arkaPlan === "#FEF2F2"
+                  ? "dashboard-status-danger"
+                  : durum.arkaPlan === "#FFF7ED"
+                    ? "dashboard-status-warning"
+                    : "dashboard-status-neutral"
+            }`}
             style={{
               padding: "6px 10px",
               borderRadius: "999px",
@@ -1100,6 +1118,11 @@ export default function DashboardPage() {
                   </h2>
 
                   <span
+                    className={
+                      emailBildirimiAcik
+                        ? "dashboard-email-status dashboard-status-success"
+                        : "dashboard-email-status dashboard-status-danger"
+                    }
                     style={{
                       padding: "5px 9px",
                       borderRadius: "999px",
@@ -1267,6 +1290,7 @@ export default function DashboardPage() {
 
             {bildirimler.length === 0 ? (
               <div
+                className="dashboard-success-panel"
                 style={{
                   marginTop: "20px",
                   padding: "17px",
@@ -1609,6 +1633,11 @@ export default function DashboardPage() {
                     </div>
 
                     <div
+                      className={
+                        emailBildirimiAcik
+                          ? "dashboard-vehicle-email-banner dashboard-status-success"
+                          : "dashboard-vehicle-email-banner dashboard-status-danger"
+                      }
                       style={{
                         marginTop: "14px",
                         padding: "12px",
@@ -1934,46 +1963,47 @@ export default function DashboardPage() {
           border-color: #243044 !important;
         }
 
-        /* Üst menü ve araç aksiyonlarındaki açık butonlar */
-        html[data-theme="koyu"] .dashboard-top-actions > a:not([style*="#1D4ED8"]),
+        /* Üst menü ve araç aksiyonları — style-string yerine sabit href kullan */
+        html[data-theme="koyu"] .dashboard-top-actions > a:not([href="/arac-ekle"]),
         html[data-theme="koyu"] .dashboard-top-actions > button,
-        html[data-theme="koyu"] .dashboard-vehicle-actions > a:not([style*="#1D4ED8"]),
+        html[data-theme="koyu"] .dashboard-vehicle-actions > a:not([href^="/arac-duzenle/"]),
         html[data-theme="koyu"] .dashboard-vehicle-actions > button {
           background-color: #162033 !important;
           border-color: #34445d !important;
           color: #f8fafc !important;
         }
 
-        /* Başarı / açık / gün kaldı kutuları */
-        html[data-theme="koyu"] .dashboard-page [style*="background-color: #F0FDF4"] {
+        html[data-theme="koyu"] .dashboard-top-actions > a[href="/arac-ekle"],
+        html[data-theme="koyu"] .dashboard-vehicle-actions > a[href^="/arac-duzenle/"] {
+          background-color: #2563eb !important;
+          border-color: #2563eb !important;
+          color: #ffffff !important;
+        }
+
+        /* Durum renkleri — doğrudan className üzerinden */
+        html[data-theme="koyu"] .dashboard-status-success,
+        html[data-theme="koyu"] .dashboard-success-panel {
           background-color: #0d281c !important;
           border-color: #245c3d !important;
           color: #86efac !important;
         }
 
-        html[data-theme="koyu"] .dashboard-page [style*="color: #166534"] {
-          color: #86efac !important;
-        }
-
-        /* Uyarı ve hata yüzeyleri */
-        html[data-theme="koyu"] .dashboard-page [style*="background-color: #FEF2F2"] {
+        html[data-theme="koyu"] .dashboard-status-danger {
           background-color: #321517 !important;
           border-color: #713238 !important;
           color: #fca5a5 !important;
         }
 
-        html[data-theme="koyu"] .dashboard-page [style*="color: #B91C1C"] {
-          color: #fca5a5 !important;
-        }
-
-        html[data-theme="koyu"] .dashboard-page [style*="background-color: #FFF7ED"] {
+        html[data-theme="koyu"] .dashboard-status-warning {
           background-color: #33200f !important;
           border-color: #74451f !important;
           color: #fdba74 !important;
         }
 
-        html[data-theme="koyu"] .dashboard-page [style*="color: #C2410C"] {
-          color: #fdba74 !important;
+        html[data-theme="koyu"] .dashboard-status-neutral {
+          background-color: #162033 !important;
+          border-color: #34445d !important;
+          color: #cbd5e1 !important;
         }
 
         /* Silme penceresi */
