@@ -456,17 +456,39 @@ export default function BakimGecmisiPage() {
                   </div>
 
                   {kayit.aciklama && (
-                    <p
+                    <div
+                      className="bakim-gecmisi-aciklama"
                       style={{
-                        margin: "16px 0 0",
-                        color: "#4B5563",
-                        fontSize: "14px",
-                        lineHeight: 1.7,
-                        whiteSpace: "pre-wrap",
+                        marginTop: "14px",
+                        padding: "13px 14px",
+                        border: "1px solid #E5E7EB",
+                        borderRadius: "9px",
+                        backgroundColor: "#FAFAFA",
                       }}
                     >
-                      {kayit.aciklama}
-                    </p>
+                      <strong
+                        style={{
+                          display: "block",
+                          marginBottom: "6px",
+                          color: "#374151",
+                          fontSize: "13px",
+                        }}
+                      >
+                        Açıklama
+                      </strong>
+                      <p
+                        style={{
+                          margin: 0,
+                          color: "#4B5563",
+                          fontSize: "14px",
+                          lineHeight: 1.7,
+                          whiteSpace: "pre-wrap",
+                          overflowWrap: "anywhere",
+                        }}
+                      >
+                        {kayit.aciklama}
+                      </p>
+                    </div>
                   )}
 
                   <div
@@ -654,6 +676,39 @@ export default function BakimGecmisiPage() {
       )}
 
       <style jsx global>{`
+        /* Bakım geçmişi — koyu tema */
+        html[data-theme="koyu"] .bakim-gecmisi-page {
+          background-color: #080d17 !important;
+          color: #f8fafc !important;
+        }
+
+        html[data-theme="koyu"] .bakim-gecmisi-vehicle,
+        html[data-theme="koyu"] .bakim-gecmisi-stats > div,
+        html[data-theme="koyu"] .bakim-gecmisi-item,
+        html[data-theme="koyu"] .bakim-gecmisi-dialog {
+          background-color: #101827 !important;
+          border-color: #243044 !important;
+        }
+
+        html[data-theme="koyu"] .bakim-gecmisi-item > div[style*="background-color"],
+        html[data-theme="koyu"] .bakim-gecmisi-aciklama,
+        html[data-theme="koyu"] .bakim-gecmisi-dialog > div[style*="background-color"] {
+          background-color: #0c1422 !important;
+          border-color: #243044 !important;
+        }
+
+        html[data-theme="koyu"] .bakim-gecmisi-page h1,
+        html[data-theme="koyu"] .bakim-gecmisi-page h2,
+        html[data-theme="koyu"] .bakim-gecmisi-page strong {
+          color: #f8fafc;
+        }
+
+        html[data-theme="koyu"] .bakim-gecmisi-aciklama p,
+        html[data-theme="koyu"] .bakim-gecmisi-page [style*="color: #6B7280"],
+        html[data-theme="koyu"] .bakim-gecmisi-page [style*="color: #4B5563"] {
+          color: #9fb2ca !important;
+        }
+
         @media (max-width: 700px) {
           .bakim-gecmisi-page {
             padding: 22px 14px 44px !important;
