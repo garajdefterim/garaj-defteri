@@ -1983,9 +1983,9 @@ export default function DashboardPage() {
         /* Durum renkleri — doğrudan className üzerinden */
         html[data-theme="koyu"] .dashboard-status-success,
         html[data-theme="koyu"] .dashboard-success-panel {
-          background-color: #0d281c !important;
-          border-color: #245c3d !important;
-          color: #86efac !important;
+          background-color: #162033 !important;
+          border-color: #34445d !important;
+          color: #c7d7ea !important;
         }
 
         html[data-theme="koyu"] .dashboard-status-danger {
@@ -2003,7 +2003,7 @@ export default function DashboardPage() {
         html[data-theme="koyu"] .dashboard-status-neutral {
           background-color: #162033 !important;
           border-color: #34445d !important;
-          color: #cbd5e1 !important;
+          color: #c7d7ea !important;
         }
 
         /* Silme penceresi */
