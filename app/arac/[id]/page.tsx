@@ -1326,6 +1326,57 @@ export default function AracDetayPage() {
           }
         }
 
+
+        /* Araç detay sayfası — koyu tema */
+        html[data-theme="koyu"] .arac-detay-page {
+          background-color: #080d17 !important;
+          color: #f8fafc !important;
+        }
+
+        html[data-theme="koyu"] .arac-detay-hero,
+        html[data-theme="koyu"] .arac-detay-summary > div,
+        html[data-theme="koyu"] .arac-detay-maintenance {
+          background-color: #101827 !important;
+          border-color: #243044 !important;
+          box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12) !important;
+        }
+
+        html[data-theme="koyu"] .arac-detay-hero h1,
+        html[data-theme="koyu"] .arac-detay-summary strong,
+        html[data-theme="koyu"] .arac-detay-maintenance h2,
+        html[data-theme="koyu"] .arac-detay-maintenance-item strong,
+        html[data-theme="koyu"] .arac-detay-mini-stats strong {
+          color: #f8fafc !important;
+        }
+
+        html[data-theme="koyu"] .arac-detay-mini-stats > div,
+        html[data-theme="koyu"] .arac-detay-dates > div,
+        html[data-theme="koyu"] .arac-detay-maintenance-item,
+        html[data-theme="koyu"] .arac-detay-maintenance > div[style*="background-color: #F7F8FA"] {
+          background-color: #0c1422 !important;
+          border-color: #243044 !important;
+        }
+
+        html[data-theme="koyu"] .arac-detay-page [style*="color: #374151"],
+        html[data-theme="koyu"] .arac-detay-page [style*="color: #475569"] {
+          color: #cbd5e1 !important;
+        }
+
+        html[data-theme="koyu"] .arac-detay-page [style*="color: #6B7280"],
+        html[data-theme="koyu"] .arac-detay-page [style*="color: #9CA3AF"] {
+          color: #94a3b8 !important;
+        }
+
+        html[data-theme="koyu"] .arac-detay-page [style*="background-color: #F1F5F9"] {
+          background-color: #162033 !important;
+          color: #cbd5e1 !important;
+        }
+
+        html[data-theme="koyu"] .arac-detay-page a[href="/dashboard"],
+        html[data-theme="koyu"] .arac-detay-page a[href^="/bakim-gecmisi/"] {
+          color: #7db4ff !important;
+        }
+
         @media (max-width: 380px) {
           .arac-detay-page {
             padding-left: 10px !important;

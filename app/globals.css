@@ -1718,3 +1718,87 @@ html[data-theme="koyu"] button[style*="background-color: #dc2626"] {
 }
 
 /* Durum renkleri kart/badge olarak kalabilir; aksiyon butonlarına yayılmaz. */
+
+/* =========================================================
+   GARAJ DEFTERİ — KOYU TEMA / INLINE BACKGROUND DÜZELTMESİ
+   React inline style içinde "background" shorthand kullanılan
+   açık kartların koyu temada beyaz kalmasını engeller.
+   Bu bölüm bilerek dosyanın EN ALTINDADIR.
+   ========================================================= */
+
+html[data-theme="koyu"] [style*="background: #FFFFFF"],
+html[data-theme="koyu"] [style*="background: #ffffff"],
+html[data-theme="koyu"] [style*="background: rgb(255, 255, 255)"],
+html[data-theme="koyu"] [style*="background: white"],
+html[data-theme="koyu"] [style*="background-color: #F7F8FA"],
+html[data-theme="koyu"] [style*="background-color: #f7f8fa"],
+html[data-theme="koyu"] [style*="background-color: rgb(247, 248, 250)"],
+html[data-theme="koyu"] [style*="background: #F7F8FA"],
+html[data-theme="koyu"] [style*="background: #f7f8fa"],
+html[data-theme="koyu"] [style*="background: rgb(247, 248, 250)"],
+html[data-theme="koyu"] [style*="background-color: #F9FAFB"],
+html[data-theme="koyu"] [style*="background-color: #f9fafb"],
+html[data-theme="koyu"] [style*="background-color: rgb(249, 250, 251)"],
+html[data-theme="koyu"] [style*="background: #F9FAFB"],
+html[data-theme="koyu"] [style*="background: #f9fafb"],
+html[data-theme="koyu"] [style*="background: rgb(249, 250, 251)"] {
+  background: #101827 !important;
+  background-color: #101827 !important;
+  border-color: #243044 !important;
+}
+
+html[data-theme="koyu"] [style*="background: #F8FAFC"],
+html[data-theme="koyu"] [style*="background: #f8fafc"],
+html[data-theme="koyu"] [style*="background: rgb(248, 250, 252)"],
+html[data-theme="koyu"] [style*="background: #FAFAFA"],
+html[data-theme="koyu"] [style*="background: #fafafa"],
+html[data-theme="koyu"] [style*="background: rgb(250, 250, 250)"] {
+  background: #0c1422 !important;
+  background-color: #0c1422 !important;
+  border-color: #243044 !important;
+}
+
+html[data-theme="koyu"] [style*="background: #F1F5F9"],
+html[data-theme="koyu"] [style*="background: #f1f5f9"],
+html[data-theme="koyu"] [style*="background: rgb(241, 245, 249)"],
+html[data-theme="koyu"] [style*="background: #F3F4F6"],
+html[data-theme="koyu"] [style*="background: #f3f4f6"],
+html[data-theme="koyu"] [style*="background: rgb(243, 244, 246)"] {
+  background: #162033 !important;
+  background-color: #162033 !important;
+  border-color: #34445d !important;
+}
+
+/* Koyu temada kart içindeki açık tema yazıları */
+html[data-theme="koyu"] main [style*="color: #111827"],
+html[data-theme="koyu"] main [style*="color: #0F172A"],
+html[data-theme="koyu"] main [style*="color: #0f172a"],
+html[data-theme="koyu"] main [style*="color: rgb(17, 24, 39)"],
+html[data-theme="koyu"] main [style*="color: rgb(15, 23, 42)"] {
+  color: #f8fafc !important;
+}
+
+html[data-theme="koyu"] main [style*="color: #374151"],
+html[data-theme="koyu"] main [style*="color: #334155"],
+html[data-theme="koyu"] main [style*="color: #475569"],
+html[data-theme="koyu"] main [style*="color: rgb(55, 65, 81)"],
+html[data-theme="koyu"] main [style*="color: rgb(51, 65, 85)"],
+html[data-theme="koyu"] main [style*="color: rgb(71, 85, 105)"] {
+  color: #cbd5e1 !important;
+}
+
+html[data-theme="koyu"] main [style*="color: #64748B"],
+html[data-theme="koyu"] main [style*="color: #64748b"],
+html[data-theme="koyu"] main [style*="color: #6B7280"],
+html[data-theme="koyu"] main [style*="color: #6b7280"],
+html[data-theme="koyu"] main [style*="color: rgb(100, 116, 139)"],
+html[data-theme="koyu"] main [style*="color: rgb(107, 114, 128)"] {
+  color: #94a3b8 !important;
+}
+
+/* Genel kart sınırlarını koyu tema ile uyumlu tut */
+html[data-theme="koyu"] main section,
+html[data-theme="koyu"] main article {
+  border-color: #243044 !important;
+}
+
