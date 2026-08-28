@@ -115,39 +115,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="home-features">
-        <div className="home-section-heading">
-          <span>ÖZELLİKLER</span>
-
-          <h2>
-            Araç yönetiminin temel ihtiyaçları tek panelde.
-          </h2>
-
-          <p>
-            Gereksiz karmaşa olmadan, aracınız için gerçekten takip etmeniz
-            gereken bilgileri düzenli tutun.
-          </p>
-        </div>
-
-        <div className="home-feature-grid">
-          {features.map((feature, index) => (
-            <article key={feature.title}>
-              <div className="home-feature-number">
-                {String(index + 1).padStart(2, "0")}
-              </div>
-
-              <span className="home-feature-eyebrow">
-                {feature.eyebrow}
-              </span>
-
-              <h3>{feature.title}</h3>
-
-              <p>{feature.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section className="home-reminder-section">
         <div className="home-reminder-card">
           <div className="home-reminder-badge">
@@ -194,6 +161,39 @@ export default function Home() {
               </span>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="home-features">
+        <div className="home-section-heading">
+          <span>ÖZELLİKLER</span>
+
+          <h2>
+            Araç yönetiminin temel ihtiyaçları tek panelde.
+          </h2>
+
+          <p>
+            Gereksiz karmaşa olmadan, aracınız için gerçekten takip etmeniz
+            gereken bilgileri düzenli tutun.
+          </p>
+        </div>
+
+        <div className="home-feature-grid">
+          {features.map((feature, index) => (
+            <article key={feature.title}>
+              <div className="home-feature-number">
+                {String(index + 1).padStart(2, "0")}
+              </div>
+
+              <span className="home-feature-eyebrow">
+                {feature.eyebrow}
+              </span>
+
+              <h3>{feature.title}</h3>
+
+              <p>{feature.description}</p>
+            </article>
+          ))}
         </div>
       </section>
 
