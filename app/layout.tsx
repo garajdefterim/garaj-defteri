@@ -152,7 +152,7 @@ export default function RootLayout({
                 <p
                   style={{
                     margin: 0,
-                    maxWidth: "330px",
+                    maxWidth: "370px",
                     color: "var(--muted)",
                     fontSize: "13px",
                     lineHeight: 1.7,
@@ -164,75 +164,31 @@ export default function RootLayout({
               </div>
 
               <div className="site-footer-column">
-                <strong className="site-footer-title">
-                  Hızlı Bağlantılar
-                </strong>
-
-                <nav
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "10px",
-                  }}
-                >
-                  <a href="/" className="site-footer-link">
-                    Ana Sayfa
-                  </a>
-
-                  <a href="/dashboard" className="site-footer-link">
-                    Panelim
-                  </a>
-
-                  <a href="/arac-ekle" className="site-footer-link">
-                    Araç Ekle
-                  </a>
-                </nav>
-              </div>
-
-              <div className="site-footer-column">
                 <strong className="site-footer-title">Destek</strong>
 
                 <p
                   style={{
                     margin: "0 0 12px",
-                    maxWidth: "260px",
+                    maxWidth: "300px",
                     color: "var(--muted)",
                     fontSize: "13px",
                     lineHeight: 1.6,
                   }}
                 >
-                  Garaj Defteri ile ilgili soru ve destek talepleriniz için bize
-                  ulaşabilirsiniz.
+                  Garaj Defteri ile ilgili soru ve destek talepleriniz için
+                  WhatsApp üzerinden bize ulaşabilirsiniz.
                 </p>
 
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "9px",
-                    alignItems: "flex-start",
-                  }}
+                <a
+                  href={whatsappLinki}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="site-footer-whatsapp"
+                  aria-label="WhatsApp üzerinden destek al"
                 >
-                  <a
-                    href="tel:+905338622510"
-                    className="site-footer-contact"
-                    aria-label="Destek hattını ara: 0533 862 25 10"
-                  >
-                    <span aria-hidden="true">☎</span>
-                    0533 862 25 10
-                  </a>
-
-                  <a
-                    href={whatsappLinki}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="site-footer-whatsapp"
-                    aria-label="WhatsApp üzerinden destek al"
-                  >
-                    <span aria-hidden="true">💬</span>
-                    WhatsApp&apos;tan Yaz
-                  </a>
-                </div>
+                  <span aria-hidden="true">💬</span>
+                  WhatsApp&apos;tan Yaz
+                </a>
               </div>
 
               <div className="site-footer-column">
@@ -278,8 +234,8 @@ export default function RootLayout({
                 margin: 0 auto;
                 padding: 36px 24px;
                 display: grid;
-                grid-template-columns: 1.35fr 0.8fr 1fr 1fr;
-                gap: 40px;
+                grid-template-columns: 1.35fr 1fr 1fr;
+                gap: 48px;
               }
 
               .site-footer-brand,
@@ -295,56 +251,15 @@ export default function RootLayout({
                 font-weight: 750;
               }
 
-              .site-footer-link {
-                width: fit-content;
-                color: var(--muted);
-                font-size: 13px;
-                line-height: 1.5;
-                text-decoration: none;
-                transition:
-                  color 0.2s ease,
-                  transform 0.2s ease;
-              }
-
-              .site-footer-link:hover {
-                color: #2563EB;
-                transform: translateX(2px);
-              }
-
               .site-footer-info {
                 color: var(--muted);
                 font-size: 13px;
                 line-height: 1.6;
               }
 
-              .site-footer-contact {
-                min-height: 40px;
-                padding: 0 13px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                gap: 8px;
-                border-radius: 9px;
-                border: 1px solid var(--border-strong);
-                background-color: var(--card-soft);
-                color: var(--foreground);
-                font-size: 13px;
-                font-weight: 700;
-                text-decoration: none;
-                white-space: nowrap;
-                transition:
-                  border-color 0.2s ease,
-                  transform 0.2s ease;
-              }
-
-              .site-footer-contact:hover {
-                border-color: #2563EB;
-                transform: translateY(-1px);
-              }
-
               .site-footer-whatsapp {
-                min-height: 40px;
-                padding: 0 13px;
+                min-height: 42px;
+                padding: 0 15px;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
@@ -386,10 +301,14 @@ export default function RootLayout({
                 line-height: 1.5;
               }
 
-              @media (max-width: 960px) {
+              @media (max-width: 900px) {
                 .site-footer-main {
                   grid-template-columns: 1fr 1fr;
                   gap: 32px;
+                }
+
+                .site-footer-brand {
+                  grid-column: 1 / -1;
                 }
               }
 
@@ -400,11 +319,10 @@ export default function RootLayout({
                   padding: 30px 16px;
                 }
 
-                .site-footer-column {
-                  padding-top: 2px;
+                .site-footer-brand {
+                  grid-column: auto;
                 }
 
-                .site-footer-contact,
                 .site-footer-whatsapp {
                   width: 100%;
                   min-height: 46px;
