@@ -52,7 +52,7 @@ export default function Home() {
 
             <p className="home-lead">
               Muayene, sigorta, seyrüsefer ve bakım bilgilerinizi
-              garaj defterimM&apos;nde toplayın. Yaklaşan işlemleri takip edin,
+              GARAJ DEFTERİM&apos;de toplayın. Yaklaşan işlemleri takip edin,
               bakım geçmişinizi kaydedin ve araçlarınızı düzenli yönetin.
             </p>
 
@@ -169,8 +169,8 @@ export default function Home() {
 
       <footer className="home-footer">
         <div>
-          <strong>garaj defterimM</strong>
-          <span>© 2026 garaj defterimM</span>
+          <strong>GARAJ DEFTERİM</strong>
+          <span>© 2026 GARAJ DEFTERİM</span>
         </div>
       </footer>
     </main>
