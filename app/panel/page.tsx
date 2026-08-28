@@ -23,7 +23,7 @@ export default function PanelPage() {
             color: "#0F172A",
           }}
         >
-          garaj defterimmM Paneli
+          GARAJ DEFRERİM Paneli
         </h1>
 
         <p

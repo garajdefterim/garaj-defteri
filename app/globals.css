@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* garaj defterimmM — global tema */
+/* GARAJ DEFRERİM — global tema */
 
 :root,
 html[data-theme="acik"] {
@@ -482,7 +482,7 @@ a {
   }
 }
 /* =========================================
-   garaj defterimmM — NAVBAR
+   GARAJ DEFRERİM — NAVBAR
    ========================================= */
 
 .site-navbar {
@@ -746,7 +746,7 @@ html[data-theme="koyu"] .site-navbar-register:hover {
   }
 }
 /* =========================================
-   garaj defterimmM — ANA SAYFA / MOBİL
+   GARAJ DEFRERİM — ANA SAYFA / MOBİL
    globals.css dosyasının EN ALTINA ekleyin
    ========================================= */
 
@@ -1342,7 +1342,7 @@ html[data-theme="koyu"] .home-eyebrow {
 }
 
 /* =========================================
-   garaj defterimmM — PROFESYONEL KOYU TEMA
+   GARAJ DEFRERİM — PROFESYONEL KOYU TEMA
    Merkezi son katman: mevcut açık tema ve mobil düzen korunur.
    ========================================= */
 
@@ -1585,7 +1585,7 @@ html[data-theme="koyu"] {
 }
 
 /* =========================================================
-   garaj defterimmM — PROFESYONEL / SADE AKSİYON RENK SİSTEMİ
+   GARAJ DEFRERİM — PROFESYONEL / SADE AKSİYON RENK SİSTEMİ
    Bu bölüm bilerek dosyanın en altındadır.
    ========================================================= */
 
@@ -1720,7 +1720,7 @@ html[data-theme="koyu"] button[style*="background-color: #dc2626"] {
 /* Durum renkleri kart/badge olarak kalabilir; aksiyon butonlarına yayılmaz. */
 
 /* =========================================================
-   garaj defterimmM — KOYU TEMA / INLINE BACKGROUND DÜZELTMESİ
+   GARAJ DEFRERİM — KOYU TEMA / INLINE BACKGROUND DÜZELTMESİ
    React inline style içinde "background" shorthand kullanılan
    açık kartların koyu temada beyaz kalmasını engeller.
    Bu bölüm bilerek dosyanın EN ALTINDADIR.

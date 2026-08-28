@@ -56,7 +56,7 @@ export default function ProfilPage() {
           metadata.full_name ||
           metadata.name ||
           metadata.ad_soyad ||
-          "garaj defterimmM Kullanıcısı";
+          "GARAJ DEFRERİM Kullanıcısı";
 
         const fotograf =
           metadata.avatar_url ||
@@ -950,7 +950,7 @@ export default function ProfilPage() {
               }}
             >
               Bu işlem geri alınamaz. Araçlarınız, bakım kayıtlarınız,
-              bildirim ayarlarınız ve garaj defterimmM hesabınız kalıcı olarak
+              bildirim ayarlarınız ve GARAJ DEFRERİM hesabınız kalıcı olarak
               silinecektir.
             </p>
 

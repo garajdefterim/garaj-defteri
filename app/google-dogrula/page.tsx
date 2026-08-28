@@ -50,7 +50,7 @@ function Brand() {
           letterSpacing: "-0.35px",
         }}
       >
-        garaj defterimmM
+        GARAJ DEFRERİM
       </div>
     </Link>
   );
@@ -313,7 +313,7 @@ export default function GoogleDogrulaPage() {
       }
 
       setMesaj(
-        "E-posta doğrulaması başarılı. garaj defterimmM açılıyor..."
+        "E-posta doğrulaması başarılı. GARAJ DEFRERİM açılıyor..."
       );
 
       setTimeout(() => {
@@ -404,7 +404,7 @@ export default function GoogleDogrulaPage() {
                 letterSpacing: "-0.35px",
               }}
             >
-              garaj defterimmM
+              GARAJ DEFRERİM
             </div>
           </div>
 
