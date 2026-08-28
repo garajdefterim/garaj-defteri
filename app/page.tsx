@@ -148,6 +148,55 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="home-reminder-section">
+        <div className="home-reminder-card">
+          <div className="home-reminder-badge">
+            E-POSTA HATIRLATMALARI
+          </div>
+
+          <div className="home-reminder-content">
+            <div>
+              <h2>
+                Önemli tarihleri unutmayın, zamanı gelmeden haberdar olun.
+              </h2>
+
+              <p>
+                GARAJ DEFTERİM, aracınıza ait önemli tarihleri takip etmenize
+                yardımcı olur. Muayene, sigorta, seyrüsefer ve bakım tarihleri
+                yaklaşırken e-posta ile hatırlatma alabilir, son güne
+                bırakmadan gerekli işlemlerinizi planlayabilirsiniz.
+              </p>
+
+              <div className="home-reminder-items">
+                <span>✓ Muayene tarihi hatırlatmaları</span>
+                <span>✓ Sigorta bitiş tarihi hatırlatmaları</span>
+                <span>✓ Seyrüsefer yenileme hatırlatmaları</span>
+                <span>✓ Bakım tarihi hatırlatmaları</span>
+              </div>
+            </div>
+
+            <div className="home-reminder-preview">
+              <span className="home-reminder-preview-label">
+                ÖRNEK HATIRLATMA
+              </span>
+
+              <strong>
+                Aracınızın muayene tarihi yaklaşıyor
+              </strong>
+
+              <p>
+                Kayıtlı aracınızın muayene tarihine 7 gün kaldı.
+                İşleminizi zamanında tamamlamak için planlama yapabilirsiniz.
+              </p>
+
+              <span className="home-reminder-mail">
+                E-posta bildirimi
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="home-cta-wrap">
         <div className="home-cta">
           <div>

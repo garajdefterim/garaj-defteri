@@ -1802,3 +1802,253 @@ html[data-theme="koyu"] main article {
   border-color: #243044 !important;
 }
 
+/* =========================================================
+   GARAJ DEFTERİM — E-POSTA HATIRLATMA TANITIM ALANI
+   ========================================================= */
+
+.home-reminder-section {
+  width: 100%;
+  padding: 0 24px 88px;
+}
+
+.home-reminder-card {
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 42px;
+  border: 1px solid #dbe4f0;
+  border-radius: 18px;
+  background:
+    linear-gradient(
+      135deg,
+      #f8fbff 0%,
+      #ffffff 55%,
+      #f5f9ff 100%
+    );
+  box-shadow: 0 14px 38px rgba(15, 23, 42, 0.05);
+}
+
+.home-reminder-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 11px;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.home-reminder-content {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  gap: 48px;
+  align-items: center;
+}
+
+.home-reminder-content h2 {
+  max-width: 680px;
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(30px, 4vw, 42px);
+  line-height: 1.14;
+  letter-spacing: -1.2px;
+}
+
+.home-reminder-content > div:first-child > p {
+  max-width: 720px;
+  margin: 16px 0 0;
+  color: #64748b;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.home-reminder-items {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px 18px;
+}
+
+.home-reminder-items span {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.home-reminder-items span::first-letter {
+  color: #2563eb;
+}
+
+.home-reminder-preview {
+  padding: 26px;
+  border: 1px solid #dbe4f0;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.07);
+}
+
+.home-reminder-preview-label {
+  display: block;
+  margin-bottom: 14px;
+  color: #2563eb;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+.home-reminder-preview strong {
+  display: block;
+  color: #0f172a;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.home-reminder-preview p {
+  margin: 11px 0 0;
+  color: #64748b;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.home-reminder-mail {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 18px;
+  padding: 7px 10px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+/* Koyu tema */
+
+html[data-theme="koyu"] .home-reminder-card {
+  background:
+    linear-gradient(
+      135deg,
+      #101827 0%,
+      #0c1422 55%,
+      #101827 100%
+    ) !important;
+  border-color: #2a3850 !important;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.18) !important;
+}
+
+html[data-theme="koyu"] .home-reminder-badge {
+  background: #102449 !important;
+  border-color: #2859a8 !important;
+  color: #93c5fd !important;
+}
+
+html[data-theme="koyu"] .home-reminder-content h2 {
+  color: #f8fafc !important;
+}
+
+html[data-theme="koyu"] .home-reminder-content > div:first-child > p {
+  color: #94a3b8 !important;
+}
+
+html[data-theme="koyu"] .home-reminder-items span {
+  color: #cbd5e1 !important;
+}
+
+html[data-theme="koyu"] .home-reminder-preview {
+  background: #0b1320 !important;
+  border-color: #30405a !important;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.2) !important;
+}
+
+html[data-theme="koyu"] .home-reminder-preview-label {
+  color: #60a5fa !important;
+}
+
+html[data-theme="koyu"] .home-reminder-preview strong {
+  color: #f8fafc !important;
+}
+
+html[data-theme="koyu"] .home-reminder-preview p {
+  color: #94a3b8 !important;
+}
+
+html[data-theme="koyu"] .home-reminder-mail {
+  background: #102449 !important;
+  border-color: #2859a8 !important;
+  color: #93c5fd !important;
+}
+
+/* Tablet */
+
+@media (max-width: 900px) {
+  .home-reminder-content {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .home-reminder-preview {
+    max-width: 560px;
+  }
+}
+
+/* Telefon */
+
+@media (max-width: 600px) {
+  .home-reminder-section {
+    padding: 0 18px 60px;
+  }
+
+  .home-reminder-card {
+    padding: 26px 21px;
+    border-radius: 15px;
+  }
+
+  .home-reminder-content {
+    margin-top: 18px;
+    gap: 24px;
+  }
+
+  .home-reminder-content h2 {
+    font-size: 29px;
+    letter-spacing: -0.8px;
+  }
+
+  .home-reminder-content > div:first-child > p {
+    font-size: 15px;
+  }
+
+  .home-reminder-items {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .home-reminder-preview {
+    padding: 21px;
+  }
+}
+
+/* Çok dar telefon */
+
+@media (max-width: 360px) {
+  .home-reminder-section {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .home-reminder-card {
+    padding: 22px 17px;
+  }
+
+  .home-reminder-content h2 {
+    font-size: 26px;
+  }
+}
