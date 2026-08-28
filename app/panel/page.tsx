@@ -23,7 +23,7 @@ export default function PanelPage() {
             color: "#0F172A",
           }}
         >
-          GARAJ DEFRERİM Paneli
+          GARAJ DEFTERİM Paneli
         </h1>
 
         <p

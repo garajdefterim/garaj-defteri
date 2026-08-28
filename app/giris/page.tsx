@@ -77,7 +77,7 @@ function Brand() {
           letterSpacing: "-0.35px",
         }}
       >
-        GARAJ DEFRERİM
+        GARAJ DEFTERİM
       </div>
     </Link>
   );

@@ -1,37 +1,37 @@
-﻿import Link from "next/link";
+import Link from "next/link";
 import Navbar from "../components/Navbar";
 
 const features = [
   {
     eyebrow: "Muayene",
-    title: "ResmÃ® tarihleri dÃ¼zenli takip edin",
+    title: "Resmî tarihleri düzenli takip edin",
     description:
-      "AraÃ§ muayene dÃ¶nemlerinizi tek panelde gÃ¶rÃ¼n ve yaklaÅŸan tarihleri Ã¶nceden takip edin.",
+      "Araç muayene dönemlerinizi tek panelde görün ve yaklaşan tarihleri önceden takip edin.",
   },
   {
     eyebrow: "Sigorta",
-    title: "BitiÅŸ tarihlerini gÃ¶zden kaÃ§Ä±rmayÄ±n",
+    title: "Bitiş tarihlerini gözden kaçırmayın",
     description:
-      "Sigorta bitiÅŸ tarihlerinizi araÃ§ bazÄ±nda kaydedin ve yaklaÅŸan yenilemeleri zamanÄ±nda gÃ¶rÃ¼n.",
+      "Sigorta bitiş tarihlerinizi araç bazında kaydedin ve yaklaşan yenilemeleri zamanında görün.",
   },
   {
-    eyebrow: "SeyrÃ¼sefer",
-    title: "Yenileme tarihlerini tek yerde yÃ¶netin",
+    eyebrow: "Seyrüsefer",
+    title: "Yenileme tarihlerini tek yerde yönetin",
     description:
-      "SeyrÃ¼sefer bilgilerinizi araÃ§larÄ±nÄ±zla birlikte saklayÄ±n ve yaklaÅŸan tarihleri kolayca kontrol edin.",
+      "Seyrüsefer bilgilerinizi araçlarınızla birlikte saklayın ve yaklaşan tarihleri kolayca kontrol edin.",
   },
   {
-    eyebrow: "BakÄ±m",
-    title: "BakÄ±m geÃ§miÅŸinizi kayÄ±t altÄ±nda tutun",
+    eyebrow: "Bakım",
+    title: "Bakım geçmişinizi kayıt altında tutun",
     description:
-      "BakÄ±m tarihlerini, kilometreyi ve masraflarÄ± dÃ¼zenli ÅŸekilde kaydedin.",
+      "Bakım tarihlerini, kilometreyi ve masrafları düzenli şekilde kaydedin.",
   },
 ];
 
 const highlights = [
-  "TÃ¼m araÃ§lar tek panelde",
-  "BakÄ±m ve masraf geÃ§miÅŸi",
-  "E-posta hatÄ±rlatmalarÄ±",
+  "Tüm araçlar tek panelde",
+  "Bakım ve masraf geçmişi",
+  "E-posta hatırlatmaları",
 ];
 
 export default function Home() {
@@ -43,26 +43,26 @@ export default function Home() {
         <div className="home-hero-grid">
           <div className="home-hero-copy">
             <div className="home-eyebrow">
-              ARAÃ‡ TAKÄ°P VE BAKIM YÃ–NETÄ°MÄ°
+              ARAÇ TAKİP VE BAKIM YÖNETİMİ
             </div>
 
             <h1>
-              AracÄ±nÄ±zla ilgili Ã¶nemli tarihleri tek yerde yÃ¶netin.
+              Aracınızla ilgili önemli tarihleri tek yerde yönetin.
             </h1>
 
             <p className="home-lead">
-              Muayene, sigorta, seyrÃ¼sefer ve bakÄ±m bilgilerinizi
-              GARAJ DEFRERÄ°M&apos;nde toplayÄ±n. YaklaÅŸan iÅŸlemleri takip edin,
-              bakÄ±m geÃ§miÅŸinizi kaydedin ve araÃ§larÄ±nÄ±zÄ± dÃ¼zenli yÃ¶netin.
+              Muayene, sigorta, seyrüsefer ve bakım bilgilerinizi
+              garaj defterimmM&apos;nde toplayın. Yaklaşan işlemleri takip edin,
+              bakım geçmişinizi kaydedin ve araçlarınızı düzenli yönetin.
             </p>
 
             <div className="home-actions">
               <Link href="/kayit" className="home-primary-button">
-                Ãœcretsiz Hesap OluÅŸtur
+                Ücretsiz Hesap Oluştur
               </Link>
 
               <Link href="/giris" className="home-secondary-button">
-                GiriÅŸ Yap
+                Giriş Yap
               </Link>
             </div>
 
@@ -80,7 +80,7 @@ export default function Home() {
             <div className="home-preview-card">
               <div className="home-preview-head">
                 <div>
-                  <span className="home-preview-label">ARAÃ‡</span>
+                  <span className="home-preview-label">ARAÇ</span>
                   <strong>Toyota Corolla</strong>
                   <span className="home-plate">UM 590</span>
                 </div>
@@ -90,10 +90,10 @@ export default function Home() {
 
               <div className="home-preview-stats">
                 {[
-                  ["Muayene", "18 gÃ¼n kaldÄ±"],
-                  ["Sigorta", "42 gÃ¼n kaldÄ±"],
-                  ["SeyrÃ¼sefer", "76 gÃ¼n kaldÄ±"],
-                  ["Son bakÄ±m", "12.08.2026"],
+                  ["Muayene", "18 gün kaldı"],
+                  ["Sigorta", "42 gün kaldı"],
+                  ["Seyrüsefer", "76 gün kaldı"],
+                  ["Son bakım", "12.08.2026"],
                 ].map(([label, value]) => (
                   <div key={label}>
                     <span>{label}</span>
@@ -104,11 +104,11 @@ export default function Home() {
             </div>
 
             <div className="home-maintenance-card">
-              <span>Son bakÄ±m</span>
+              <span>Son bakım</span>
 
               <div>
-                <strong>Motor yaÄŸÄ± ve filtre deÄŸiÅŸimi</strong>
-                <span>â‚º2.500</span>
+                <strong>Motor yağı ve filtre değişimi</strong>
+                <span>₺2.500</span>
               </div>
             </div>
           </div>
@@ -117,15 +117,15 @@ export default function Home() {
 
       <section className="home-features">
         <div className="home-section-heading">
-          <span>Ã–ZELLÄ°KLER</span>
+          <span>ÖZELLİKLER</span>
 
           <h2>
-            AraÃ§ yÃ¶netiminin temel ihtiyaÃ§larÄ± tek panelde.
+            Araç yönetiminin temel ihtiyaçları tek panelde.
           </h2>
 
           <p>
-            Gereksiz karmaÅŸa olmadan, aracÄ±nÄ±z iÃ§in gerÃ§ekten takip etmeniz
-            gereken bilgileri dÃ¼zenli tutun.
+            Gereksiz karmaşa olmadan, aracınız için gerçekten takip etmeniz
+            gereken bilgileri düzenli tutun.
           </p>
         </div>
 
@@ -152,25 +152,25 @@ export default function Home() {
         <div className="home-cta">
           <div>
             <h2>
-              GarajÄ±nÄ±zÄ± dÃ¼zenli tutmaya baÅŸlayÄ±n.
+              Garajınızı düzenli tutmaya başlayın.
             </h2>
 
             <p>
-              HesabÄ±nÄ±zÄ± oluÅŸturun, aracÄ±nÄ±zÄ± ekleyin ve Ã¶nemli tarihlerinizi
+              Hesabınızı oluşturun, aracınızı ekleyin ve önemli tarihlerinizi
               tek panelden takip edin.
             </p>
           </div>
 
           <Link href="/kayit">
-            Hesap OluÅŸtur
+            Hesap Oluştur
           </Link>
         </div>
       </section>
 
       <footer className="home-footer">
         <div>
-          <strong>GARAJ DEFRERÄ°M</strong>
-          <span>Â© 2026 GARAJ DEFRERÄ°M</span>
+          <strong>garaj defterimmM</strong>
+          <span>© 2026 garaj defterimmM</span>
         </div>
       </footer>
     </main>

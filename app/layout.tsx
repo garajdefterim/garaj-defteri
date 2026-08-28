@@ -16,23 +16,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "GARAJ DEFRERİM",
-    template: "%s | GARAJ DEFRERİM",
+    default: "GARAJ DEFTERİM",
+    template: "%s | GARAJ DEFTERİM",
   },
   description:
     "Araçlarınızı, bakım kayıtlarınızı ve önemli tarihlerinizi tek panelden yönetin.",
-  applicationName: "GARAJ DEFRERİM",
+  applicationName: "GARAJ DEFTERİM",
   keywords: [
     "araç takibi",
     "bakım takibi",
     "muayene",
     "sigorta",
     "seyrüsefer",
-    "GARAJ DEFRERİM",
+    "GARAJ DEFTERİM",
   ],
-  authors: [{ name: "GARAJ DEFRERİM" }],
-  creator: "GARAJ DEFRERİM",
-  publisher: "GARAJ DEFRERİM",
+  authors: [{ name: "GARAJ DEFTERİM" }],
+  creator: "GARAJ DEFTERİM",
+  publisher: "GARAJ DEFTERİM",
   robots: {
     index: true,
     follow: true,
@@ -145,7 +145,7 @@ export default function RootLayout({
                       letterSpacing: "-0.3px",
                     }}
                   >
-                    GARAJ DEFRERİM
+                    GARAJ DEFTERİM
                   </strong>
                 </div>
 
@@ -175,7 +175,7 @@ export default function RootLayout({
                     lineHeight: 1.6,
                   }}
                 >
-                  GARAJ DEFRERİM ile ilgili soru ve destek talepleriniz için
+                  GARAJ DEFTERİM ile ilgili soru ve destek talepleriniz için
                   WhatsApp üzerinden bize ulaşabilirsiniz.
                 </p>
 
@@ -219,7 +219,7 @@ export default function RootLayout({
             <div className="site-footer-bottom">
               <div className="site-footer-bottom-inner">
                 <span>
-                  © {new Date().getFullYear()} GARAJ DEFRERİM. Tüm hakları
+                  © {new Date().getFullYear()} GARAJ DEFTERİM. Tüm hakları
                   saklıdır.
                 </span>
 

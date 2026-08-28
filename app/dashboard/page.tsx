@@ -899,7 +899,7 @@ export default function DashboardPage() {
                 letterSpacing: "-1px",
               }}
             >
-              GARAJ DEFRERİM
+              GARAJ DEFTERİM
             </h1>
 
             <p

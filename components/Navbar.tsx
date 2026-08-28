@@ -10,7 +10,7 @@ export default function Navbar() {
           </div>
 
           <div className="site-brand-name">
-            GARAJ DEFRERİM
+            GARAJ DEFTERİM
           </div>
         </Link>
 

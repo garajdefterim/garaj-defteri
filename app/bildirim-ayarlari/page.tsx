@@ -596,7 +596,7 @@ export default function BildirimAyarlariPage() {
                 lineHeight: 1.6,
               }}
             >
-              GARAJ DEFRERİM araç tarihlerinizi düzenli olarak kontrol eder.
+              GARAJ DEFTERİM araç tarihlerinizi düzenli olarak kontrol eder.
               Muayene için seçtiğiniz süre; sigorta için 7 gün, seyrüsefer ve
               bakım için 14 günlük süre kullanılır. Aynı hatırlatma yalnızca bir
               kez gönderilir.

@@ -77,7 +77,7 @@ function Brand() {
           letterSpacing: "-0.35px",
         }}
       >
-        GARAJ DEFRERİM
+        GARAJ DEFTERİM
       </div>
     </Link>
   );
@@ -399,7 +399,7 @@ export default function KayitPage() {
                 lineHeight: 1.6,
               }}
             >
-              GARAJ DEFRERİM'ni kullanmaya başlamak
+              GARAJ DEFTERİM'ni kullanmaya başlamak
               için hesabınızı oluşturun.
             </p>
           </div>
