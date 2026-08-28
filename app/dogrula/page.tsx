@@ -48,7 +48,7 @@ function Brand() {
           letterSpacing: "-0.35px",
         }}
       >
-        GARAJ DEFTERİ
+        garaj defterimmM
       </div>
     </Link>
   );

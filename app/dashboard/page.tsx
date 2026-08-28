@@ -899,7 +899,7 @@ export default function DashboardPage() {
                 letterSpacing: "-1px",
               }}
             >
-              GARAJ DEFTERİ
+              garaj defterimmM
             </h1>
 
             <p

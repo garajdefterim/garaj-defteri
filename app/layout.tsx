@@ -16,23 +16,23 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "GARAJ DEFTERİ",
-    template: "%s | GARAJ DEFTERİ",
+    default: "garaj defterimmM",
+    template: "%s | garaj defterimmM",
   },
   description:
     "Araçlarınızı, bakım kayıtlarınızı ve önemli tarihlerinizi tek panelden yönetin.",
-  applicationName: "GARAJ DEFTERİ",
+  applicationName: "garaj defterimmM",
   keywords: [
     "araç takibi",
     "bakım takibi",
     "muayene",
     "sigorta",
     "seyrüsefer",
-    "GARAJ DEFTERİ",
+    "garaj defterimmM",
   ],
-  authors: [{ name: "GARAJ DEFTERİ" }],
-  creator: "GARAJ DEFTERİ",
-  publisher: "GARAJ DEFTERİ",
+  authors: [{ name: "garaj defterimmM" }],
+  creator: "garaj defterimmM",
+  publisher: "garaj defterimmM",
   robots: {
     index: true,
     follow: true,
@@ -145,7 +145,7 @@ export default function RootLayout({
                       letterSpacing: "-0.3px",
                     }}
                   >
-                    GARAJ DEFTERİ
+                    garaj defterimmM
                   </strong>
                 </div>
 
@@ -175,7 +175,7 @@ export default function RootLayout({
                     lineHeight: 1.6,
                   }}
                 >
-                  Garaj Defteri ile ilgili soru ve destek talepleriniz için
+                  garaj defterimmM ile ilgili soru ve destek talepleriniz için
                   WhatsApp üzerinden bize ulaşabilirsiniz.
                 </p>
 
@@ -219,7 +219,7 @@ export default function RootLayout({
             <div className="site-footer-bottom">
               <div className="site-footer-bottom-inner">
                 <span>
-                  © {new Date().getFullYear()} GARAJ DEFTERİ. Tüm hakları
+                  © {new Date().getFullYear()} garaj defterimmM. Tüm hakları
                   saklıdır.
                 </span>
 
