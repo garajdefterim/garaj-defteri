@@ -103,7 +103,7 @@ export default function RootLayout({
           </div>
 
           <footer
-            className="site-support-footer"
+            className="site-footer"
             style={{
               width: "100%",
               borderTop: "1px solid var(--border)",
@@ -111,151 +111,311 @@ export default function RootLayout({
               color: "var(--foreground)",
             }}
           >
-            <div
-              className="site-support-footer-inner"
-              style={{
-                width: "100%",
-                maxWidth: "1180px",
-                margin: "0 auto",
-                padding: "22px 24px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                gap: "20px",
-                flexWrap: "wrap",
-              }}
-            >
-              <div
-                style={{
-                  minWidth: 0,
-                }}
-              >
-                <strong
+            <div className="site-footer-main">
+              <div className="site-footer-brand">
+                <div
                   style={{
-                    display: "block",
-                    fontSize: "14px",
-                    fontWeight: 750,
-                    color: "var(--foreground)",
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "9px",
+                    marginBottom: "12px",
                   }}
                 >
-                  Destek Hattı
-                </strong>
+                  <div
+                    style={{
+                      width: "36px",
+                      height: "36px",
+                      borderRadius: "10px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: "#1D4ED8",
+                      color: "#FFFFFF",
+                      fontWeight: 800,
+                      fontSize: "15px",
+                    }}
+                  >
+                    GD
+                  </div>
+
+                  <strong
+                    style={{
+                      fontSize: "17px",
+                      fontWeight: 800,
+                      letterSpacing: "-0.3px",
+                    }}
+                  >
+                    GARAJ DEFTERİ
+                  </strong>
+                </div>
 
                 <p
                   style={{
-                    margin: "5px 0 0",
+                    margin: 0,
+                    maxWidth: "330px",
                     color: "var(--muted)",
                     fontSize: "13px",
-                    lineHeight: 1.5,
+                    lineHeight: 1.7,
                   }}
                 >
-                  Garaj Defteri ile ilgili destek için bize ulaşabilirsiniz.
+                  Araçlarınızı, bakım kayıtlarınızı, muayene, sigorta ve diğer
+                  önemli tarihlerinizi tek yerden kolayca takip edin.
                 </p>
               </div>
 
-              <div
-                className="site-support-footer-actions"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  flexWrap: "wrap",
-                }}
-              >
-                <a
-                  href="tel:+905338622510"
-                  aria-label="Destek hattını ara: 0533 862 25 10"
-                  style={{
-                    minHeight: "42px",
-                    padding: "0 14px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                    borderRadius: "9px",
-                    border: "1px solid var(--border-strong)",
-                    backgroundColor: "var(--card-soft)",
-                    color: "var(--foreground)",
-                    fontSize: "13px",
-                    fontWeight: 700,
-                    textDecoration: "none",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  <span aria-hidden="true">☎</span>
-                  0533 862 25 10
-                </a>
+              <div className="site-footer-column">
+                <strong className="site-footer-title">
+                  Hızlı Bağlantılar
+                </strong>
 
-                <a
-                  href={whatsappLinki}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="WhatsApp üzerinden destek al"
+                <nav
                   style={{
-                    minHeight: "42px",
-                    padding: "0 15px",
-                    display: "inline-flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                    borderRadius: "9px",
-                    border: "1px solid #2563EB",
-                    backgroundColor: "#1D4ED8",
-                    color: "#FFFFFF",
-                    fontSize: "13px",
-                    fontWeight: 700,
-                    textDecoration: "none",
-                    whiteSpace: "nowrap",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
                   }}
                 >
-                  <span aria-hidden="true">💬</span>
-                  WhatsApp&apos;tan Yaz
-                </a>
+                  <a href="/" className="site-footer-link">
+                    Ana Sayfa
+                  </a>
+
+                  <a href="/dashboard" className="site-footer-link">
+                    Panelim
+                  </a>
+
+                  <a href="/arac-ekle" className="site-footer-link">
+                    Araç Ekle
+                  </a>
+                </nav>
+              </div>
+
+              <div className="site-footer-column">
+                <strong className="site-footer-title">Destek</strong>
+
+                <p
+                  style={{
+                    margin: "0 0 12px",
+                    maxWidth: "260px",
+                    color: "var(--muted)",
+                    fontSize: "13px",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  Garaj Defteri ile ilgili soru ve destek talepleriniz için bize
+                  ulaşabilirsiniz.
+                </p>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "9px",
+                    alignItems: "flex-start",
+                  }}
+                >
+                  <a
+                    href="tel:+905338622510"
+                    className="site-footer-contact"
+                    aria-label="Destek hattını ara: 0533 862 25 10"
+                  >
+                    <span aria-hidden="true">☎</span>
+                    0533 862 25 10
+                  </a>
+
+                  <a
+                    href={whatsappLinki}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="site-footer-whatsapp"
+                    aria-label="WhatsApp üzerinden destek al"
+                  >
+                    <span aria-hidden="true">💬</span>
+                    WhatsApp&apos;tan Yaz
+                  </a>
+                </div>
+              </div>
+
+              <div className="site-footer-column">
+                <strong className="site-footer-title">Bilgilendirme</strong>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "10px",
+                  }}
+                >
+                  <span className="site-footer-info">
+                    Araç ve bakım kayıtlarınızı düzenli takip edin.
+                  </span>
+
+                  <span className="site-footer-info">
+                    Önemli tarihlerinizi tek panelde yönetin.
+                  </span>
+
+                  <span className="site-footer-info">
+                    Mobil ve masaüstü cihazlardan kullanın.
+                  </span>
+                </div>
               </div>
             </div>
 
-            <div
-              style={{
-                width: "100%",
-                borderTop: "1px solid var(--border)",
-              }}
-            >
-              <div
-                style={{
-                  width: "100%",
-                  maxWidth: "1180px",
-                  margin: "0 auto",
-                  padding: "13px 24px",
-                  color: "var(--muted)",
-                  fontSize: "12px",
-                  lineHeight: 1.5,
-                }}
-              >
-                © {new Date().getFullYear()} GARAJ DEFTERİ
+            <div className="site-footer-bottom">
+              <div className="site-footer-bottom-inner">
+                <span>
+                  © {new Date().getFullYear()} GARAJ DEFTERİ. Tüm hakları
+                  saklıdır.
+                </span>
+
+                <span>Aracınızın dijital bakım ve takip defteri.</span>
               </div>
             </div>
 
             <style>{`
+              .site-footer-main {
+                width: 100%;
+                max-width: 1180px;
+                margin: 0 auto;
+                padding: 36px 24px;
+                display: grid;
+                grid-template-columns: 1.35fr 0.8fr 1fr 1fr;
+                gap: 40px;
+              }
+
+              .site-footer-brand,
+              .site-footer-column {
+                min-width: 0;
+              }
+
+              .site-footer-title {
+                display: block;
+                margin-bottom: 14px;
+                color: var(--foreground);
+                font-size: 13px;
+                font-weight: 750;
+              }
+
+              .site-footer-link {
+                width: fit-content;
+                color: var(--muted);
+                font-size: 13px;
+                line-height: 1.5;
+                text-decoration: none;
+                transition:
+                  color 0.2s ease,
+                  transform 0.2s ease;
+              }
+
+              .site-footer-link:hover {
+                color: #2563EB;
+                transform: translateX(2px);
+              }
+
+              .site-footer-info {
+                color: var(--muted);
+                font-size: 13px;
+                line-height: 1.6;
+              }
+
+              .site-footer-contact {
+                min-height: 40px;
+                padding: 0 13px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border-radius: 9px;
+                border: 1px solid var(--border-strong);
+                background-color: var(--card-soft);
+                color: var(--foreground);
+                font-size: 13px;
+                font-weight: 700;
+                text-decoration: none;
+                white-space: nowrap;
+                transition:
+                  border-color 0.2s ease,
+                  transform 0.2s ease;
+              }
+
+              .site-footer-contact:hover {
+                border-color: #2563EB;
+                transform: translateY(-1px);
+              }
+
+              .site-footer-whatsapp {
+                min-height: 40px;
+                padding: 0 13px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border-radius: 9px;
+                border: 1px solid #2563EB;
+                background-color: #1D4ED8;
+                color: #FFFFFF;
+                font-size: 13px;
+                font-weight: 700;
+                text-decoration: none;
+                white-space: nowrap;
+                transition:
+                  background-color 0.2s ease,
+                  transform 0.2s ease;
+              }
+
+              .site-footer-whatsapp:hover {
+                background-color: #1E40AF;
+                transform: translateY(-1px);
+              }
+
+              .site-footer-bottom {
+                width: 100%;
+                border-top: 1px solid var(--border);
+              }
+
+              .site-footer-bottom-inner {
+                width: 100%;
+                max-width: 1180px;
+                margin: 0 auto;
+                padding: 14px 24px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                color: var(--muted);
+                font-size: 12px;
+                line-height: 1.5;
+              }
+
+              @media (max-width: 960px) {
+                .site-footer-main {
+                  grid-template-columns: 1fr 1fr;
+                  gap: 32px;
+                }
+              }
+
               @media (max-width: 640px) {
-                .site-support-footer-inner {
-                  padding: 20px 16px !important;
-                  align-items: stretch !important;
+                .site-footer-main {
+                  grid-template-columns: 1fr;
+                  gap: 28px;
+                  padding: 30px 16px;
                 }
 
-                .site-support-footer-actions {
-                  width: 100% !important;
-                  display: grid !important;
-                  grid-template-columns: 1fr !important;
+                .site-footer-column {
+                  padding-top: 2px;
                 }
 
-                .site-support-footer-actions > a {
-                  width: 100% !important;
-                  min-height: 46px !important;
+                .site-footer-contact,
+                .site-footer-whatsapp {
+                  width: 100%;
+                  min-height: 46px;
+                  box-sizing: border-box;
                 }
 
-                .site-support-footer > div:last-of-type > div {
-                  padding-left: 16px !important;
-                  padding-right: 16px !important;
+                .site-footer-bottom-inner {
+                  padding: 14px 16px;
+                  flex-direction: column;
+                  align-items: flex-start;
+                  gap: 5px;
                 }
               }
             `}</style>
