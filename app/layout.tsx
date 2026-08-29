@@ -41,17 +41,181 @@ export const metadata: Metadata = {
 
 const temaScripti = `
 (function () {
-  try {
-    var tema = localStorage.getItem("garaj-defteri-tema");
+  var TEMA_KEY = "garaj-defteri-tema";
 
-    if (tema !== "acik" && tema !== "koyu") {
+  function temaGecerliMi(tema) {
+    return tema === "acik" || tema === "koyu";
+  }
+
+  function supabaseOturumTemasiniBul() {
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+
+        if (!key) continue;
+
+        if (
+          key.indexOf("sb-") !== 0 ||
+          key.indexOf("-auth-token") === -1
+        ) {
+          continue;
+        }
+
+        /*
+         * Supabase bazı durumlarda auth verisini
+         * parçalara ayırabilir. Ana auth-token kaydı
+         * değilse burada atlıyoruz.
+         */
+        if (/\\.\\d+$/.test(key)) {
+          continue;
+        }
+
+        var raw = localStorage.getItem(key);
+
+        if (!raw) continue;
+
+        try {
+          var session = JSON.parse(raw);
+
+          if (
+            session &&
+            session.user &&
+            session.user.user_metadata
+          ) {
+            var tema = session.user.user_metadata.tema;
+
+            if (temaGecerliMi(tema)) {
+              return tema;
+            }
+          }
+        } catch (parseError) {
+          // Başka bir localStorage kaydı olabilir, devam et.
+        }
+      }
+    } catch (e) {
+      // localStorage erişilemezse sessizce devam et.
+    }
+
+    return null;
+  }
+
+  function temayiUygula(tema) {
+    if (!temaGecerliMi(tema)) {
       tema = "acik";
     }
 
-    document.documentElement.setAttribute("data-theme", tema);
-  } catch (e) {
-    document.documentElement.setAttribute("data-theme", "acik");
+    var mevcutTema =
+      document.documentElement.getAttribute("data-theme");
+
+    if (mevcutTema !== tema) {
+      document.documentElement.setAttribute(
+        "data-theme",
+        tema
+      );
+    }
+
+    try {
+      var kayitliTema =
+        localStorage.getItem(TEMA_KEY);
+
+      if (kayitliTema !== tema) {
+        localStorage.setItem(
+          TEMA_KEY,
+          tema
+        );
+      }
+    } catch (e) {
+      // Tema yine de HTML üzerine uygulanmış olur.
+    }
   }
+
+  function temayiSenkronizeEt() {
+    try {
+      /*
+       * Öncelik:
+       * 1. Giriş yapmış kullanıcının Supabase tema tercihi
+       * 2. Bu domaine daha önce kaydedilmiş tema
+       * 3. Açık tema
+       */
+      var supabaseTema =
+        supabaseOturumTemasiniBul();
+
+      var localTema =
+        localStorage.getItem(TEMA_KEY);
+
+      var tema = "acik";
+
+      if (temaGecerliMi(supabaseTema)) {
+        tema = supabaseTema;
+      } else if (temaGecerliMi(localTema)) {
+        tema = localTema;
+      }
+
+      temayiUygula(tema);
+    } catch (e) {
+      temayiUygula("acik");
+    }
+  }
+
+  /*
+   * İlk HTML çizilmeden önce mevcut tercihi uygula.
+   */
+  temayiSenkronizeEt();
+
+  /*
+   * Supabase giriş yaptıktan sonra auth token localStorage'a
+   * yazılır. Root layout client navigation sırasında yeniden
+   * kurulmayabileceği için oturum değişimini merkezi olarak
+   * takip ediyoruz.
+   */
+  var temaKontrolSayaci = 0;
+
+  var temaKontrol = window.setInterval(function () {
+    temayiSenkronizeEt();
+
+    temaKontrolSayaci++;
+
+    /*
+     * İlk 30 saniye sık kontrol yeterli.
+     * Sonrasında interval'i kapatıyoruz.
+     */
+    if (temaKontrolSayaci >= 120) {
+      window.clearInterval(temaKontrol);
+    }
+  }, 250);
+
+  /*
+   * Sekmeye geri dönüldüğünde tekrar kontrol et.
+   */
+  window.addEventListener(
+    "focus",
+    temayiSenkronizeEt
+  );
+
+  document.addEventListener(
+    "visibilitychange",
+    function () {
+      if (!document.hidden) {
+        temayiSenkronizeEt();
+      }
+    }
+  );
+
+  /*
+   * Başka sekmede tema/oturum değişirse bu sekmeyi de güncelle.
+   */
+  window.addEventListener(
+    "storage",
+    temayiSenkronizeEt
+  );
+
+  /*
+   * Tarayıcı geri/ileri önbelleğinden dönüldüğünde kontrol et.
+   */
+  window.addEventListener(
+    "pageshow",
+    temayiSenkronizeEt
+  );
 })();
 `;
 
