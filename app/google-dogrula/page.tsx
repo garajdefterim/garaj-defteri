@@ -8,7 +8,7 @@ import {
 } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
+import Turnstile from "react-turnstile";
 import { supabase } from "../../lib/supabase";
 
 function Brand() {
@@ -58,11 +58,11 @@ function Brand() {
 
 export default function GoogleDogrulaPage() {
   const router = useRouter();
-  const captchaRef = useRef<HCaptcha>(null);
 
   const [email, setEmail] = useState("");
   const [kod, setKod] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
+  const [turnstileKey, setTurnstileKey] = useState(0);
 
   const [sayfaYukleniyor, setSayfaYukleniyor] =
     useState(true);
@@ -82,9 +82,8 @@ export default function GoogleDogrulaPage() {
   const [beklemeSuresi, setBeklemeSuresi] =
     useState(0);
 
-  const hcaptchaSiteKey =
-    process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ||
-    "be4a5a44-94a0-459a-a750-caaa23900666";
+  const turnstileSiteKey =
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
   useEffect(() => {
     async function googleKullanicisiniHazirla() {
@@ -191,8 +190,8 @@ export default function GoogleDogrulaPage() {
           },
         });
 
-      captchaRef.current?.resetCaptcha();
       setCaptchaToken("");
+      setTurnstileKey((onceki) => onceki + 1);
 
       if (error) {
         console.error(
@@ -205,7 +204,7 @@ export default function GoogleDogrulaPage() {
 
         if (hataMesaji.includes("captcha")) {
           setHata(
-            "Güvenlik doğrulaması kabul edilmedi. Lütfen CAPTCHA'yı tekrar tamamlayın."
+            "Güvenlik doğrulaması kabul edilmedi. Lütfen güvenlik kontrolünü tekrar tamamlayın."
           );
         } else if (
           hataMesaji.includes("rate") ||
@@ -237,8 +236,8 @@ export default function GoogleDogrulaPage() {
         error
       );
 
-      captchaRef.current?.resetCaptcha();
       setCaptchaToken("");
+      setTurnstileKey((onceki) => onceki + 1);
 
       setHata(
         "Doğrulama kodu gönderilirken beklenmeyen bir hata oluştu."
@@ -343,8 +342,8 @@ export default function GoogleDogrulaPage() {
     setMesaj("");
     setKod("");
     setCaptchaToken("");
+    setTurnstileKey((onceki) => onceki + 1);
 
-    captchaRef.current?.resetCaptcha();
     setKodGonderildi(false);
   }
 
@@ -561,24 +560,40 @@ export default function GoogleDogrulaPage() {
                     overflow: "hidden",
                   }}
                 >
-                  <HCaptcha
-                    ref={captchaRef}
-                    sitekey={hcaptchaSiteKey}
-                    onVerify={(token) => {
-                      setCaptchaToken(token);
-                      setHata("");
-                    }}
-                    onExpire={() => {
-                      setCaptchaToken("");
-                    }}
-                    onError={() => {
-                      setCaptchaToken("");
-
-                      setHata(
-                        "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
-                      );
-                    }}
-                  />
+                  {turnstileSiteKey ? (
+                    <Turnstile
+                      key={turnstileKey}
+                      sitekey={turnstileSiteKey}
+                      onVerify={(token) => {
+                        setCaptchaToken(token);
+                        setHata("");
+                      }}
+                      onExpire={() => {
+                        setCaptchaToken("");
+                      }}
+                      onError={() => {
+                        setCaptchaToken("");
+                        setHata(
+                          "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
+                        );
+                      }}
+                    />
+                  ) : (
+                    <div
+                      role="alert"
+                      style={{
+                        padding: "12px 13px",
+                        borderRadius: "8px",
+                        border: "1px solid #F1C7C7",
+                        backgroundColor: "#FFF7F7",
+                        color: "#A93838",
+                        fontSize: "13px",
+                        lineHeight: 1.5,
+                      }}
+                    >
+                      Güvenlik doğrulaması yapılandırılmamış.
+                    </div>
+                  )}
                 </div>
 
                 {hata && (

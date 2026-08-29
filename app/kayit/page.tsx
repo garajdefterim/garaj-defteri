@@ -3,11 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  useRef,
   useState,
   type FormEvent,
 } from "react";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
+import Turnstile from "react-turnstile";
 import { supabase } from "../../lib/supabase";
 
 function GoogleIcon() {
@@ -85,7 +84,6 @@ function Brand() {
 
 export default function KayitPage() {
   const router = useRouter();
-  const captchaRef = useRef<HCaptcha>(null);
 
   const [kullaniciAdi, setKullaniciAdi] =
     useState("");
@@ -97,6 +95,7 @@ export default function KayitPage() {
   const [sifreTekrarGoster, setSifreTekrarGoster] = useState(false);
   const [captchaToken, setCaptchaToken] =
     useState("");
+  const [turnstileKey, setTurnstileKey] = useState(0);
 
   const [hata, setHata] = useState("");
   const [mesaj, setMesaj] = useState("");
@@ -107,8 +106,8 @@ export default function KayitPage() {
   const [googleYukleniyor, setGoogleYukleniyor] =
     useState(false);
 
-  const hcaptchaSiteKey =
-    process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? "";
+  const turnstileSiteKey =
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
   async function emailIleKayitOl(
     event: FormEvent<HTMLFormElement>
@@ -152,7 +151,7 @@ export default function KayitPage() {
       return;
     }
 
-    if (!hcaptchaSiteKey) {
+    if (!turnstileSiteKey) {
       setHata(
         "Güvenlik doğrulaması yapılandırılmamış."
       );
@@ -183,8 +182,8 @@ export default function KayitPage() {
           },
         });
 
-      captchaRef.current?.resetCaptcha();
       setCaptchaToken("");
+      setTurnstileKey((onceki) => onceki + 1);
 
       if (error) {
         console.error(
@@ -261,8 +260,8 @@ export default function KayitPage() {
         error
       );
 
-      captchaRef.current?.resetCaptcha();
       setCaptchaToken("");
+      setTurnstileKey((onceki) => onceki + 1);
 
       setHata(
         "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin."
@@ -673,7 +672,7 @@ export default function KayitPage() {
                 </div>
               </label>
 
-              {hcaptchaSiteKey && (
+              {turnstileSiteKey && (
                 <div
                   className="kayit-captcha"
                   style={{
@@ -683,9 +682,9 @@ export default function KayitPage() {
                     overflow: "hidden",
                   }}
                 >
-                  <HCaptcha
-                    ref={captchaRef}
-                    sitekey={hcaptchaSiteKey}
+                  <Turnstile
+                    key={turnstileKey}
+                    sitekey={turnstileSiteKey}
                     onVerify={(token) => {
                       setCaptchaToken(token);
                       setHata("");
@@ -695,7 +694,6 @@ export default function KayitPage() {
                     }}
                     onError={() => {
                       setCaptchaToken("");
-
                       setHata(
                         "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
                       );

@@ -3,12 +3,34 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  useEffect,
   useRef,
   useState,
   type FormEvent,
 } from "react";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
 import { supabase } from "../../lib/supabase";
+
+type TurnstileApi = {
+  render: (
+    container: HTMLElement,
+    options: {
+      sitekey: string;
+      theme?: "light" | "dark" | "auto";
+      callback?: (token: string) => void;
+      "expired-callback"?: () => void;
+      "error-callback"?: () => void;
+    }
+  ) => string;
+  reset: (widgetId?: string) => void;
+  remove: (widgetId?: string) => void;
+};
+
+declare global {
+  interface Window {
+    turnstile?: TurnstileApi;
+  }
+}
+
 
 function GoogleIcon() {
   return (
@@ -85,7 +107,8 @@ function Brand() {
 
 export default function GirisPage() {
   const router = useRouter();
-  const captchaRef = useRef<HCaptcha>(null);
+  const turnstileContainerRef = useRef<HTMLDivElement>(null);
+  const turnstileWidgetIdRef = useRef<string | null>(null);
 
   const [email, setEmail] = useState("");
   const [sifre, setSifre] = useState("");
@@ -98,8 +121,102 @@ export default function GirisPage() {
   const [googleYukleniyor, setGoogleYukleniyor] =
     useState(false);
 
-  const hcaptchaSiteKey =
-    process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? "";
+  const turnstileSiteKey =
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+
+  useEffect(() => {
+    if (!turnstileSiteKey) {
+      return;
+    }
+
+    let iptalEdildi = false;
+
+    const widgetOlustur = () => {
+      if (
+        iptalEdildi ||
+        !window.turnstile ||
+        !turnstileContainerRef.current ||
+        turnstileWidgetIdRef.current
+      ) {
+        return;
+      }
+
+      turnstileWidgetIdRef.current =
+        window.turnstile.render(
+          turnstileContainerRef.current,
+          {
+            sitekey: turnstileSiteKey,
+            theme: "auto",
+            callback: (token) => {
+              setCaptchaToken(token);
+              setHata("");
+            },
+            "expired-callback": () => {
+              setCaptchaToken("");
+            },
+            "error-callback": () => {
+              setCaptchaToken("");
+              setHata(
+                "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
+              );
+            },
+          }
+        );
+    };
+
+    const scriptSrc =
+      "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+    const mevcutScript = document.querySelector<HTMLScriptElement>(
+      `script[src="${scriptSrc}"]`
+    );
+
+    if (window.turnstile) {
+      widgetOlustur();
+    } else if (mevcutScript) {
+      mevcutScript.addEventListener("load", widgetOlustur);
+    } else {
+      const script = document.createElement("script");
+      script.src = scriptSrc;
+      script.async = true;
+      script.defer = true;
+      script.addEventListener("load", widgetOlustur);
+      document.head.appendChild(script);
+    }
+
+    return () => {
+      iptalEdildi = true;
+
+      if (mevcutScript) {
+        mevcutScript.removeEventListener(
+          "load",
+          widgetOlustur
+        );
+      }
+
+      if (
+        window.turnstile &&
+        turnstileWidgetIdRef.current
+      ) {
+        window.turnstile.remove(
+          turnstileWidgetIdRef.current
+        );
+        turnstileWidgetIdRef.current = null;
+      }
+    };
+  }, [turnstileSiteKey]);
+
+  function turnstileSifirla() {
+    if (
+      window.turnstile &&
+      turnstileWidgetIdRef.current
+    ) {
+      window.turnstile.reset(
+        turnstileWidgetIdRef.current
+      );
+    }
+
+    setCaptchaToken("");
+  }
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>
@@ -107,7 +224,7 @@ export default function GirisPage() {
     event.preventDefault();
     setHata("");
 
-    if (!hcaptchaSiteKey) {
+    if (!turnstileSiteKey) {
       setHata(
         "Güvenlik doğrulaması yapılandırılmamış."
       );
@@ -134,8 +251,7 @@ export default function GirisPage() {
         });
 
       if (error) {
-        captchaRef.current?.resetCaptcha();
-        setCaptchaToken("");
+        turnstileSifirla();
 
         const mesaj = error.message.toLowerCase();
 
@@ -162,8 +278,7 @@ export default function GirisPage() {
       router.push("/dashboard");
       router.refresh();
     } catch {
-      captchaRef.current?.resetCaptcha();
-      setCaptchaToken("");
+      turnstileSifirla();
 
       setHata(
         "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin."
@@ -503,9 +618,9 @@ export default function GirisPage() {
                 </Link>
               </div>
 
-              {hcaptchaSiteKey && (
+              {turnstileSiteKey && (
                 <div
-                  className="giris-captcha"
+                  className="giris-turnstile"
                   style={{
                     display: "flex",
                     justifyContent: "center",
@@ -513,23 +628,7 @@ export default function GirisPage() {
                     overflow: "hidden",
                   }}
                 >
-                  <HCaptcha
-                    ref={captchaRef}
-                    sitekey={hcaptchaSiteKey}
-                    onVerify={(token) => {
-                      setCaptchaToken(token);
-                      setHata("");
-                    }}
-                    onExpire={() => {
-                      setCaptchaToken("");
-                    }}
-                    onError={() => {
-                      setCaptchaToken("");
-                      setHata(
-                        "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
-                      );
-                    }}
-                  />
+                  <div ref={turnstileContainerRef} />
                 </div>
               )}
 
@@ -670,7 +769,7 @@ export default function GirisPage() {
             gap: 16px !important;
           }
 
-          .giris-captcha {
+          .giris-turnstile {
             width: 100% !important;
             justify-content: center !important;
           }
@@ -700,7 +799,7 @@ export default function GirisPage() {
             font-size: 26px !important;
           }
 
-          .giris-captcha {
+          .giris-turnstile {
             transform: scale(0.92);
             transform-origin: center top;
             margin-bottom: -6px;
@@ -708,7 +807,7 @@ export default function GirisPage() {
         }
 
         @media (max-width: 340px) {
-          .giris-captcha {
+          .giris-turnstile {
             transform: scale(0.84);
             margin-bottom: -12px;
           }

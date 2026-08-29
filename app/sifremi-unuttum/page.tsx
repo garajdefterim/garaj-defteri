@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import {
-  useRef,
   useState,
   type FormEvent,
 } from "react";
-import HCaptcha from "@hcaptcha/react-hcaptcha";
+import Turnstile from "react-turnstile";
 import { supabase } from "../../lib/supabase";
 
 function Brand() {
@@ -55,19 +54,19 @@ function Brand() {
 }
 
 export default function SifremiUnuttumPage() {
-  const captchaRef = useRef<HCaptcha>(null);
 
   const [email, setEmail] = useState("");
   const [captchaToken, setCaptchaToken] =
     useState("");
+  const [turnstileKey, setTurnstileKey] = useState(0);
 
   const [hata, setHata] = useState("");
   const [mesaj, setMesaj] = useState("");
   const [yukleniyor, setYukleniyor] =
     useState(false);
 
-  const hcaptchaSiteKey =
-    process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY ?? "";
+  const turnstileSiteKey =
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
   async function sifreSifirlamaGonder(
     event: FormEvent<HTMLFormElement>
@@ -87,7 +86,7 @@ export default function SifremiUnuttumPage() {
       return;
     }
 
-    if (!hcaptchaSiteKey) {
+    if (!turnstileSiteKey) {
       setHata(
         "Güvenlik doğrulaması yapılandırılmamış."
       );
@@ -114,8 +113,8 @@ export default function SifremiUnuttumPage() {
           }
         );
 
-      captchaRef.current?.resetCaptcha();
       setCaptchaToken("");
+      setTurnstileKey((onceki) => onceki + 1);
 
       if (error) {
         console.error(
@@ -157,8 +156,8 @@ export default function SifremiUnuttumPage() {
         error
       );
 
-      captchaRef.current?.resetCaptcha();
       setCaptchaToken("");
+      setTurnstileKey((onceki) => onceki + 1);
 
       setHata(
         "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin."
@@ -300,7 +299,7 @@ export default function SifremiUnuttumPage() {
                 />
               </label>
 
-              {hcaptchaSiteKey && (
+              {turnstileSiteKey && (
                 <div
                   className="sifremi-unuttum-captcha"
                   style={{
@@ -310,9 +309,9 @@ export default function SifremiUnuttumPage() {
                     overflow: "hidden",
                   }}
                 >
-                  <HCaptcha
-                    ref={captchaRef}
-                    sitekey={hcaptchaSiteKey}
+                  <Turnstile
+                    key={turnstileKey}
+                    sitekey={turnstileSiteKey}
                     onVerify={(token) => {
                       setCaptchaToken(token);
                       setHata("");
@@ -322,7 +321,6 @@ export default function SifremiUnuttumPage() {
                     }}
                     onError={() => {
                       setCaptchaToken("");
-
                       setHata(
                         "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
                       );
