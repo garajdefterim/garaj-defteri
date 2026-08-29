@@ -108,7 +108,10 @@ export default function SifremiUnuttumPage() {
           temizEmail,
           {
             redirectTo:
-              `${window.location.origin}/sifre-yenile`,
+              window.location.hostname === "localhost" ||
+              window.location.hostname === "127.0.0.1"
+                ? `${window.location.origin}/sifre-yenile`
+                : "https://www.garajdefterim.com/sifre-yenile",
             captchaToken,
           }
         );

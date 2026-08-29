@@ -77,24 +77,138 @@ export default function SifreYenilePage() {
   useEffect(() => {
     let aktif = true;
 
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (!aktif) {
+          return;
+        }
+
+        if (
+          event === "PASSWORD_RECOVERY" ||
+          event === "SIGNED_IN" ||
+          event === "INITIAL_SESSION"
+        ) {
+          setGecerliOturum(Boolean(session));
+          setOturumKontrolEdiliyor(false);
+        }
+      }
+    );
+
     async function oturumuKontrolEt() {
       try {
         const {
-          data: { session },
+          data: { session: mevcutOturum },
         } = await supabase.auth.getSession();
 
         if (!aktif) {
           return;
         }
 
-        if (session) {
+        if (mevcutOturum) {
           setGecerliOturum(true);
+          setOturumKontrolEdiliyor(false);
+          return;
         }
+
+        const url = new URL(window.location.href);
+        const code = url.searchParams.get("code");
+
+        if (code) {
+          const { data, error } =
+            await supabase.auth.exchangeCodeForSession(code);
+
+          if (!aktif) {
+            return;
+          }
+
+          if (!error && data.session) {
+            setGecerliOturum(true);
+            setOturumKontrolEdiliyor(false);
+
+            url.searchParams.delete("code");
+            url.searchParams.delete("sb_flow_id");
+
+            const temizUrl =
+              `${url.pathname}${url.search}${url.hash}`;
+
+            window.history.replaceState(
+              {},
+              document.title,
+              temizUrl
+            );
+
+            return;
+          }
+
+          if (error) {
+            console.error(
+              "Şifre yenileme kodu işlenemedi:",
+              error
+            );
+          }
+        }
+
+        const hashParams = new URLSearchParams(
+          window.location.hash.replace(/^#/, "")
+        );
+
+        const accessToken =
+          hashParams.get("access_token");
+        const refreshToken =
+          hashParams.get("refresh_token");
+
+        if (accessToken && refreshToken) {
+          const { data, error } =
+            await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken,
+            });
+
+          if (!aktif) {
+            return;
+          }
+
+          if (!error && data.session) {
+            setGecerliOturum(true);
+            setOturumKontrolEdiliyor(false);
+
+            window.history.replaceState(
+              {},
+              document.title,
+              `${window.location.pathname}${window.location.search}`
+            );
+
+            return;
+          }
+
+          if (error) {
+            console.error(
+              "Şifre yenileme oturumu kurulamadı:",
+              error
+            );
+          }
+        }
+
+        const {
+          data: { session: sonOturum },
+        } = await supabase.auth.getSession();
+
+        if (!aktif) {
+          return;
+        }
+
+        setGecerliOturum(Boolean(sonOturum));
       } catch (error) {
         console.error(
           "Şifre yenileme oturum kontrolü:",
           error
         );
+
+        if (aktif) {
+          setGecerliOturum(false);
+        }
       } finally {
         if (aktif) {
           setOturumKontrolEdiliyor(false);
@@ -103,20 +217,6 @@ export default function SifreYenilePage() {
     }
 
     oturumuKontrolEt();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (
-          event === "PASSWORD_RECOVERY" ||
-          event === "SIGNED_IN"
-        ) {
-          setGecerliOturum(Boolean(session));
-          setOturumKontrolEdiliyor(false);
-        }
-      }
-    );
 
     return () => {
       aktif = false;
