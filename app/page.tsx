@@ -222,6 +222,274 @@ export default function Home() {
           <span>© 2026 GARAJ DEFTERİM</span>
         </div>
       </footer>
+
+      <style jsx global>{`
+        .home-page,
+        .home-page * {
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .home-page img,
+        .home-page svg {
+          max-width: 100%;
+        }
+
+        .home-actions a,
+        .home-cta a {
+          min-height: 46px;
+        }
+
+        @media (max-width: 1024px) {
+          .home-hero-grid {
+            gap: 40px !important;
+          }
+
+          .home-reminder-content {
+            gap: 28px !important;
+          }
+
+          .home-feature-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .home-hero,
+          .home-reminder-section,
+          .home-features,
+          .home-cta-wrap {
+            padding-left: 16px !important;
+            padding-right: 16px !important;
+          }
+
+          .home-hero-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 28px !important;
+          }
+
+          .home-hero-copy h1 {
+            font-size: clamp(36px, 10vw, 50px) !important;
+            line-height: 1.02 !important;
+            letter-spacing: -1.4px !important;
+          }
+
+          .home-lead {
+            font-size: 16px !important;
+            line-height: 1.65 !important;
+          }
+
+          .home-actions {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px !important;
+          }
+
+          .home-actions a {
+            width: 100% !important;
+            justify-content: center !important;
+            text-align: center !important;
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+          }
+
+          .home-highlights {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px 14px !important;
+          }
+
+          .home-highlights span:last-child {
+            grid-column: 1 / -1;
+          }
+
+          .home-preview {
+            width: 100% !important;
+            max-width: 560px !important;
+            margin: 0 auto !important;
+          }
+
+          .home-preview-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .home-reminder-card {
+            padding: 22px !important;
+          }
+
+          .home-reminder-content {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 22px !important;
+          }
+
+          .home-reminder-items {
+            display: grid !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px 14px !important;
+          }
+
+          .home-reminder-preview {
+            width: 100% !important;
+          }
+
+          .home-section-heading h2,
+          .home-reminder-content h2,
+          .home-cta h2 {
+            font-size: clamp(28px, 8vw, 36px) !important;
+            line-height: 1.08 !important;
+          }
+
+          .home-feature-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+          }
+
+          .home-feature-grid article {
+            padding: 18px !important;
+          }
+
+          .home-cta {
+            grid-template-columns: minmax(0, 1fr) auto !important;
+            gap: 20px !important;
+            align-items: center !important;
+          }
+
+          .home-cta a {
+            white-space: nowrap;
+          }
+
+          .home-footer > div {
+            gap: 14px !important;
+            flex-wrap: wrap !important;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .home-hero,
+          .home-reminder-section,
+          .home-features,
+          .home-cta-wrap {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+          }
+
+          .home-hero-copy h1 {
+            font-size: clamp(34px, 10.5vw, 44px) !important;
+          }
+
+          .home-eyebrow,
+          .home-reminder-badge {
+            font-size: 11px !important;
+            letter-spacing: 0.08em !important;
+          }
+
+          .home-actions {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .home-highlights {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .home-preview-card {
+            padding: 18px !important;
+          }
+
+          .home-preview-head {
+            gap: 12px !important;
+          }
+
+          .home-preview-logo {
+            flex: 0 0 auto !important;
+          }
+
+          .home-preview-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px !important;
+          }
+
+          .home-maintenance-card > div {
+            gap: 10px !important;
+          }
+
+          .home-reminder-card {
+            padding: 18px !important;
+          }
+
+          .home-reminder-items {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 9px 10px !important;
+          }
+
+          .home-feature-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px !important;
+          }
+
+          .home-feature-grid article {
+            padding: 16px !important;
+          }
+
+          .home-feature-grid h3 {
+            font-size: 17px !important;
+          }
+
+          .home-feature-grid p {
+            font-size: 13px !important;
+            line-height: 1.55 !important;
+          }
+
+          .home-cta {
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 16px !important;
+          }
+
+          .home-cta a {
+            width: 100% !important;
+            justify-content: center !important;
+            text-align: center !important;
+          }
+
+          .home-footer > div {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .home-hero,
+          .home-reminder-section,
+          .home-features,
+          .home-cta-wrap {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .home-actions {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+
+          .home-highlights {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+
+          .home-highlights span:last-child {
+            grid-column: auto;
+          }
+
+          .home-preview-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .home-reminder-items {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+
+          .home-feature-grid {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

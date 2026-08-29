@@ -1025,6 +1025,38 @@ export default function ProfilPage() {
       )}
 
       <style jsx global>{`
+        .profil-page,
+        .profil-page * {
+          min-width: 0;
+        }
+
+        .profil-page img {
+          max-width: 100%;
+        }
+
+        .profil-page input,
+        .profil-page button,
+        .profil-page a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .profil-page {
+            padding: 28px 20px 56px !important;
+          }
+
+          .profil-container {
+            max-width: 760px !important;
+          }
+
+          .profil-form,
+          .profil-card,
+          .profil-danger,
+          .profil-hero {
+            border-radius: 13px !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .profil-page {
             padding: 22px 14px 44px !important;
@@ -1032,12 +1064,18 @@ export default function ProfilPage() {
           }
 
           .profil-container {
+            width: 100% !important;
             max-width: 100% !important;
           }
 
           .profil-header {
             margin-bottom: 20px !important;
             align-items: flex-start !important;
+            gap: 12px !important;
+          }
+
+          .profil-header > div {
+            width: 100%;
           }
 
           .profil-header h1 {
@@ -1047,6 +1085,7 @@ export default function ProfilPage() {
 
           .profil-header p {
             font-size: 14px !important;
+            line-height: 1.5 !important;
           }
 
           .profil-hero {
@@ -1054,7 +1093,10 @@ export default function ProfilPage() {
           }
 
           .profil-hero > div {
+            display: grid !important;
+            grid-template-columns: auto minmax(0, 1fr) !important;
             gap: 14px !important;
+            align-items: center !important;
           }
 
           .profil-hero img,
@@ -1071,12 +1113,19 @@ export default function ProfilPage() {
 
           .profil-hero p {
             overflow-wrap: anywhere;
+            word-break: break-word;
           }
 
           .profil-form,
           .profil-card,
           .profil-danger {
             padding: 18px !important;
+          }
+
+          .profil-form input {
+            width: 100% !important;
+            min-width: 0 !important;
+            font-size: 16px !important;
           }
 
           .profil-save-actions {
@@ -1086,19 +1135,34 @@ export default function ProfilPage() {
           .profil-save-actions > button {
             width: 100% !important;
             min-width: 0 !important;
+            min-height: 46px !important;
+          }
+
+          .profil-account > div {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 10px !important;
           }
 
           .profil-theme-actions {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
 
+          .profil-theme-actions > button {
+            min-width: 0 !important;
+            width: 100% !important;
+          }
+
           .profil-notifications > a,
           .profil-session > button,
           .profil-danger > button {
             width: 100% !important;
+            min-width: 0 !important;
           }
 
           .profil-delete-dialog {
+            width: min(100%, 480px) !important;
+            max-height: calc(100dvh - 28px);
+            overflow-y: auto;
             padding: 20px !important;
           }
 
@@ -1120,22 +1184,77 @@ export default function ProfilPage() {
           }
         }
 
-        @media (max-width: 380px) {
+        @media (max-width: 480px) {
+          .profil-page {
+            padding: 18px 12px 38px !important;
+          }
+
+          .profil-header h1 {
+            font-size: 28px !important;
+          }
+
+          .profil-hero,
+          .profil-form,
+          .profil-card,
+          .profil-danger {
+            padding: 16px !important;
+          }
+
+          .profil-hero > div {
+            grid-template-columns: 56px minmax(0, 1fr) !important;
+            gap: 12px !important;
+          }
+
+          .profil-hero img,
+          .profil-hero [aria-hidden="true"] {
+            width: 56px !important;
+            height: 56px !important;
+          }
+
+          .profil-hero h2 {
+            font-size: 19px !important;
+          }
+
+          .profil-account > div {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .profil-account strong {
+            overflow-wrap: anywhere;
+          }
+
+          .profil-delete-dialog {
+            padding: 18px !important;
+          }
+        }
+
+        @media (max-width: 360px) {
           .profil-page {
             padding-left: 10px !important;
             padding-right: 10px !important;
           }
 
+          .profil-hero,
           .profil-form,
           .profil-card,
-          .profil-danger,
-          .profil-hero {
-            padding: 15px !important;
+          .profil-danger {
+            padding: 14px !important;
           }
 
+          .profil-account > div,
           .profil-theme-actions,
           .profil-delete-actions {
             grid-template-columns: 1fr !important;
+          }
+
+          .profil-hero > div {
+            grid-template-columns: 50px minmax(0, 1fr) !important;
+          }
+
+          .profil-hero img,
+          .profil-hero [aria-hidden="true"] {
+            width: 50px !important;
+            height: 50px !important;
           }
         }
       `}</style>

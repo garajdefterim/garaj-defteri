@@ -427,6 +427,7 @@ export default function GoogleDogrulaPage() {
 
   return (
     <main
+      className="google-dogrula-page"
       style={{
         minHeight: "100vh",
         backgroundColor: "#F7F8FA",
@@ -438,6 +439,7 @@ export default function GoogleDogrulaPage() {
       }}
     >
       <header
+        className="google-dogrula-header"
         style={{
           width: "100%",
           maxWidth: "1180px",
@@ -450,6 +452,7 @@ export default function GoogleDogrulaPage() {
       </header>
 
       <div
+        className="google-dogrula-shell"
         style={{
           flex: 1,
           display: "flex",
@@ -459,12 +462,14 @@ export default function GoogleDogrulaPage() {
         }}
       >
         <section
+          className="google-dogrula-section"
           style={{
             width: "100%",
             maxWidth: "420px",
           }}
         >
           <div
+            className="google-dogrula-title"
             style={{
               marginBottom: "28px",
             }}
@@ -496,6 +501,7 @@ export default function GoogleDogrulaPage() {
           </div>
 
           <div
+            className="google-dogrula-card"
             style={{
               padding: "28px",
               backgroundColor: "#FFFFFF",
@@ -554,6 +560,7 @@ export default function GoogleDogrulaPage() {
                 </p>
 
                 <div
+                  className="google-dogrula-captcha"
                   style={{
                     display: "flex",
                     justifyContent: "center",
@@ -692,6 +699,7 @@ export default function GoogleDogrulaPage() {
                     Doğrulama kodu
 
                     <input
+                      className="google-dogrula-code-input"
                       type="text"
                       inputMode="numeric"
                       autoComplete="one-time-code"
@@ -884,6 +892,163 @@ export default function GoogleDogrulaPage() {
           </p>
         </section>
       </div>
+      <style jsx global>{`
+        .google-dogrula-page,
+        .google-dogrula-page * {
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .google-dogrula-card input,
+        .google-dogrula-card button,
+        .google-dogrula-card a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .google-dogrula-header {
+            padding: 24px 20px !important;
+          }
+
+          .google-dogrula-shell {
+            padding: 24px 20px 56px !important;
+          }
+        }
+
+        @media (max-width: 700px) {
+          .google-dogrula-page {
+            min-height: 100dvh !important;
+            overflow-x: hidden;
+          }
+
+          .google-dogrula-header {
+            padding: 18px 16px !important;
+          }
+
+          .google-dogrula-shell {
+            align-items: flex-start !important;
+            padding: 18px 14px 42px !important;
+          }
+
+          .google-dogrula-section {
+            width: 100% !important;
+            max-width: 440px !important;
+          }
+
+          .google-dogrula-title {
+            margin-bottom: 18px !important;
+          }
+
+          .google-dogrula-title h1 {
+            font-size: 28px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .google-dogrula-title p {
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+          }
+
+          .google-dogrula-card {
+            padding: 20px !important;
+            border-radius: 12px !important;
+          }
+
+          .google-dogrula-card button {
+            min-width: 0 !important;
+            min-height: 46px;
+          }
+
+          .google-dogrula-code-input {
+            font-size: 22px !important;
+            letter-spacing: 8px !important;
+          }
+
+          .google-dogrula-captcha {
+            width: 100% !important;
+            justify-content: center !important;
+            overflow: visible !important;
+          }
+
+          .google-dogrula-captcha > div {
+            max-width: 100%;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .google-dogrula-header {
+            padding: 16px 14px !important;
+          }
+
+          .google-dogrula-shell {
+            padding: 14px 12px 36px !important;
+          }
+
+          .google-dogrula-title {
+            margin-bottom: 16px !important;
+          }
+
+          .google-dogrula-title h1 {
+            font-size: 27px !important;
+          }
+
+          .google-dogrula-card {
+            padding: 18px !important;
+          }
+
+          .google-dogrula-code-input {
+            font-size: 21px !important;
+            letter-spacing: 7px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .google-dogrula-header {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+          }
+
+          .google-dogrula-shell {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .google-dogrula-card {
+            padding: 16px !important;
+          }
+
+          .google-dogrula-title h1 {
+            font-size: 26px !important;
+          }
+
+          .google-dogrula-code-input {
+            letter-spacing: 6px !important;
+          }
+
+          .google-dogrula-captcha {
+            transform: scale(0.92);
+            transform-origin: center top;
+            margin-bottom: -6px;
+          }
+        }
+
+        @media (max-width: 340px) {
+          .google-dogrula-card {
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+          }
+
+          .google-dogrula-code-input {
+            font-size: 20px !important;
+            letter-spacing: 5px !important;
+          }
+
+          .google-dogrula-captcha {
+            transform: scale(0.84);
+            margin-bottom: -12px;
+          }
+        }
+      `}</style>
     </main>
   );
 }

@@ -274,6 +274,7 @@ export default function DogrulaPage() {
 
   return (
     <main
+      className="dogrula-page"
       style={{
         minHeight: "100vh",
         backgroundColor: "#F7F8FA",
@@ -285,6 +286,7 @@ export default function DogrulaPage() {
       }}
     >
       <header
+        className="dogrula-header"
         style={{
           width: "100%",
           maxWidth: "1180px",
@@ -297,6 +299,7 @@ export default function DogrulaPage() {
       </header>
 
       <div
+        className="dogrula-shell"
         style={{
           flex: 1,
           display: "flex",
@@ -306,12 +309,14 @@ export default function DogrulaPage() {
         }}
       >
         <section
+          className="dogrula-section"
           style={{
             width: "100%",
             maxWidth: "420px",
           }}
         >
           <div
+            className="dogrula-title"
             style={{
               marginBottom: "28px",
             }}
@@ -344,6 +349,7 @@ export default function DogrulaPage() {
           </div>
 
           <div
+            className="dogrula-card"
             style={{
               padding: "28px",
               backgroundColor: "#FFFFFF",
@@ -399,6 +405,7 @@ export default function DogrulaPage() {
             )}
 
             <form
+              className="dogrula-form"
               onSubmit={koduDogrula}
               style={{
                 display: "flex",
@@ -419,6 +426,7 @@ export default function DogrulaPage() {
                 Doğrulama kodu
 
                 <input
+                  className="dogrula-code-input"
                   type="text"
                   inputMode="numeric"
                   autoComplete="one-time-code"
@@ -611,6 +619,149 @@ export default function DogrulaPage() {
           </p>
         </section>
       </div>
+      <style jsx global>{`
+        .dogrula-page,
+        .dogrula-page * {
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .dogrula-card input,
+        .dogrula-card button,
+        .dogrula-card a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .dogrula-header {
+            padding: 24px 20px !important;
+          }
+
+          .dogrula-shell {
+            padding: 24px 20px 56px !important;
+          }
+        }
+
+        @media (max-width: 700px) {
+          .dogrula-page {
+            min-height: 100dvh !important;
+            overflow-x: hidden;
+          }
+
+          .dogrula-header {
+            padding: 18px 16px !important;
+          }
+
+          .dogrula-shell {
+            align-items: flex-start !important;
+            padding: 18px 14px 42px !important;
+          }
+
+          .dogrula-section {
+            width: 100% !important;
+            max-width: 440px !important;
+          }
+
+          .dogrula-title {
+            margin-bottom: 18px !important;
+          }
+
+          .dogrula-title h1 {
+            font-size: 28px !important;
+            letter-spacing: -0.6px !important;
+          }
+
+          .dogrula-title p {
+            font-size: 14px !important;
+            line-height: 1.55 !important;
+          }
+
+          .dogrula-card {
+            padding: 20px !important;
+            border-radius: 12px !important;
+          }
+
+          .dogrula-form {
+            gap: 16px !important;
+          }
+
+          .dogrula-code-input {
+            font-size: 22px !important;
+            letter-spacing: 8px !important;
+          }
+
+          .dogrula-card button {
+            min-width: 0 !important;
+          }
+
+          .dogrula-form > button[type="submit"] {
+            min-height: 46px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .dogrula-header {
+            padding: 16px 14px !important;
+          }
+
+          .dogrula-shell {
+            padding: 14px 12px 36px !important;
+          }
+
+          .dogrula-title {
+            margin-bottom: 16px !important;
+          }
+
+          .dogrula-title h1 {
+            font-size: 27px !important;
+          }
+
+          .dogrula-card {
+            padding: 18px !important;
+          }
+
+          .dogrula-code-input {
+            font-size: 21px !important;
+            letter-spacing: 7px !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .dogrula-header {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+          }
+
+          .dogrula-shell {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
+
+          .dogrula-card {
+            padding: 16px !important;
+          }
+
+          .dogrula-title h1 {
+            font-size: 26px !important;
+          }
+
+          .dogrula-code-input {
+            font-size: 20px !important;
+            letter-spacing: 6px !important;
+          }
+        }
+
+        @media (max-width: 340px) {
+          .dogrula-card {
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+          }
+
+          .dogrula-code-input {
+            letter-spacing: 5px !important;
+          }
+        }
+      `}</style>
     </main>
   );
 }

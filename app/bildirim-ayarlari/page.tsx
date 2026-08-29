@@ -661,6 +661,40 @@ export default function BildirimAyarlariPage() {
       </div>
 
       <style jsx global>{`
+        .bildirim-ayarlari-page,
+        .bildirim-ayarlari-page * {
+          min-width: 0;
+        }
+
+        .bildirim-ayarlari-page input,
+        .bildirim-ayarlari-page select,
+        .bildirim-ayarlari-page button,
+        .bildirim-ayarlari-page a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .bildirim-ayarlari-page {
+            padding: 28px 20px 54px !important;
+          }
+
+          .bildirim-ayarlari-container {
+            max-width: 820px !important;
+          }
+
+          .bildirim-ayarlari-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .bildirim-ayarlari-stats > div:last-child {
+            grid-column: 1 / -1;
+          }
+
+          .bildirim-ayarlari-plan-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .bildirim-ayarlari-page {
             padding: 22px 14px 44px !important;
@@ -668,28 +702,37 @@ export default function BildirimAyarlariPage() {
           }
 
           .bildirim-ayarlari-container {
+            width: 100% !important;
             max-width: 100% !important;
           }
 
           .bildirim-ayarlari-header {
-            align-items: stretch !important;
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) auto !important;
+            align-items: end !important;
             gap: 14px !important;
             margin-bottom: 20px !important;
           }
 
           .bildirim-ayarlari-header > div {
-            width: 100%;
+            width: auto !important;
+            min-width: 0;
           }
 
           .bildirim-ayarlari-header > a {
-            width: 100% !important;
+            width: auto !important;
+            min-width: 0 !important;
             min-height: 46px !important;
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+            white-space: nowrap;
           }
 
           .bildirim-ayarlari-header h1 {
             margin-top: 12px !important;
             font-size: 30px !important;
             letter-spacing: -0.6px !important;
+            overflow-wrap: anywhere;
           }
 
           .bildirim-ayarlari-header p {
@@ -718,6 +761,7 @@ export default function BildirimAyarlariPage() {
           .bildirim-ayarlari-plan,
           .bildirim-ayarlari-form {
             padding: 18px !important;
+            border-radius: 12px !important;
           }
 
           .bildirim-ayarlari-plan-grid {
@@ -746,6 +790,13 @@ export default function BildirimAyarlariPage() {
             flex-shrink: 0;
           }
 
+          .bildirim-ayarlari-form input,
+          .bildirim-ayarlari-form select {
+            width: 100% !important;
+            min-width: 0 !important;
+            font-size: 16px !important;
+          }
+
           .bildirim-ayarlari-save {
             justify-content: stretch !important;
           }
@@ -757,24 +808,60 @@ export default function BildirimAyarlariPage() {
           }
         }
 
-        @media (max-width: 380px) {
+        @media (max-width: 480px) {
+          .bildirim-ayarlari-page {
+            padding: 18px 12px 38px !important;
+          }
+
+          .bildirim-ayarlari-header {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+
+          .bildirim-ayarlari-header > a {
+            width: 100% !important;
+          }
+
+          .bildirim-ayarlari-header h1 {
+            font-size: 28px !important;
+          }
+
+          .bildirim-ayarlari-stats,
+          .bildirim-ayarlari-plan-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .bildirim-ayarlari-stats > div {
+            padding: 14px !important;
+          }
+
+          .bildirim-ayarlari-plan,
+          .bildirim-ayarlari-form {
+            padding: 16px !important;
+          }
+        }
+
+        @media (max-width: 360px) {
           .bildirim-ayarlari-page {
             padding-left: 10px !important;
             padding-right: 10px !important;
           }
 
-          .bildirim-ayarlari-stats,
+          .bildirim-ayarlari-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .bildirim-ayarlari-stats > div:last-child {
+            grid-column: 1 / -1;
+          }
+
           .bildirim-ayarlari-plan-grid {
             grid-template-columns: 1fr !important;
           }
 
-          .bildirim-ayarlari-stats > div:last-child {
-            grid-column: auto;
-          }
-
           .bildirim-ayarlari-plan,
           .bildirim-ayarlari-form {
-            padding: 15px !important;
+            padding: 14px !important;
           }
         }
       `}</style>

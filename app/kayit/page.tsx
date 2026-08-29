@@ -816,6 +816,28 @@ export default function KayitPage() {
       </div>
 
       <style jsx global>{`
+        .kayit-page,
+        .kayit-page * {
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .kayit-card input,
+        .kayit-card button,
+        .kayit-card a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .kayit-header {
+            padding: 24px 20px !important;
+          }
+
+          .kayit-shell {
+            padding: 24px 20px 56px !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .kayit-page {
             min-height: 100dvh !important;
@@ -828,15 +850,16 @@ export default function KayitPage() {
 
           .kayit-shell {
             align-items: flex-start !important;
-            padding: 20px 14px 42px !important;
+            padding: 18px 14px 42px !important;
           }
 
           .kayit-section {
-            max-width: 100% !important;
+            width: 100% !important;
+            max-width: 460px !important;
           }
 
           .kayit-title {
-            margin-bottom: 20px !important;
+            margin-bottom: 18px !important;
           }
 
           .kayit-title h1 {
@@ -846,6 +869,7 @@ export default function KayitPage() {
 
           .kayit-title p {
             font-size: 14px !important;
+            line-height: 1.55 !important;
           }
 
           .kayit-card {
@@ -857,14 +881,47 @@ export default function KayitPage() {
             gap: 16px !important;
           }
 
-          .kayit-card input,
+          .kayit-card input {
+            width: 100% !important;
+            min-width: 0 !important;
+            font-size: 16px !important;
+          }
+
           .kayit-card button {
-            min-width: 0;
+            min-width: 0 !important;
+            min-height: 46px;
           }
 
           .kayit-captcha {
             width: 100% !important;
             justify-content: center !important;
+            overflow: visible !important;
+          }
+
+          .kayit-captcha > div {
+            max-width: 100%;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .kayit-header {
+            padding: 16px 14px !important;
+          }
+
+          .kayit-shell {
+            padding: 14px 12px 36px !important;
+          }
+
+          .kayit-title {
+            margin-bottom: 16px !important;
+          }
+
+          .kayit-title h1 {
+            font-size: 27px !important;
+          }
+
+          .kayit-card {
+            padding: 18px !important;
           }
         }
 
@@ -895,6 +952,11 @@ export default function KayitPage() {
         }
 
         @media (max-width: 340px) {
+          .kayit-card {
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+          }
+
           .kayit-captcha {
             transform: scale(0.84);
             margin-bottom: -12px;

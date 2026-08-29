@@ -723,6 +723,28 @@ export default function SifreYenilePage() {
       </div>
 
       <style jsx global>{`
+        .sifre-yenile-page,
+        .sifre-yenile-page * {
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .sifre-yenile-card input,
+        .sifre-yenile-card button,
+        .sifre-yenile-card a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .sifre-yenile-header {
+            padding: 24px 20px !important;
+          }
+
+          .sifre-yenile-shell {
+            padding: 24px 20px 56px !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .sifre-yenile-page {
             min-height: 100dvh !important;
@@ -735,15 +757,16 @@ export default function SifreYenilePage() {
 
           .sifre-yenile-shell {
             align-items: flex-start !important;
-            padding: 20px 14px 42px !important;
+            padding: 18px 14px 42px !important;
           }
 
           .sifre-yenile-section {
-            max-width: 100% !important;
+            width: 100% !important;
+            max-width: 440px !important;
           }
 
           .sifre-yenile-title {
-            margin-bottom: 20px !important;
+            margin-bottom: 18px !important;
           }
 
           .sifre-yenile-title h1 {
@@ -753,6 +776,7 @@ export default function SifreYenilePage() {
 
           .sifre-yenile-title p {
             font-size: 14px !important;
+            line-height: 1.55 !important;
           }
 
           .sifre-yenile-card {
@@ -764,10 +788,41 @@ export default function SifreYenilePage() {
             gap: 16px !important;
           }
 
-          .sifre-yenile-card input,
-          .sifre-yenile-card button,
-          .sifre-yenile-card a {
-            min-width: 0;
+          .sifre-yenile-card input {
+            width: 100% !important;
+            min-width: 0 !important;
+            font-size: 16px !important;
+          }
+
+          .sifre-yenile-card button {
+            min-width: 0 !important;
+          }
+
+          .sifre-yenile-form > button[type="submit"],
+          .sifre-yenile-card > a {
+            min-height: 46px !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .sifre-yenile-header {
+            padding: 16px 14px !important;
+          }
+
+          .sifre-yenile-shell {
+            padding: 14px 12px 36px !important;
+          }
+
+          .sifre-yenile-title {
+            margin-bottom: 16px !important;
+          }
+
+          .sifre-yenile-title h1 {
+            font-size: 27px !important;
+          }
+
+          .sifre-yenile-card {
+            padding: 18px !important;
           }
         }
 
@@ -788,6 +843,13 @@ export default function SifreYenilePage() {
 
           .sifre-yenile-title h1 {
             font-size: 26px !important;
+          }
+        }
+
+        @media (max-width: 340px) {
+          .sifre-yenile-card {
+            padding-left: 14px !important;
+            padding-right: 14px !important;
           }
         }
       `}</style>

@@ -251,6 +251,7 @@ export default function RootLayout({
         }}
       >
         <div
+          className="site-root-shell"
           style={{
             minHeight: "100vh",
             display: "flex",
@@ -278,6 +279,7 @@ export default function RootLayout({
             <div className="site-footer-main">
               <div className="site-footer-brand">
                 <div
+                  className="site-footer-brand-row"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",
@@ -314,6 +316,7 @@ export default function RootLayout({
                 </div>
 
                 <p
+                  className="site-footer-description"
                   style={{
                     margin: 0,
                     maxWidth: "370px",
@@ -331,6 +334,7 @@ export default function RootLayout({
                 <strong className="site-footer-title">Destek</strong>
 
                 <p
+                  className="site-footer-support-text"
                   style={{
                     margin: "0 0 12px",
                     maxWidth: "300px",
@@ -392,6 +396,16 @@ export default function RootLayout({
             </div>
 
             <style>{`
+              .site-root-shell,
+              .site-root-shell * {
+                box-sizing: border-box;
+                min-width: 0;
+              }
+
+              .site-footer {
+                overflow-x: hidden;
+              }
+
               .site-footer-main {
                 width: 100%;
                 max-width: 1180px;
@@ -419,10 +433,16 @@ export default function RootLayout({
                 color: var(--muted);
                 font-size: 13px;
                 line-height: 1.6;
+                overflow-wrap: anywhere;
+              }
+
+              .site-footer-description,
+              .site-footer-support-text {
+                overflow-wrap: anywhere;
               }
 
               .site-footer-whatsapp {
-                min-height: 42px;
+                min-height: 44px;
                 padding: 0 15px;
                 display: inline-flex;
                 align-items: center;
@@ -467,37 +487,114 @@ export default function RootLayout({
 
               @media (max-width: 900px) {
                 .site-footer-main {
-                  grid-template-columns: 1fr 1fr;
-                  gap: 32px;
+                  grid-template-columns: 1.2fr 1fr;
+                  gap: 30px 36px;
+                  padding: 32px 20px;
                 }
 
                 .site-footer-brand {
                   grid-column: 1 / -1;
                 }
+
+                .site-footer-bottom-inner {
+                  padding-left: 20px;
+                  padding-right: 20px;
+                }
               }
 
-              @media (max-width: 640px) {
+              @media (max-width: 700px) {
+                .site-root-shell {
+                  min-height: 100dvh !important;
+                }
+
                 .site-footer-main {
-                  grid-template-columns: 1fr;
-                  gap: 28px;
-                  padding: 30px 16px;
+                  grid-template-columns: repeat(2, minmax(0, 1fr));
+                  gap: 24px 18px;
+                  padding: 28px 14px;
+                }
+
+                .site-footer-brand {
+                  grid-column: 1 / -1;
+                }
+
+                .site-footer-brand-row {
+                  margin-bottom: 10px !important;
+                }
+
+                .site-footer-description {
+                  max-width: 100% !important;
+                  font-size: 13px !important;
+                  line-height: 1.6 !important;
+                }
+
+                .site-footer-support-text {
+                  max-width: 100% !important;
+                }
+
+                .site-footer-whatsapp {
+                  width: 100%;
+                  min-height: 46px;
+                  padding-left: 10px;
+                  padding-right: 10px;
+                  white-space: normal;
+                  text-align: center;
+                }
+
+                .site-footer-bottom-inner {
+                  padding: 13px 14px;
+                  display: grid;
+                  grid-template-columns: repeat(2, minmax(0, 1fr));
+                  align-items: start;
+                  gap: 10px 16px;
+                }
+
+                .site-footer-bottom-inner span:last-child {
+                  text-align: right;
+                }
+              }
+
+              @media (max-width: 480px) {
+                .site-footer-main {
+                  grid-template-columns: repeat(2, minmax(0, 1fr));
+                  gap: 22px 14px;
+                  padding: 24px 12px;
+                }
+
+                .site-footer-title {
+                  margin-bottom: 10px;
+                }
+
+                .site-footer-info,
+                .site-footer-support-text {
+                  font-size: 12px !important;
+                }
+
+                .site-footer-bottom-inner {
+                  padding: 12px;
+                  grid-template-columns: minmax(0, 1fr);
+                  gap: 4px;
+                }
+
+                .site-footer-bottom-inner span:last-child {
+                  text-align: left;
+                }
+              }
+
+              @media (max-width: 360px) {
+                .site-footer-main {
+                  grid-template-columns: minmax(0, 1fr);
+                  gap: 22px;
+                  padding-left: 10px;
+                  padding-right: 10px;
                 }
 
                 .site-footer-brand {
                   grid-column: auto;
                 }
 
-                .site-footer-whatsapp {
-                  width: 100%;
-                  min-height: 46px;
-                  box-sizing: border-box;
-                }
-
                 .site-footer-bottom-inner {
-                  padding: 14px 16px;
-                  flex-direction: column;
-                  align-items: flex-start;
-                  gap: 5px;
+                  padding-left: 10px;
+                  padding-right: 10px;
                 }
               }
             `}</style>

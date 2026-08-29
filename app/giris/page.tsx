@@ -728,6 +728,28 @@ export default function GirisPage() {
       </div>
 
       <style jsx global>{`
+        .giris-page,
+        .giris-page * {
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .giris-card input,
+        .giris-card button,
+        .giris-card a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .giris-header {
+            padding: 24px 20px !important;
+          }
+
+          .giris-shell {
+            padding: 24px 20px 56px !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .giris-page {
             min-height: 100dvh !important;
@@ -740,15 +762,16 @@ export default function GirisPage() {
 
           .giris-shell {
             align-items: flex-start !important;
-            padding: 20px 14px 42px !important;
+            padding: 18px 14px 42px !important;
           }
 
           .giris-section {
-            max-width: 100% !important;
+            width: 100% !important;
+            max-width: 440px !important;
           }
 
           .giris-title {
-            margin-bottom: 20px !important;
+            margin-bottom: 18px !important;
           }
 
           .giris-title h1 {
@@ -758,6 +781,7 @@ export default function GirisPage() {
 
           .giris-title p {
             font-size: 14px !important;
+            line-height: 1.55 !important;
           }
 
           .giris-card {
@@ -769,14 +793,47 @@ export default function GirisPage() {
             gap: 16px !important;
           }
 
+          .giris-card input {
+            width: 100% !important;
+            min-width: 0 !important;
+            font-size: 16px !important;
+          }
+
+          .giris-card button {
+            min-width: 0 !important;
+            min-height: 46px;
+          }
+
           .giris-turnstile {
             width: 100% !important;
             justify-content: center !important;
+            overflow: visible !important;
           }
 
-          .giris-card button,
-          .giris-card input {
-            min-width: 0;
+          .giris-turnstile > div {
+            max-width: 100%;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .giris-header {
+            padding: 16px 14px !important;
+          }
+
+          .giris-shell {
+            padding: 14px 12px 36px !important;
+          }
+
+          .giris-title {
+            margin-bottom: 16px !important;
+          }
+
+          .giris-title h1 {
+            font-size: 27px !important;
+          }
+
+          .giris-card {
+            padding: 18px !important;
           }
         }
 
@@ -807,6 +864,11 @@ export default function GirisPage() {
         }
 
         @media (max-width: 340px) {
+          .giris-card {
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+          }
+
           .giris-turnstile {
             transform: scale(0.84);
             margin-bottom: -12px;

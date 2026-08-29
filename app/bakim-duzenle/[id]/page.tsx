@@ -590,6 +590,38 @@ export default function BakimDuzenlePage() {
       </div>
 
       <style jsx global>{`
+        .bakim-duzenle-page,
+        .bakim-duzenle-page * {
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .bakim-duzenle-form input,
+        .bakim-duzenle-form textarea,
+        .bakim-duzenle-form button,
+        .bakim-duzenle-form a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .bakim-duzenle-page {
+            padding: 28px 20px 54px !important;
+          }
+
+          .bakim-duzenle-container {
+            max-width: 820px !important;
+          }
+
+          .bakim-duzenle-form {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .bakim-duzenle-description,
+          .bakim-duzenle-actions {
+            grid-column: 1 / -1 !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .bakim-duzenle-page {
             padding: 22px 14px 42px !important;
@@ -626,16 +658,21 @@ export default function BakimDuzenlePage() {
           }
 
           .bakim-duzenle-form {
-            grid-template-columns: minmax(0, 1fr) !important;
-            gap: 16px !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 16px 12px !important;
           }
 
           .bakim-duzenle-form > * {
             min-width: 0;
           }
 
+          .bakim-duzenle-form input,
+          .bakim-duzenle-form textarea {
+            font-size: 16px !important;
+          }
+
           .bakim-duzenle-description {
-            grid-column: auto !important;
+            grid-column: 1 / -1 !important;
           }
 
           .bakim-duzenle-description textarea {
@@ -643,7 +680,7 @@ export default function BakimDuzenlePage() {
           }
 
           .bakim-duzenle-actions {
-            grid-column: auto !important;
+            grid-column: 1 / -1 !important;
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 9px !important;
@@ -660,7 +697,27 @@ export default function BakimDuzenlePage() {
           }
         }
 
-        @media (max-width: 380px) {
+        @media (max-width: 480px) {
+          .bakim-duzenle-page {
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+          }
+
+          .bakim-duzenle-card {
+            padding: 17px !important;
+          }
+
+          .bakim-duzenle-form {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 15px 10px !important;
+          }
+
+          .bakim-duzenle-actions {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+        }
+
+        @media (max-width: 360px) {
           .bakim-duzenle-page {
             padding-left: 10px !important;
             padding-right: 10px !important;
@@ -670,8 +727,17 @@ export default function BakimDuzenlePage() {
             padding: 15px !important;
           }
 
+          .bakim-duzenle-form {
+            grid-template-columns: minmax(0, 1fr) !important;
+          }
+
+          .bakim-duzenle-description,
           .bakim-duzenle-actions {
-            grid-template-columns: 1fr !important;
+            grid-column: auto !important;
+          }
+
+          .bakim-duzenle-actions {
+            grid-template-columns: minmax(0, 1fr) !important;
           }
         }
       `}</style>

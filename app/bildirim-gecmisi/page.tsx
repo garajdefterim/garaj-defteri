@@ -482,6 +482,38 @@ export default function BildirimGecmisiPage() {
       </div>
 
       <style jsx global>{`
+        .bildirim-gecmisi-page,
+        .bildirim-gecmisi-page * {
+          min-width: 0;
+        }
+
+        .bildirim-gecmisi-page a,
+        .bildirim-gecmisi-page button {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .bildirim-gecmisi-page {
+            padding: 28px 20px 54px !important;
+          }
+
+          .bildirim-gecmisi-container {
+            max-width: 900px !important;
+          }
+
+          .bildirim-gecmisi-stats {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+          }
+
+          .bildirim-gecmisi-stats > div:first-child {
+            grid-column: 1 / -1;
+          }
+
+          .bildirim-gecmisi-info-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .bildirim-gecmisi-page {
             padding: 22px 14px 44px !important;
@@ -489,28 +521,37 @@ export default function BildirimGecmisiPage() {
           }
 
           .bildirim-gecmisi-container {
+            width: 100% !important;
             max-width: 100% !important;
           }
 
           .bildirim-gecmisi-header {
-            align-items: stretch !important;
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) auto !important;
+            align-items: end !important;
             gap: 14px !important;
             margin-bottom: 20px !important;
           }
 
-          .bildirim-gecmisi-header > div,
-          .bildirim-gecmisi-header > a {
-            width: 100% !important;
+          .bildirim-gecmisi-header > div {
+            width: auto !important;
+            min-width: 0;
           }
 
           .bildirim-gecmisi-header > a {
+            width: auto !important;
+            min-width: 0 !important;
             min-height: 46px !important;
+            padding-left: 12px !important;
+            padding-right: 12px !important;
+            white-space: nowrap;
           }
 
           .bildirim-gecmisi-header h1 {
             margin-top: 12px !important;
             font-size: 30px !important;
             letter-spacing: -0.6px !important;
+            overflow-wrap: anywhere;
           }
 
           .bildirim-gecmisi-header p {
@@ -532,13 +573,23 @@ export default function BildirimGecmisiPage() {
             grid-column: 1 / -1;
           }
 
+          .bildirim-gecmisi-stats strong {
+            font-size: 21px !important;
+          }
+
+          .bildirim-gecmisi-list {
+            gap: 10px !important;
+            margin-top: 14px !important;
+          }
+
           .bildirim-gecmisi-item {
             padding: 16px !important;
           }
 
           .bildirim-gecmisi-item-head {
             display: grid !important;
-            grid-template-columns: minmax(0, 1fr) !important;
+            grid-template-columns: minmax(0, 1fr) auto !important;
+            align-items: start !important;
             gap: 12px !important;
           }
 
@@ -552,30 +603,90 @@ export default function BildirimGecmisiPage() {
           }
 
           .bildirim-gecmisi-time {
-            text-align: left !important;
-            padding-top: 10px;
-            border-top: 1px solid var(--border);
+            text-align: right !important;
+            padding-top: 0 !important;
+            border-top: none !important;
+            min-width: 112px;
           }
 
           .bildirim-gecmisi-info-grid {
-            grid-template-columns: minmax(0, 1fr) !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 8px !important;
             margin-top: 14px !important;
           }
         }
 
-        @media (max-width: 380px) {
+        @media (max-width: 480px) {
+          .bildirim-gecmisi-page {
+            padding: 18px 12px 38px !important;
+          }
+
+          .bildirim-gecmisi-header {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+
+          .bildirim-gecmisi-header > a {
+            width: 100% !important;
+          }
+
+          .bildirim-gecmisi-header h1 {
+            font-size: 28px !important;
+          }
+
+          .bildirim-gecmisi-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .bildirim-gecmisi-stats > div {
+            padding: 14px !important;
+          }
+
+          .bildirim-gecmisi-item {
+            padding: 15px !important;
+          }
+
+          .bildirim-gecmisi-item-head {
+            grid-template-columns: minmax(0, 1fr) auto !important;
+            gap: 10px !important;
+          }
+
+          .bildirim-gecmisi-time {
+            min-width: 98px;
+          }
+
+          .bildirim-gecmisi-info-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+        }
+
+        @media (max-width: 360px) {
           .bildirim-gecmisi-page {
             padding-left: 10px !important;
             padding-right: 10px !important;
           }
 
           .bildirim-gecmisi-stats {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
 
           .bildirim-gecmisi-stats > div:first-child {
-            grid-column: auto;
+            grid-column: 1 / -1;
+          }
+
+          .bildirim-gecmisi-item-head {
+            grid-template-columns: 1fr !important;
+          }
+
+          .bildirim-gecmisi-time {
+            min-width: 0;
+            text-align: left !important;
+            padding-top: 10px !important;
+            border-top: 1px solid var(--border) !important;
+          }
+
+          .bildirim-gecmisi-info-grid {
+            grid-template-columns: 1fr !important;
           }
 
           .bildirim-gecmisi-item {

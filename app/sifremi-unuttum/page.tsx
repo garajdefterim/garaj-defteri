@@ -428,6 +428,28 @@ export default function SifremiUnuttumPage() {
       </div>
 
       <style jsx global>{`
+        .sifremi-unuttum-page,
+        .sifremi-unuttum-page * {
+          min-width: 0;
+          box-sizing: border-box;
+        }
+
+        .sifremi-unuttum-card input,
+        .sifremi-unuttum-card button,
+        .sifremi-unuttum-card a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .sifremi-unuttum-header {
+            padding: 24px 20px !important;
+          }
+
+          .sifremi-unuttum-shell {
+            padding: 24px 20px 56px !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .sifremi-unuttum-page {
             min-height: 100dvh !important;
@@ -440,15 +462,16 @@ export default function SifremiUnuttumPage() {
 
           .sifremi-unuttum-shell {
             align-items: flex-start !important;
-            padding: 20px 14px 42px !important;
+            padding: 18px 14px 42px !important;
           }
 
           .sifremi-unuttum-section {
-            max-width: 100% !important;
+            width: 100% !important;
+            max-width: 440px !important;
           }
 
           .sifremi-unuttum-title {
-            margin-bottom: 20px !important;
+            margin-bottom: 18px !important;
           }
 
           .sifremi-unuttum-title h1 {
@@ -458,6 +481,7 @@ export default function SifremiUnuttumPage() {
 
           .sifremi-unuttum-title p {
             font-size: 14px !important;
+            line-height: 1.55 !important;
           }
 
           .sifremi-unuttum-card {
@@ -469,14 +493,47 @@ export default function SifremiUnuttumPage() {
             gap: 16px !important;
           }
 
-          .sifremi-unuttum-card input,
+          .sifremi-unuttum-card input {
+            width: 100% !important;
+            min-width: 0 !important;
+            font-size: 16px !important;
+          }
+
           .sifremi-unuttum-card button {
-            min-width: 0;
+            min-width: 0 !important;
+            min-height: 46px;
           }
 
           .sifremi-unuttum-captcha {
             width: 100% !important;
             justify-content: center !important;
+            overflow: visible !important;
+          }
+
+          .sifremi-unuttum-captcha > div {
+            max-width: 100%;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .sifremi-unuttum-header {
+            padding: 16px 14px !important;
+          }
+
+          .sifremi-unuttum-shell {
+            padding: 14px 12px 36px !important;
+          }
+
+          .sifremi-unuttum-title {
+            margin-bottom: 16px !important;
+          }
+
+          .sifremi-unuttum-title h1 {
+            font-size: 27px !important;
+          }
+
+          .sifremi-unuttum-card {
+            padding: 18px !important;
           }
         }
 
@@ -507,6 +564,11 @@ export default function SifremiUnuttumPage() {
         }
 
         @media (max-width: 340px) {
+          .sifremi-unuttum-card {
+            padding-left: 14px !important;
+            padding-right: 14px !important;
+          }
+
           .sifremi-unuttum-captcha {
             transform: scale(0.84);
             margin-bottom: -12px;

@@ -1,4 +1,4 @@
-"use client";
+
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -676,6 +676,16 @@ export default function BakimGecmisiPage() {
       )}
 
       <style jsx global>{`
+        .bakim-gecmisi-page,
+        .bakim-gecmisi-page * {
+          min-width: 0;
+        }
+
+        .bakim-gecmisi-page a,
+        .bakim-gecmisi-page button {
+          max-width: 100%;
+        }
+
         /* Bakım geçmişi — koyu tema */
         html[data-theme="koyu"] .bakim-gecmisi-page {
           background-color: #080d17 !important;
@@ -709,6 +719,20 @@ export default function BakimGecmisiPage() {
           color: #9fb2ca !important;
         }
 
+        @media (max-width: 900px) {
+          .bakim-gecmisi-page {
+            padding: 28px 20px 54px !important;
+          }
+
+          .bakim-gecmisi-container {
+            max-width: 900px !important;
+          }
+
+          .bakim-gecmisi-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .bakim-gecmisi-page {
             padding: 22px 14px 44px !important;
@@ -716,26 +740,35 @@ export default function BakimGecmisiPage() {
           }
 
           .bakim-gecmisi-container {
+            width: 100% !important;
             max-width: 100% !important;
           }
 
           .bakim-gecmisi-header {
-            align-items: stretch !important;
-            gap: 16px !important;
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) auto !important;
+            align-items: end !important;
+            gap: 14px !important;
             margin-bottom: 20px !important;
           }
 
           .bakim-gecmisi-header > div {
-            width: 100%;
+            width: auto !important;
+            min-width: 0;
           }
 
           .bakim-gecmisi-header > a {
-            width: 100% !important;
+            width: auto !important;
+            min-width: 0 !important;
             min-height: 46px !important;
+            padding-left: 13px !important;
+            padding-right: 13px !important;
+            white-space: nowrap;
           }
 
           .bakim-gecmisi-header h1 {
             font-size: 30px !important;
+            overflow-wrap: anywhere;
           }
 
           .bakim-gecmisi-header p {
@@ -744,6 +777,7 @@ export default function BakimGecmisiPage() {
 
           .bakim-gecmisi-vehicle {
             padding: 15px !important;
+            overflow-wrap: anywhere;
           }
 
           .bakim-gecmisi-stats {
@@ -761,6 +795,11 @@ export default function BakimGecmisiPage() {
             overflow-wrap: anywhere;
           }
 
+          .bakim-gecmisi-list {
+            gap: 12px !important;
+            margin-top: 14px !important;
+          }
+
           .bakim-gecmisi-item {
             padding: 17px !important;
           }
@@ -769,19 +808,28 @@ export default function BakimGecmisiPage() {
             overflow-wrap: anywhere;
           }
 
+          .bakim-gecmisi-aciklama {
+            overflow-wrap: anywhere;
+          }
+
           .bakim-gecmisi-item-actions {
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 8px !important;
+            margin-top: 16px !important;
           }
 
           .bakim-gecmisi-item-actions > a,
           .bakim-gecmisi-item-actions > button {
             width: 100% !important;
             min-width: 0 !important;
+            min-height: 44px !important;
           }
 
           .bakim-gecmisi-dialog {
+            max-width: 460px !important;
+            max-height: calc(100dvh - 28px) !important;
+            overflow-y: auto !important;
             padding: 20px !important;
           }
 
@@ -794,24 +842,78 @@ export default function BakimGecmisiPage() {
           .bakim-gecmisi-dialog-actions > button {
             width: 100% !important;
             min-width: 0 !important;
+            min-height: 44px !important;
             padding-left: 8px !important;
             padding-right: 8px !important;
           }
         }
 
-        @media (max-width: 380px) {
+        @media (max-width: 480px) {
+          .bakim-gecmisi-page {
+            padding: 18px 12px 38px !important;
+          }
+
+          .bakim-gecmisi-header {
+            grid-template-columns: 1fr !important;
+            gap: 12px !important;
+          }
+
+          .bakim-gecmisi-header > a {
+            width: 100% !important;
+          }
+
+          .bakim-gecmisi-header h1 {
+            font-size: 28px !important;
+          }
+
+          .bakim-gecmisi-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 9px !important;
+          }
+
+          .bakim-gecmisi-stats > div {
+            padding: 14px !important;
+          }
+
+          .bakim-gecmisi-stats strong {
+            font-size: 18px !important;
+          }
+
+          .bakim-gecmisi-item {
+            padding: 15px !important;
+          }
+
+          .bakim-gecmisi-item > div:first-child {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) auto !important;
+            gap: 10px !important;
+          }
+
+          .bakim-gecmisi-dialog {
+            width: 100% !important;
+            padding: 18px !important;
+          }
+        }
+
+        @media (max-width: 360px) {
           .bakim-gecmisi-page {
             padding-left: 10px !important;
             padding-right: 10px !important;
           }
 
-          .bakim-gecmisi-stats,
+          .bakim-gecmisi-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
           .bakim-gecmisi-item-actions,
           .bakim-gecmisi-dialog-actions {
             grid-template-columns: 1fr !important;
           }
 
-          .bakim-gecmisi-item,
+          .bakim-gecmisi-item {
+            padding: 14px !important;
+          }
+
           .bakim-gecmisi-dialog {
             padding: 15px !important;
           }

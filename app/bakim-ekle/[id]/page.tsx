@@ -541,6 +541,38 @@ export default function BakimEklePage() {
       </div>
 
       <style jsx global>{`
+        .bakim-ekle-page,
+        .bakim-ekle-page * {
+          min-width: 0;
+        }
+
+        .bakim-ekle-page input,
+        .bakim-ekle-page textarea,
+        .bakim-ekle-page button,
+        .bakim-ekle-page a {
+          max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+          .bakim-ekle-page {
+            padding: 28px 20px 54px !important;
+          }
+
+          .bakim-ekle-container {
+            max-width: 820px !important;
+          }
+
+          .bakim-ekle-form {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 18px !important;
+          }
+
+          .bakim-ekle-description,
+          .bakim-ekle-actions {
+            grid-column: 1 / -1 !important;
+          }
+        }
+
         @media (max-width: 700px) {
           .bakim-ekle-page {
             padding: 22px 14px 42px !important;
@@ -548,6 +580,7 @@ export default function BakimEklePage() {
           }
 
           .bakim-ekle-container {
+            width: 100% !important;
             max-width: 100% !important;
           }
 
@@ -574,19 +607,27 @@ export default function BakimEklePage() {
           .bakim-ekle-vehicle {
             margin-bottom: 18px !important;
             padding: 13px !important;
+            overflow-wrap: anywhere;
           }
 
           .bakim-ekle-form {
-            grid-template-columns: minmax(0, 1fr) !important;
-            gap: 16px !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 15px 12px !important;
           }
 
           .bakim-ekle-form > * {
             min-width: 0;
           }
 
+          .bakim-ekle-form input,
+          .bakim-ekle-form textarea {
+            width: 100% !important;
+            min-width: 0 !important;
+            font-size: 16px !important;
+          }
+
           .bakim-ekle-description {
-            grid-column: auto !important;
+            grid-column: 1 / -1 !important;
           }
 
           .bakim-ekle-description textarea {
@@ -594,7 +635,7 @@ export default function BakimEklePage() {
           }
 
           .bakim-ekle-actions {
-            grid-column: auto !important;
+            grid-column: 1 / -1 !important;
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 9px !important;
@@ -611,14 +652,50 @@ export default function BakimEklePage() {
           }
         }
 
-        @media (max-width: 380px) {
+        @media (max-width: 480px) {
+          .bakim-ekle-page {
+            padding: 18px 12px 38px !important;
+          }
+
+          .bakim-ekle-header h1 {
+            font-size: 28px !important;
+          }
+
+          .bakim-ekle-card {
+            padding: 16px !important;
+          }
+
+          .bakim-ekle-form {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 14px 10px !important;
+          }
+
+          .bakim-ekle-form label {
+            font-size: 13px !important;
+          }
+
+          .bakim-ekle-description {
+            grid-column: 1 / -1 !important;
+          }
+        }
+
+        @media (max-width: 360px) {
           .bakim-ekle-page {
             padding-left: 10px !important;
             padding-right: 10px !important;
           }
 
           .bakim-ekle-card {
-            padding: 15px !important;
+            padding: 14px !important;
+          }
+
+          .bakim-ekle-form {
+            grid-template-columns: 1fr !important;
+          }
+
+          .bakim-ekle-description,
+          .bakim-ekle-actions {
+            grid-column: auto !important;
           }
 
           .bakim-ekle-actions {
