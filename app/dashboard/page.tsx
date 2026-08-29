@@ -2013,15 +2013,84 @@ export default function DashboardPage() {
           color: #f8fafc !important;
         }
 
-        @media (max-width: 700px) {
+        /* =====================================================
+           DASHBOARD — RESPONSIVE / MOBİL SON KATMAN
+           ===================================================== */
+
+        .dashboard-page,
+        .dashboard-page * {
+          min-width: 0;
+        }
+
+        .dashboard-page {
+          width: 100%;
+          overflow-x: clip;
+        }
+
+        .dashboard-top-actions > a,
+        .dashboard-top-actions > button,
+        .dashboard-vehicle-actions > a,
+        .dashboard-vehicle-actions > button {
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .dashboard-page p,
+        .dashboard-page span,
+        .dashboard-page strong,
+        .dashboard-page h1,
+        .dashboard-page h2,
+        .dashboard-page h3 {
+          overflow-wrap: anywhere;
+        }
+
+        @media (max-width: 1024px) {
           .dashboard-page {
-            padding: 22px 14px 44px !important;
+            padding: 28px 20px 56px !important;
+          }
+
+          .dashboard-top-actions {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+          }
+
+          .dashboard-stats {
+            grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+          }
+
+          .dashboard-stats > div:last-child {
+            grid-column: span 2;
+          }
+
+          .dashboard-vehicles-grid {
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .dashboard-page {
+            padding:
+              22px
+              max(14px, env(safe-area-inset-right))
+              calc(44px + env(safe-area-inset-bottom))
+              max(14px, env(safe-area-inset-left)) !important;
             overflow-x: hidden;
           }
 
           .dashboard-header {
             gap: 18px !important;
             margin-bottom: 22px !important;
+          }
+
+          .dashboard-header h1 {
+            font-size: clamp(28px, 8vw, 36px) !important;
+            letter-spacing: -0.7px !important;
+          }
+
+          .dashboard-header p {
+            font-size: 15px !important;
+            line-height: 1.55 !important;
           }
 
           .dashboard-top-actions {
@@ -2033,10 +2102,11 @@ export default function DashboardPage() {
           .dashboard-top-actions > button {
             width: 100% !important;
             min-width: 0 !important;
-            min-height: 44px;
-            padding: 10px 8px !important;
-            font-size: 12px !important;
-            line-height: 1.25;
+            min-height: 46px !important;
+            padding: 10px 9px !important;
+            font-size: 12.5px !important;
+            line-height: 1.25 !important;
+            white-space: normal !important;
           }
 
           .dashboard-top-actions > :nth-child(5) {
@@ -2050,17 +2120,39 @@ export default function DashboardPage() {
           }
 
           .dashboard-stats > div {
-            min-width: 0;
-            padding: 16px !important;
+            min-width: 0 !important;
+            padding: 15px !important;
           }
 
           .dashboard-stats > div:last-child {
             grid-column: 1 / -1;
           }
 
+          .dashboard-stat-value {
+            font-size: clamp(20px, 7vw, 27px) !important;
+            line-height: 1.15 !important;
+          }
+
           .dashboard-email-card,
           .dashboard-notification-center {
             padding: 16px !important;
+            margin-bottom: 20px !important;
+          }
+
+          .dashboard-email-card > div > div:first-child {
+            align-items: stretch !important;
+          }
+
+          .dashboard-email-card > div > div:first-child > a {
+            min-height: 44px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+          }
+
+          .dashboard-notification-center h2,
+          .dashboard-vehicles-section > h2 {
+            font-size: 22px !important;
           }
 
           .dashboard-notification-center a {
@@ -2069,18 +2161,42 @@ export default function DashboardPage() {
             padding: 13px !important;
           }
 
+          .dashboard-notification-center a > span:first-child {
+            flex: 0 0 auto;
+            font-size: 23px !important;
+          }
+
+          .dashboard-notification-center a > span:last-child {
+            flex: 0 0 auto;
+          }
+
           .dashboard-vehicles-grid {
             grid-template-columns: minmax(0, 1fr) !important;
             gap: 14px !important;
           }
 
           .dashboard-vehicle-card {
-            min-width: 0;
+            min-width: 0 !important;
             padding: 17px !important;
           }
 
+          .dashboard-vehicle-card > div:first-child {
+            flex-wrap: wrap !important;
+          }
+
           .dashboard-vehicle-card h3 {
-            overflow-wrap: anywhere;
+            font-size: 21px !important;
+            line-height: 1.25 !important;
+          }
+
+          .dashboard-status-badge {
+            max-width: 100%;
+            white-space: normal !important;
+            text-align: center;
+          }
+
+          .dashboard-vehicle-email-banner {
+            line-height: 1.45 !important;
           }
 
           .dashboard-vehicle-actions {
@@ -2093,31 +2209,130 @@ export default function DashboardPage() {
           .dashboard-vehicle-actions > button {
             width: 100% !important;
             min-width: 0 !important;
-            padding: 11px 7px !important;
+            min-height: 46px !important;
+            padding: 10px 7px !important;
             font-size: 13px !important;
+            line-height: 1.25 !important;
+            white-space: normal !important;
           }
 
           .dashboard-vehicle-actions > :last-child {
             grid-column: 1 / -1;
           }
-        }
 
-        @media (max-width: 380px) {
-          .dashboard-page {
-            padding-left: 10px !important;
-            padding-right: 10px !important;
+          .dashboard-page > [role="presentation"] {
+            padding:
+              14px
+              max(12px, env(safe-area-inset-right))
+              max(14px, env(safe-area-inset-bottom))
+              max(12px, env(safe-area-inset-left)) !important;
           }
 
-          .dashboard-top-actions,
-          .dashboard-stats,
+          .dashboard-page [role="dialog"] {
+            max-width: 100% !important;
+            max-height: calc(100dvh - 28px) !important;
+            overflow-y: auto !important;
+            padding: 22px !important;
+          }
+
+          .dashboard-page [role="dialog"] h2 {
+            font-size: 22px !important;
+          }
+
+          .dashboard-page [role="dialog"] button {
+            min-height: 46px !important;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .dashboard-page {
+            padding-top: 18px !important;
+          }
+
+          .dashboard-top-actions {
+            grid-template-columns: 1fr !important;
+          }
+
+          .dashboard-top-actions > :nth-child(5) {
+            grid-column: auto;
+          }
+
+          .dashboard-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .dashboard-email-card > div > div:first-child {
+            flex-direction: column !important;
+          }
+
+          .dashboard-email-card > div > div:first-child > a {
+            width: 100% !important;
+          }
+
+          .dashboard-notification-center > div:first-child {
+            align-items: flex-start !important;
+          }
+
+          .dashboard-notification-center a > span:last-child {
+            display: none;
+          }
+
+          .dashboard-vehicle-card > div:nth-child(2) {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
           .dashboard-vehicle-actions {
             grid-template-columns: 1fr !important;
           }
 
-          .dashboard-top-actions > :nth-child(5),
-          .dashboard-stats > div:last-child,
           .dashboard-vehicle-actions > :last-child {
             grid-column: auto;
+          }
+
+          .dashboard-page [role="dialog"] > div:last-child {
+            display: grid !important;
+            grid-template-columns: 1fr !important;
+            width: 100% !important;
+          }
+
+          .dashboard-page [role="dialog"] > div:last-child button {
+            width: 100% !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .dashboard-page {
+            padding-left: max(10px, env(safe-area-inset-left)) !important;
+            padding-right: max(10px, env(safe-area-inset-right)) !important;
+          }
+
+          .dashboard-header h1 {
+            font-size: 27px !important;
+          }
+
+          .dashboard-stats {
+            grid-template-columns: 1fr !important;
+          }
+
+          .dashboard-stats > div:last-child {
+            grid-column: auto;
+          }
+
+          .dashboard-vehicle-card > div:nth-child(2) {
+            grid-template-columns: 1fr !important;
+          }
+
+          .dashboard-vehicle-card {
+            padding: 14px !important;
+          }
+
+          .dashboard-email-card,
+          .dashboard-notification-center {
+            padding: 14px !important;
+          }
+
+          .dashboard-page [role="dialog"] {
+            padding: 18px !important;
           }
         }
       `}</style>
