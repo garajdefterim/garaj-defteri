@@ -2052,3 +2052,529 @@ html[data-theme="koyu"] .home-reminder-mail {
     font-size: 26px;
   }
 }
+
+/* =========================================================
+   GARAJ DEFTERİM — GENEL RESPONSIVE / MOBİL SON KATMAN
+   Bu bölüm dosyanın en altında kalmalıdır.
+   ========================================================= */
+
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  min-width: 0;
+}
+
+main,
+section,
+article,
+header,
+footer,
+nav,
+form,
+div {
+  min-width: 0;
+}
+
+img,
+picture,
+svg,
+video,
+canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+iframe {
+  max-width: 100%;
+}
+
+input,
+textarea,
+select,
+button {
+  max-width: 100%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+table {
+  max-width: 100%;
+  border-collapse: collapse;
+}
+
+/* Turnstile / dış doğrulama kutularının telefonda taşmasını engelle */
+.cf-turnstile,
+[data-turnstile-widget],
+iframe[src*="challenges.cloudflare.com"] {
+  max-width: 100% !important;
+}
+
+/* Inline style ağırlıklı sayfalarda güvenli küçülme */
+main [style*="min-width:"] {
+  min-width: 0 !important;
+}
+
+main [style*="max-width:"] {
+  width: 100%;
+}
+
+/* Büyük tablet / küçük laptop */
+@media (max-width: 1024px) {
+  .site-navbar-inner,
+  .home-hero-grid,
+  .home-features,
+  .home-cta,
+  .home-reminder-card,
+  .site-footer-main,
+  .site-footer-bottom-inner {
+    max-width: 100%;
+  }
+
+  .home-hero-grid {
+    gap: 40px;
+  }
+
+  .home-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  main [style*="grid-template-columns: repeat(5"],
+  main [style*="grid-template-columns:repeat(5"],
+  main [style*="grid-template-columns: repeat(4"],
+  main [style*="grid-template-columns:repeat(4"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+/* Tablet ve büyük telefon */
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  main {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .site-navbar-inner {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .home-hero {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .home-features,
+  .home-cta-wrap,
+  .home-reminder-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .home-cta {
+    padding: 30px 26px;
+  }
+
+  .home-reminder-card {
+    padding: 30px 26px;
+  }
+
+  .site-footer-main {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  .site-footer-bottom-inner {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  /* Inline grid kullanan uygulama sayfalarını iki sütuna indir */
+  main [style*="grid-template-columns: repeat(5"],
+  main [style*="grid-template-columns:repeat(5"],
+  main [style*="grid-template-columns: repeat(4"],
+  main [style*="grid-template-columns:repeat(4"],
+  main [style*="grid-template-columns: repeat(3"],
+  main [style*="grid-template-columns:repeat(3"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  main [style*="gap: 32px"],
+  main [style*="gap: 36px"],
+  main [style*="gap: 40px"],
+  main [style*="gap: 48px"] {
+    gap: 20px !important;
+  }
+}
+
+/* Telefon */
+@media (max-width: 640px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100vw;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  /* iOS Safari form zoom'unu engeller */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+
+  button,
+  a[role="button"],
+  input[type="button"],
+  input[type="submit"] {
+    min-height: 44px;
+  }
+
+  main {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* JSX inline width değerleri telefonda viewport'u aşmasın */
+  main [style*="width:"] {
+    max-width: 100% !important;
+  }
+
+  main [style*="min-width:"] {
+    min-width: 0 !important;
+  }
+
+  /* Uygulamadaki çok sütunlu inline gridleri telefonda tek sütun yap */
+  main [style*="grid-template-columns"] {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  /* Yan yana duran geniş aksiyon satırları taşmasın */
+  main [style*="display: flex"][style*="justify-content: space-between"],
+  main [style*="display:flex"][style*="justify-content:space-between"] {
+    flex-wrap: wrap !important;
+  }
+
+  main [style*="gap: 24px"],
+  main [style*="gap: 28px"],
+  main [style*="gap: 32px"],
+  main [style*="gap: 36px"],
+  main [style*="gap: 40px"],
+  main [style*="gap: 48px"] {
+    gap: 16px !important;
+  }
+
+  /* Navbar */
+  .site-navbar-inner {
+    min-height: 64px;
+    padding: 10px 14px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .site-brand {
+    gap: 8px;
+    flex: 1 1 auto;
+  }
+
+  .site-brand-logo {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .site-brand-name {
+    font-size: 12px;
+    letter-spacing: 0.035em;
+  }
+
+  .site-navbar-actions {
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .site-navbar-login,
+  .site-navbar-register {
+    min-height: 38px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+
+  /* Ana sayfa */
+  .home-hero {
+    padding: 48px 16px 42px;
+  }
+
+  .home-hero-grid {
+    gap: 30px;
+  }
+
+  .home-hero h1 {
+    max-width: 100%;
+    font-size: clamp(32px, 10.5vw, 44px);
+    line-height: 1.05;
+    letter-spacing: -1.4px;
+    overflow-wrap: anywhere;
+  }
+
+  .home-lead {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .home-actions {
+    width: 100%;
+    grid-template-columns: 1fr;
+  }
+
+  .home-primary-button,
+  .home-secondary-button,
+  .home-cta > a {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .home-highlights {
+    gap: 9px;
+  }
+
+  .home-preview {
+    width: 100%;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .home-preview-card {
+    padding: 15px;
+  }
+
+  .home-preview-head {
+    align-items: flex-start;
+  }
+
+  .home-preview-logo {
+    width: 40px;
+    height: 40px;
+    flex-basis: 40px;
+  }
+
+  .home-preview-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .home-maintenance-card > div {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .home-maintenance-card div span {
+    white-space: normal;
+  }
+
+  .home-features {
+    padding: 54px 16px 58px;
+  }
+
+  .home-section-heading h2 {
+    font-size: clamp(27px, 8.5vw, 34px);
+  }
+
+  .home-feature-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-feature-grid article {
+    min-height: 0;
+    padding: 20px;
+  }
+
+  .home-cta-wrap {
+    padding: 0 16px 58px;
+  }
+
+  .home-cta {
+    padding: 25px 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .home-cta h2 {
+    font-size: clamp(25px, 8vw, 30px);
+  }
+
+  .home-reminder-section {
+    padding: 0 16px 56px;
+  }
+
+  .home-reminder-card {
+    padding: 24px 18px;
+  }
+
+  .home-reminder-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+
+  .home-reminder-content h2 {
+    font-size: clamp(25px, 8vw, 30px);
+  }
+
+  .home-reminder-items {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-reminder-preview {
+    width: 100%;
+    max-width: 100%;
+    padding: 19px;
+  }
+
+  /* Footer */
+  .site-footer-main {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 26px !important;
+    padding: 28px 16px !important;
+  }
+
+  .site-footer-bottom-inner {
+    padding: 14px 16px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 5px !important;
+  }
+
+  .site-footer-whatsapp {
+    width: 100% !important;
+    min-height: 46px !important;
+  }
+
+  /* Uzun metin / e-posta / plaka gibi değerler kutudan taşmasın */
+  main p,
+  main span,
+  main strong,
+  main a,
+  main td,
+  main th {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  /* Tablolar küçük ekranda yatay kaydırılabilir */
+  main table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Küçük telefon */
+@media (max-width: 480px) {
+  .site-navbar-inner {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .site-brand-logo {
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+  }
+
+  .site-brand-name {
+    font-size: 11px;
+    letter-spacing: 0.02em;
+  }
+
+  .site-navbar-login,
+  .site-navbar-register {
+    min-height: 36px;
+    padding: 0 8px;
+    font-size: 10.5px;
+  }
+
+  .home-hero,
+  .home-features,
+  .home-cta-wrap,
+  .home-reminder-section {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .home-preview-stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-section-heading p,
+  .home-reminder-content > div:first-child > p {
+    font-size: 14px;
+  }
+}
+
+/* Çok dar telefon */
+@media (max-width: 360px) {
+  .site-navbar-inner {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .site-brand {
+    gap: 6px;
+  }
+
+  .site-brand-logo {
+    width: 32px;
+    height: 32px;
+    flex-basis: 32px;
+  }
+
+  .site-brand-name {
+    font-size: 10px;
+    letter-spacing: 0.01em;
+  }
+
+  .site-navbar-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .site-navbar-login,
+  .site-navbar-register {
+    width: 100%;
+  }
+
+  .home-hero h1 {
+    font-size: 30px;
+  }
+
+  .home-hero,
+  .home-features,
+  .home-cta-wrap,
+  .home-reminder-section {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .home-cta,
+  .home-reminder-card {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+}
+
