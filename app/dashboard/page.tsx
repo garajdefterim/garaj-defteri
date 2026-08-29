@@ -1172,6 +1172,7 @@ export default function DashboardPage() {
               </p>
 
               <div
+                className="dashboard-email-reminder-grid"
                 style={{
                   display: "grid",
                   gridTemplateColumns:
@@ -1536,6 +1537,7 @@ export default function DashboardPage() {
                     </div>
 
                     <div
+                      className="dashboard-vehicle-meta-grid"
                       style={{
                         display: "grid",
                         gridTemplateColumns: "1fr 1fr",
@@ -1853,6 +1855,7 @@ export default function DashboardPage() {
             </div>
 
             <div
+              className="dashboard-dialog-actions"
               style={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -2249,20 +2252,32 @@ export default function DashboardPage() {
             padding-top: 18px !important;
           }
 
+          /* Telefonda menüyü tek uzun sütuna çevirmiyoruz. */
           .dashboard-top-actions {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
 
           .dashboard-top-actions > :nth-child(5) {
-            grid-column: auto;
+            grid-column: 1 / -1;
           }
 
+          /* Özet kartları telefonda 2'li kompakt düzen. */
           .dashboard-stats {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+          }
+
+          .dashboard-stats > div:last-child {
+            grid-column: 1 / -1;
+          }
+
+          /* Hatırlatma kutuları da gereksiz yere alt alta dizilmesin. */
+          .dashboard-email-reminder-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
 
           .dashboard-email-card > div > div:first-child {
             flex-direction: column !important;
+            align-items: stretch !important;
           }
 
           .dashboard-email-card > div > div:first-child > a {
@@ -2277,25 +2292,28 @@ export default function DashboardPage() {
             display: none;
           }
 
-          .dashboard-vehicle-card > div:nth-child(2) {
+          /* Yıl ve kilometre yan yana kalır. */
+          .dashboard-vehicle-meta-grid {
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
 
+          /* Araç işlemleri 2 sütun; sadece Sil tam satır. */
           .dashboard-vehicle-actions {
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
 
           .dashboard-vehicle-actions > :last-child {
-            grid-column: auto;
+            grid-column: 1 / -1;
           }
 
-          .dashboard-page [role="dialog"] > div:last-child {
+          /* Silme penceresinde iki buton yan yana. */
+          .dashboard-dialog-actions {
             display: grid !important;
-            grid-template-columns: 1fr !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             width: 100% !important;
           }
 
-          .dashboard-page [role="dialog"] > div:last-child button {
+          .dashboard-dialog-actions button {
             width: 100% !important;
           }
         }
@@ -2310,16 +2328,30 @@ export default function DashboardPage() {
             font-size: 27px !important;
           }
 
-          .dashboard-stats {
-            grid-template-columns: 1fr !important;
+          /* Dar telefonlarda da ana özet ve işlemler 2 sütun kalır. */
+          .dashboard-top-actions,
+          .dashboard-stats,
+          .dashboard-email-reminder-grid,
+          .dashboard-vehicle-meta-grid,
+          .dashboard-vehicle-actions {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
           }
 
-          .dashboard-stats > div:last-child {
-            grid-column: auto;
+          .dashboard-top-actions > :nth-child(5),
+          .dashboard-stats > div:last-child,
+          .dashboard-vehicle-actions > :last-child {
+            grid-column: 1 / -1;
           }
 
-          .dashboard-vehicle-card > div:nth-child(2) {
-            grid-template-columns: 1fr !important;
+          .dashboard-top-actions > a,
+          .dashboard-top-actions > button {
+            padding-left: 6px !important;
+            padding-right: 6px !important;
+            font-size: 12px !important;
+          }
+
+          .dashboard-stat-value {
+            font-size: 21px !important;
           }
 
           .dashboard-vehicle-card {

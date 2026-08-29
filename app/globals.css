@@ -2121,9 +2121,8 @@ main [style*="min-width:"] {
   min-width: 0 !important;
 }
 
-main [style*="max-width:"] {
-  width: 100%;
-}
+/* max-width verilen elemanları masaüstünde zorla tam genişlik yapmıyoruz.
+   Böylece kartlar ve küçük bileşenler doğal ölçülerini korur. */
 
 /* Büyük tablet / küçük laptop */
 @media (max-width: 1024px) {
@@ -2258,8 +2257,26 @@ main [style*="max-width:"] {
     min-width: 0 !important;
   }
 
-  /* Uygulamadaki çok sütunlu inline gridleri telefonda tek sütun yap */
-  main [style*="grid-template-columns"] {
+  /* Tüm gridleri tek sütuna zorlamak yerine yalnızca gerçekten geniş
+     uygulama gridlerini hedefliyoruz. 2 sütunlu kompakt kartlar korunur. */
+  main [style*="grid-template-columns: repeat(5"],
+  main [style*="grid-template-columns:repeat(5"],
+  main [style*="grid-template-columns: repeat(4"],
+  main [style*="grid-template-columns:repeat(4"],
+  main [style*="grid-template-columns: repeat(3"],
+  main [style*="grid-template-columns:repeat(3"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  /* Dashboard kendi mobil yapısını korusun: istatistikler ve aksiyonlar
+     telefonda 2 sütun, araç listesi ise tek sütun. */
+  .dashboard-top-actions,
+  .dashboard-stats,
+  .dashboard-vehicle-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .dashboard-vehicles-grid {
     grid-template-columns: minmax(0, 1fr) !important;
   }
 
