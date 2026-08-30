@@ -333,20 +333,31 @@ export default function RootLayout({
                     lineHeight: 1.6,
                   }}
                 >
-                  GARAJ DEFTERİM ile ilgili soru ve destek talepleriniz için
-                  WhatsApp üzerinden bize ulaşabilirsiniz.
+                  GARAJ DEFTERİM ile ilgili soru, öneri ve destek taleplerinizi
+                  destek merkezimiz üzerinden bize iletebilirsiniz.
                 </p>
 
-                <a
-                  href={whatsappLinki}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="site-footer-whatsapp"
-                  aria-label="WhatsApp üzerinden destek al"
-                >
-                  <span aria-hidden="true">💬</span>
-                  WhatsApp&apos;tan Yaz
-                </a>
+                <div className="site-footer-support-actions">
+                  <a
+                    href="/destek"
+                    className="site-footer-support-primary"
+                    aria-label="Destek talebi oluştur"
+                  >
+                    <span aria-hidden="true">✉️</span>
+                    Destek Talebi Oluştur
+                  </a>
+
+                  <a
+                    href={whatsappLinki}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="site-footer-whatsapp"
+                    aria-label="WhatsApp üzerinden destek al"
+                  >
+                    <span aria-hidden="true">💬</span>
+                    WhatsApp&apos;tan Yaz
+                  </a>
+                </div>
               </div>
 
               <div className="site-footer-column">
@@ -431,6 +442,13 @@ export default function RootLayout({
                 overflow-wrap: anywhere;
               }
 
+              .site-footer-support-actions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 9px;
+              }
+
+              .site-footer-support-primary,
               .site-footer-whatsapp {
                 min-height: 44px;
                 padding: 0 15px;
@@ -451,8 +469,38 @@ export default function RootLayout({
                   transform 0.2s ease;
               }
 
-              .site-footer-whatsapp:hover {
+              .site-footer-support-primary {
+                padding: 0 15px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border-radius: 9px;
+                border: 1px solid #2563EB;
+                background-color: #1D4ED8;
+                color: #FFFFFF;
+                font-size: 13px;
+                font-weight: 700;
+                text-decoration: none;
+                white-space: nowrap;
+                transition:
+                  background-color 0.2s ease,
+                  transform 0.2s ease;
+              }
+
+              .site-footer-whatsapp {
+                border-color: var(--border-strong);
+                background-color: var(--card-soft);
+                color: var(--foreground);
+              }
+
+              .site-footer-support-primary:hover {
                 background-color: #1E40AF;
+                transform: translateY(-1px);
+              }
+
+              .site-footer-whatsapp:hover {
+                background-color: var(--dark-button-bg-hover, var(--card-soft));
                 transform: translateY(-1px);
               }
 
@@ -521,6 +569,12 @@ export default function RootLayout({
                   max-width: 100% !important;
                 }
 
+                .site-footer-support-actions {
+                  display: grid;
+                  grid-template-columns: minmax(0, 1fr);
+                }
+
+                .site-footer-support-primary,
                 .site-footer-whatsapp {
                   width: 100%;
                   min-height: 46px;
