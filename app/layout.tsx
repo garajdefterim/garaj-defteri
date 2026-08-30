@@ -61,12 +61,7 @@ const temaScripti = `
           continue;
         }
 
-        /*
-         * Supabase bazı durumlarda auth verisini
-         * parçalara ayırabilir. Ana auth-token kaydı
-         * değilse burada atlıyoruz.
-         */
-        if (/\\.\\d+$/.test(key)) {
+        if (/\.\d+$/.test(key)) {
           continue;
         }
 
@@ -89,7 +84,7 @@ const temaScripti = `
             }
           }
         } catch (parseError) {
-          // Başka bir localStorage kaydı olabilir, devam et.
+          // Bu kayıt beklenen JSON biçiminde değilse devam et.
         }
       }
     } catch (e) {
@@ -99,7 +94,7 @@ const temaScripti = `
     return null;
   }
 
-  function temayiUygula(tema) {
+  function temayiUygula(tema, lokaleKaydet) {
     if (!temaGecerliMi(tema)) {
       tema = "acik";
     }
@@ -114,111 +109,93 @@ const temaScripti = `
       );
     }
 
+    if (!lokaleKaydet) {
+      return;
+    }
+
     try {
-      var kayitliTema =
-        localStorage.getItem(TEMA_KEY);
+      var kayitliTema = localStorage.getItem(TEMA_KEY);
 
       if (kayitliTema !== tema) {
-        localStorage.setItem(
-          TEMA_KEY,
-          tema
-        );
+        localStorage.setItem(TEMA_KEY, tema);
       }
     } catch (e) {
-      // Tema yine de HTML üzerine uygulanmış olur.
+      // Tema HTML üzerinde uygulanmış olur.
     }
+  }
+
+  function ilkTemayiBul() {
+    try {
+      /*
+       * İlk çizimde local tema önceliklidir.
+       * Böylece daha önce seçilmiş tema, eski bir auth metadata
+       * değeri tarafından tekrar tekrar ezilmez.
+       */
+      var localTema = localStorage.getItem(TEMA_KEY);
+
+      if (temaGecerliMi(localTema)) {
+        return localTema;
+      }
+
+      var supabaseTema = supabaseOturumTemasiniBul();
+
+      if (temaGecerliMi(supabaseTema)) {
+        return supabaseTema;
+      }
+    } catch (e) {
+      // Varsayılan açık temaya düş.
+    }
+
+    return "acik";
   }
 
   function temayiSenkronizeEt() {
-    try {
-      /*
-       * Öncelik:
-       * 1. Giriş yapmış kullanıcının Supabase tema tercihi
-       * 2. Bu domaine daha önce kaydedilmiş tema
-       * 3. Açık tema
-       */
-      var supabaseTema =
-        supabaseOturumTemasiniBul();
-
-      var localTema =
-        localStorage.getItem(TEMA_KEY);
-
-      var tema = "acik";
-
-      if (temaGecerliMi(supabaseTema)) {
-        tema = supabaseTema;
-      } else if (temaGecerliMi(localTema)) {
-        tema = localTema;
-      }
-
-      temayiUygula(tema);
-    } catch (e) {
-      temayiUygula("acik");
-    }
+    var tema = ilkTemayiBul();
+    temayiUygula(tema, true);
   }
 
   /*
-   * İlk HTML çizilmeden önce mevcut tercihi uygula.
+   * İlk HTML çizilmeden önce tek seferde doğru temayı uygula.
    */
   temayiSenkronizeEt();
 
   /*
-   * Supabase giriş yaptıktan sonra auth token localStorage'a
-   * yazılır. Root layout client navigation sırasında yeniden
-   * kurulmayabileceği için oturum değişimini merkezi olarak
-   * takip ediyoruz.
+   * İlk sayfa çizimi tamamlanana kadar CSS geçişlerini kapalı tut.
+   * Böylece açılışta açık/koyu renklerin kısa süre birbirine
+   * karışması engellenir.
    */
-  var temaKontrolSayaci = 0;
+  document.addEventListener("DOMContentLoaded", function () {
+    window.requestAnimationFrame(function () {
+      document.documentElement.setAttribute(
+        "data-theme-ready",
+        "true"
+      );
+    });
+  });
 
-  var temaKontrol = window.setInterval(function () {
+  /*
+   * Başka sekmede tema değişirse bu sekmeyi de güncelle.
+   */
+  window.addEventListener("storage", function (event) {
+    if (
+      event.key === TEMA_KEY ||
+      (event.key &&
+        event.key.indexOf("sb-") === 0 &&
+        event.key.indexOf("-auth-token") !== -1)
+    ) {
+      temayiSenkronizeEt();
+    }
+  });
+
+  /*
+   * Tarayıcı geri/ileri önbelleğinden döndüğünde mevcut
+   * local tercihi yeniden uygula.
+   */
+  window.addEventListener("pageshow", function () {
     temayiSenkronizeEt();
-
-    temaKontrolSayaci++;
-
-    /*
-     * İlk 30 saniye sık kontrol yeterli.
-     * Sonrasında interval'i kapatıyoruz.
-     */
-    if (temaKontrolSayaci >= 120) {
-      window.clearInterval(temaKontrol);
-    }
-  }, 250);
-
-  /*
-   * Sekmeye geri dönüldüğünde tekrar kontrol et.
-   */
-  window.addEventListener(
-    "focus",
-    temayiSenkronizeEt
-  );
-
-  document.addEventListener(
-    "visibilitychange",
-    function () {
-      if (!document.hidden) {
-        temayiSenkronizeEt();
-      }
-    }
-  );
-
-  /*
-   * Başka sekmede tema/oturum değişirse bu sekmeyi de güncelle.
-   */
-  window.addEventListener(
-    "storage",
-    temayiSenkronizeEt
-  );
-
-  /*
-   * Tarayıcı geri/ileri önbelleğinden dönüldüğünde kontrol et.
-   */
-  window.addEventListener(
-    "pageshow",
-    temayiSenkronizeEt
-  );
+  });
 })();
 `;
-
 const whatsappLinki =
   "https://wa.me/905338622510?text=Merhaba%2C%20Garaj%20Defteri%20i%C3%A7in%20destek%20almak%20istiyorum.";
 
@@ -234,6 +211,19 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
       <head>
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              html:not([data-theme-ready="true"]) *,
+              html:not([data-theme-ready="true"]) *::before,
+              html:not([data-theme-ready="true"]) *::after {
+                transition: none !important;
+                animation: none !important;
+              }
+            `,
+          }}
+        />
+
         <script
           dangerouslySetInnerHTML={{
             __html: temaScripti,
