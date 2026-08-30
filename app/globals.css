@@ -2595,3 +2595,87 @@ main [style*="min-width:"] {
   }
 }
 
+
+/* =========================================================
+   GARAJ DEFTERİM — F5 / İLK YÜKLEME TEMA TUTARLILIĞI
+   SSR sırasında inline style değerlerinin tarayıcı tarafından
+   farklı biçimde yazılmasından etkilenmemek için auth sayfaları
+   sınıf bazlı olarak koyu temaya sabitlenir.
+   Mevcut mobil düzeni değiştirmez.
+   ========================================================= */
+
+html[data-theme="koyu"] .giris-page,
+html[data-theme="koyu"] .sifremi-unuttum-page {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+html[data-theme="koyu"] .giris-header a,
+html[data-theme="koyu"] .sifremi-unuttum-header a {
+  color: var(--foreground) !important;
+}
+
+html[data-theme="koyu"] .giris-title h1,
+html[data-theme="koyu"] .sifremi-unuttum-title h1 {
+  color: var(--foreground) !important;
+}
+
+html[data-theme="koyu"] .giris-title p,
+html[data-theme="koyu"] .sifremi-unuttum-title p {
+  color: var(--muted) !important;
+}
+
+html[data-theme="koyu"] .giris-card,
+html[data-theme="koyu"] .sifremi-unuttum-card {
+  background: var(--card) !important;
+  background-color: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--foreground) !important;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.16) !important;
+}
+
+html[data-theme="koyu"] .giris-card label,
+html[data-theme="koyu"] .sifremi-unuttum-card label {
+  color: var(--muted-strong) !important;
+}
+
+html[data-theme="koyu"] .giris-card > button[type="button"] {
+  background: var(--dark-button-bg) !important;
+  background-color: var(--dark-button-bg) !important;
+  color: var(--foreground) !important;
+  border-color: var(--dark-button-border) !important;
+}
+
+html[data-theme="koyu"] .giris-card > button[type="button"]:hover:not(:disabled) {
+  background: var(--dark-button-bg-hover) !important;
+  background-color: var(--dark-button-bg-hover) !important;
+  border-color: #506684 !important;
+}
+
+html[data-theme="koyu"] .giris-card input,
+html[data-theme="koyu"] .sifremi-unuttum-card input {
+  background: var(--input-bg) !important;
+  background-color: var(--input-bg) !important;
+  color: var(--foreground) !important;
+  border-color: var(--border-strong) !important;
+}
+
+html[data-theme="koyu"] .giris-card input::placeholder,
+html[data-theme="koyu"] .sifremi-unuttum-card input::placeholder {
+  color: var(--muted) !important;
+}
+
+/* Şifremi unuttum sayfasındaki metin bağlantısı butona dönüşmesin. */
+html[data-theme="koyu"] .sifremi-unuttum-card a[href="/giris"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #93c5fd !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-theme="koyu"] .sifremi-unuttum-card a[href="/giris"]:hover {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: #bfdbfe !important;
+}
