@@ -87,8 +87,8 @@ export default function DestekPage() {
 
         <div className="destek-grid">
           <div className="destek-intro">
-            <span className="destek-kicker">DESTEK MERKEZİ</span>
-            <h1>Size nasıl yardımcı olabiliriz?</h1>
+            <span className="destek-kicker">GARAJ DEFTERİM DESTEK</span>
+            <h1>Destek ve İletişim</h1>
             <p>
               Garaj Defterim ile ilgili sorularınızı, teknik sorunlarınızı veya
               önerilerinizi bize iletin. Talebinizi inceleyip e-posta üzerinden
@@ -100,7 +100,7 @@ export default function DestekPage() {
                 ✓
               </div>
               <div>
-                <strong>Talebiniz doğrudan destek ekibine iletilir</strong>
+                <strong>Destek talebiniz bize iletilir</strong>
                 <span>
                   Formdaki e-posta adresinizi yalnızca talebinize dönüş yapmak
                   için kullanırız.
@@ -248,7 +248,7 @@ export default function DestekPage() {
         .destek-logo {
           width: 38px;
           height: 38px;
-          border-radius: 10px;
+          border-radius: 6px;
           display: inline-flex;
           align-items: center;
           justify-content: center;
@@ -265,7 +265,7 @@ export default function DestekPage() {
           align-items: center;
           justify-content: center;
           border: 1px solid var(--border);
-          border-radius: 10px;
+          border-radius: 6px;
           background: var(--card);
           color: var(--foreground);
           font-size: 13px;
@@ -318,7 +318,7 @@ export default function DestekPage() {
           align-items: flex-start;
           gap: 13px;
           border: 1px solid var(--border);
-          border-radius: 14px;
+          border-radius: 8px;
           background: var(--card-soft);
         }
 
@@ -326,7 +326,7 @@ export default function DestekPage() {
           width: 32px;
           height: 32px;
           flex: 0 0 32px;
-          border-radius: 50%;
+          border-radius: 6px;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -361,13 +361,13 @@ export default function DestekPage() {
         .destek-card {
           padding: 30px;
           border: 1px solid var(--border);
-          border-radius: 20px;
+          border-radius: 8px;
           background: var(--card);
-          box-shadow: 0 18px 46px rgba(15, 23, 42, 0.08);
+          box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
         }
 
         html[data-theme="koyu"] .destek-card {
-          box-shadow: 0 18px 46px rgba(0, 0, 0, 0.22);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
         }
 
         .destek-card-heading h2 {
@@ -413,7 +413,7 @@ export default function DestekPage() {
           width: 100%;
           min-height: 46px;
           border: 1px solid var(--border-strong);
-          border-radius: 10px;
+          border-radius: 6px;
           outline: none;
           background: var(--input-bg);
           color: var(--foreground);
@@ -458,7 +458,7 @@ export default function DestekPage() {
 
         .destek-status {
           padding: 12px 13px;
-          border-radius: 10px;
+          border-radius: 6px;
           font-size: 13px;
           line-height: 1.55;
         }
@@ -479,18 +479,17 @@ export default function DestekPage() {
           min-height: 48px;
           width: 100%;
           border: 1px solid #2563eb;
-          border-radius: 10px;
+          border-radius: 6px;
           background: #1d4ed8;
           color: #ffffff;
           font-size: 14px;
           font-weight: 800;
           cursor: pointer;
-          transition: background-color 0.18s ease, transform 0.18s ease;
+          transition: background-color 0.15s ease;
         }
 
         .destek-submit:hover:not(:disabled) {
           background: #1e40af;
-          transform: translateY(-1px);
         }
 
         .destek-submit:disabled {
@@ -561,7 +560,7 @@ export default function DestekPage() {
 
           .destek-card {
             padding: 22px 18px;
-            border-radius: 16px;
+            border-radius: 8px;
           }
 
           .destek-field-grid {
