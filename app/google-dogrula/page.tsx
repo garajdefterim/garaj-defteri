@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { supabase } from "../../lib/supabase";
 
@@ -50,226 +49,141 @@ function Brand() {
   );
 }
 
+function bekle(ms: number) {
+  return new Promise((resolve) => {
+    window.setTimeout(resolve, ms);
+  });
+}
+
 export default function GoogleDogrulaPage() {
-  const router = useRouter();
   const [hata, setHata] = useState("");
 
   useEffect(() => {
     let iptalEdildi = false;
-    let tamamlandi = false;
+    let yonlendirildi = false;
 
-    function kullaniciTemasiniUygula(
+    function temayiUygula(
       metadata: Record<string, unknown> | undefined
     ) {
-      const kullaniciTemasi = metadata?.tema;
+      const tema = metadata?.tema;
 
-      if (
-        kullaniciTemasi !== "acik" &&
-        kullaniciTemasi !== "koyu"
-      ) {
+      if (tema !== "acik" && tema !== "koyu") {
         return;
       }
 
       localStorage.setItem(
         "garaj-defteri-tema",
-        kullaniciTemasi
+        tema
       );
 
       document.documentElement.setAttribute(
         "data-theme",
-        kullaniciTemasi
+        tema
       );
     }
 
-    async function dashboardaGec(
+    function dashboardaGit(
       user: {
         user_metadata?: Record<string, unknown>;
       }
     ) {
-      if (iptalEdildi || tamamlandi) {
+      if (iptalEdildi || yonlendirildi) {
         return;
       }
 
-      tamamlandi = true;
+      yonlendirildi = true;
+      temayiUygula(user.user_metadata);
 
-      kullaniciTemasiniUygula(
-        user.user_metadata
-      );
-
-      // OAuth code/hash bilgisini tarayıcı adresinden temizle.
-      window.history.replaceState(
-        {},
-        document.title,
-        "/google-dogrula"
-      );
-
-      router.replace("/dashboard");
-      router.refresh();
+      /*
+       * Next router yerine gerçek sayfa geçişi kullanıyoruz.
+       * Böylece dashboard yeni sayfada, Supabase oturumu storage'a
+       * tamamen yazıldıktan sonra açılıyor.
+       */
+      window.location.replace("/dashboard");
     }
 
-    async function googleOturumunuTamamla() {
+    async function oturumuBekle() {
       setHata("");
 
-      try {
-        const url = new URL(window.location.href);
+      const url = new URL(window.location.href);
 
-        const oauthHatasi =
-          url.searchParams.get("error_description") ||
-          url.searchParams.get("error");
+      const oauthHatasi =
+        url.searchParams.get("error_description") ||
+        url.searchParams.get("error");
 
-        if (oauthHatasi) {
-          setHata(
-            "Google ile giriş tamamlanamadı. Lütfen tekrar deneyin."
-          );
+      const hashParams = new URLSearchParams(
+        window.location.hash.replace(/^#/, "")
+      );
+
+      const hashHatasi =
+        hashParams.get("error_description") ||
+        hashParams.get("error");
+
+      if (oauthHatasi || hashHatasi) {
+        setHata(
+          "Google ile giriş tamamlanamadı. Lütfen tekrar deneyin."
+        );
+        return;
+      }
+
+      /*
+       * Supabase implicit OAuth dönüşündeki access_token bilgisini
+       * detectSessionInUrl ile işler. Burada session oluşana kadar
+       * kontrollü şekilde bekliyoruz.
+       */
+      for (let deneme = 0; deneme < 50; deneme += 1) {
+        if (iptalEdildi || yonlendirildi) {
           return;
         }
 
-        /*
-         * 1) Supabase URL'yi otomatik işlediyse session zaten hazır olabilir.
-         * Önce bunu kontrol ediyoruz. Bu sayede aynı authorization code'u
-         * ikinci kez exchange etmeye çalışmıyoruz.
-         */
         const {
-          data: ilkSessionData,
-          error: ilkSessionError,
+          data: { session },
+          error,
         } = await supabase.auth.getSession();
 
-        if (iptalEdildi) {
-          return;
-        }
-
-        if (
-          !ilkSessionError &&
-          ilkSessionData.session?.user
-        ) {
-          await dashboardaGec(
-            ilkSessionData.session.user
+        if (error) {
+          console.error(
+            "Google session kontrolü:",
+            error
           );
+        }
+
+        if (session?.user) {
+          dashboardaGit(session.user);
           return;
         }
 
-        /*
-         * 2) PKCE callback'i ?code=... ile geldiyse ve otomatik exchange
-         * henüz tamamlanmadıysa burada açıkça tamamlıyoruz.
-         */
-        const code = url.searchParams.get("code");
+        await bekle(150);
+      }
 
-        if (code) {
-          const {
-            data: exchangeData,
-            error: exchangeError,
-          } =
-            await supabase.auth.exchangeCodeForSession(
-              code
-            );
-
-          if (iptalEdildi) {
-            return;
-          }
-
-          if (
-            !exchangeError &&
-            exchangeData.session?.user
-          ) {
-            await dashboardaGec(
-              exchangeData.session.user
-            );
-            return;
-          }
-        }
-
-        /*
-         * 3) Bazı tarayıcılarda URL işleme ile auth state event'i arasında
-         * çok kısa bir yarış oluşabiliyor. Oturum gerçekten oluşana kadar
-         * auth event'ini dinliyoruz; kullanıcıyı erkenden /giris'e atmıyoruz.
-         */
-        const user = await new Promise<
-          | {
-              user_metadata?: Record<
-                string,
-                unknown
-              >;
-            }
-          | null
-        >((resolve) => {
-          let bitti = false;
-
-          const bitir = (
-            sonuc:
-              | {
-                  user_metadata?: Record<
-                    string,
-                    unknown
-                  >;
-                }
-              | null
-          ) => {
-            if (bitti) {
-              return;
-            }
-
-            bitti = true;
-            clearTimeout(timeout);
-            subscription.unsubscribe();
-            resolve(sonuc);
-          };
-
-          const {
-            data: { subscription },
-          } =
-            supabase.auth.onAuthStateChange(
-              (_event, session) => {
-                if (session?.user) {
-                  bitir(session.user);
-                }
-              }
-            );
-
-          const timeout = window.setTimeout(
-            async () => {
-              const { data } =
-                await supabase.auth.getSession();
-
-              bitir(
-                data.session?.user ?? null
-              );
-            },
-            6000
-          );
-        });
-
-        if (iptalEdildi) {
-          return;
-        }
-
-        if (user) {
-          await dashboardaGec(user);
-          return;
-        }
-
+      if (!iptalEdildi && !yonlendirildi) {
         setHata(
-          "Google oturumu tamamlanamadı. Giriş sayfasına dönüp tekrar deneyin."
+          "Google oturumu oluşturulamadı. Giriş sayfasına dönüp tekrar deneyin."
         );
-      } catch (error) {
-        console.error(
-          "Google giriş tamamlama hatası:",
-          error
-        );
-
-        if (!iptalEdildi) {
-          setHata(
-            "Google ile giriş tamamlanırken beklenmeyen bir hata oluştu."
-          );
-        }
       }
     }
 
-    googleOturumunuTamamla();
+    /*
+     * Auth event'i session kontrolünden önce gelirse kullanıcıyı
+     * anında dashboard'a geçirir.
+     */
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        if (session?.user) {
+          dashboardaGit(session.user);
+        }
+      }
+    );
+
+    oturumuBekle();
 
     return () => {
       iptalEdildi = true;
+      subscription.unsubscribe();
     };
-  }, [router]);
+  }, []);
 
   return (
     <main
@@ -351,7 +265,7 @@ export default function GoogleDogrulaPage() {
             >
               {hata
                 ? hata
-                : "Oturumunuz güvenli şekilde hazırlanıyor. Birkaç saniye bekleyin."}
+                : "Oturumunuz hazırlanıyor. Birkaç saniye bekleyin."}
             </p>
 
             {!hata && (

@@ -310,9 +310,6 @@ export default function GirisPage() {
           options: {
             redirectTo:
               `${window.location.origin}/google-dogrula`,
-            queryParams: {
-              prompt: "select_account",
-            },
           },
         });
 

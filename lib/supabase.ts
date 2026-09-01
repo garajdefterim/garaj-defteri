@@ -38,17 +38,9 @@ const authStorage: SupportedStorage = {
       return null;
     }
 
-    const beniHatirla = beniHatirlaTercihiniOku();
-
-    const anaDepo = beniHatirla
-      ? localStorage
-      : sessionStorage;
-
-    const yedekDepo = beniHatirla
-      ? sessionStorage
-      : localStorage;
-
-    return anaDepo.getItem(key) ?? yedekDepo.getItem(key);
+    return beniHatirlaTercihiniOku()
+      ? localStorage.getItem(key)
+      : sessionStorage.getItem(key);
   },
 
   setItem(key, value) {
@@ -56,20 +48,13 @@ const authStorage: SupportedStorage = {
       return;
     }
 
-    const beniHatirla = beniHatirlaTercihiniOku();
-
-    const anaDepo = beniHatirla
-      ? localStorage
-      : sessionStorage;
-
-    const digerDepo = beniHatirla
-      ? sessionStorage
-      : localStorage;
-
-    anaDepo.setItem(key, value);
-
-    // Aynı Supabase auth kaydının iki depoda birden kalmasını engelle.
-    digerDepo.removeItem(key);
+    if (beniHatirlaTercihiniOku()) {
+      localStorage.setItem(key, value);
+      sessionStorage.removeItem(key);
+    } else {
+      sessionStorage.setItem(key, value);
+      localStorage.removeItem(key);
+    }
   },
 
   removeItem(key) {
@@ -90,7 +75,7 @@ export const supabase = createClient(
       persistSession: true,
       autoRefreshToken: true,
       detectSessionInUrl: true,
-      flowType: "pkce",
+      flowType: "implicit",
       storage: authStorage,
     },
   }
