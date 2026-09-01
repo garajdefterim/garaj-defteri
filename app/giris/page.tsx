@@ -8,7 +8,11 @@ import {
   useState,
   type FormEvent,
 } from "react";
-import { supabase } from "../../lib/supabase";
+import {
+  beniHatirlaAyarla,
+  beniHatirlaTercihiniOku,
+  supabase,
+} from "../../lib/supabase";
 
 type TurnstileApi = {
   render: (
@@ -113,6 +117,7 @@ export default function GirisPage() {
   const [email, setEmail] = useState("");
   const [sifre, setSifre] = useState("");
   const [sifreGoster, setSifreGoster] = useState(false);
+  const [beniHatirla, setBeniHatirla] = useState(false);
   const [captchaToken, setCaptchaToken] =
     useState("");
   const [hata, setHata] = useState("");
@@ -123,6 +128,10 @@ export default function GirisPage() {
 
   const turnstileSiteKey =
     process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
+
+  useEffect(() => {
+    setBeniHatirla(beniHatirlaTercihiniOku());
+  }, []);
 
   useEffect(() => {
     if (!turnstileSiteKey) {
@@ -240,6 +249,9 @@ export default function GirisPage() {
 
     setYukleniyor(true);
 
+    // Oturumun tarayıcı kapatıldıktan sonra da korunup korunmayacağını belirle.
+    beniHatirlaAyarla(beniHatirla);
+
     try {
       const { error } =
         await supabase.auth.signInWithPassword({
@@ -255,11 +267,7 @@ export default function GirisPage() {
 
         const mesaj = error.message.toLowerCase();
 
-        if (mesaj.includes("email not confirmed")) {
-          setHata(
-            "Önce e-posta adresinizi doğrulamanız gerekiyor."
-          );
-        } else if (
+        if (
           mesaj.includes("captcha") ||
           mesaj.includes("challenge")
         ) {
@@ -292,38 +300,29 @@ export default function GirisPage() {
     setHata("");
     setGoogleYukleniyor(true);
 
-    try {
-      /*
-       * Google dönüşünü doğrudan dashboard'a vermiyoruz.
-       * Önce /google-dogrula oturumun tarayıcıya tamamen
-       * yerleşmesini bekleyecek, ardından dashboard'a geçecek.
-       */
-      localStorage.setItem(
-        "garaj-google-akis",
-        JSON.stringify({
-          tip: "giris",
-          zaman: Date.now(),
-        })
-      );
+    // Google OAuth akışında da "Beni hatırla" tercihini kullan.
+    beniHatirlaAyarla(beniHatirla);
 
+    try {
       const { error } =
         await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
             redirectTo:
               `${window.location.origin}/google-dogrula`,
+            queryParams: {
+              prompt: "select_account",
+            },
           },
         });
 
       if (error) {
-        localStorage.removeItem("garaj-google-akis");
         setHata(
           `Google ile giriş başlatılamadı: ${error.message}`
         );
         setGoogleYukleniyor(false);
       }
     } catch {
-      localStorage.removeItem("garaj-google-akis");
       setHata(
         "Google ile giriş başlatılırken bir hata oluştu."
       );
@@ -614,12 +613,44 @@ export default function GirisPage() {
               </label>
 
               <div
+                className="giris-login-options"
                 style={{
                   marginTop: "-7px",
                   display: "flex",
-                  justifyContent: "flex-end",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: "12px",
                 }}
               >
+                <label
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    color: "#4B5563",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    cursor: "pointer",
+                    userSelect: "none",
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={beniHatirla}
+                    onChange={(event) =>
+                      setBeniHatirla(event.target.checked)
+                    }
+                    style={{
+                      width: "18px",
+                      height: "18px",
+                      margin: 0,
+                      accentColor: "#1D4ED8",
+                      cursor: "pointer",
+                    }}
+                  />
+                  Beni hatırla
+                </label>
+
                 <Link
                   href="/sifremi-unuttum"
                   style={{
@@ -627,6 +658,7 @@ export default function GirisPage() {
                     fontSize: "13px",
                     fontWeight: 700,
                     textDecoration: "none",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Şifremi unuttum
@@ -817,6 +849,16 @@ export default function GirisPage() {
           .giris-card button {
             min-width: 0 !important;
             min-height: 46px;
+          }
+
+          .giris-login-options {
+            min-height: 44px;
+          }
+
+          .giris-login-options input[type="checkbox"] {
+            width: 18px !important;
+            min-width: 18px !important;
+            height: 18px !important;
           }
 
           .giris-turnstile {
