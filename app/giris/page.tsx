@@ -11,6 +11,7 @@ import {
 import {
   beniHatirlaAyarla,
   beniHatirlaTercihiniOku,
+  HATIRLANAN_EMAIL_KEY,
   supabase,
 } from "../../lib/supabase";
 
@@ -130,7 +131,36 @@ export default function GirisPage() {
     process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
   useEffect(() => {
-    setBeniHatirla(beniHatirlaTercihiniOku());
+    /*
+     * Production'da tek origin kullanıyoruz.
+     * www / non-www arasında localStorage ve Supabase session
+     * bölünmesin diye giriş ekranını kanonik domaine taşır.
+     */
+    if (
+      window.location.hostname ===
+      "garajdefterim.com"
+    ) {
+      window.location.replace(
+        `https://www.garajdefterim.com${window.location.pathname}${window.location.search}${window.location.hash}`
+      );
+      return;
+    }
+
+    const hatirla =
+      beniHatirlaTercihiniOku();
+
+    setBeniHatirla(hatirla);
+
+    if (hatirla) {
+      const hatirlananEmail =
+        localStorage.getItem(
+          HATIRLANAN_EMAIL_KEY
+        );
+
+      if (hatirlananEmail) {
+        setEmail(hatirlananEmail);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -283,8 +313,18 @@ export default function GirisPage() {
         return;
       }
 
-      router.push("/dashboard");
-      router.refresh();
+      if (beniHatirla) {
+        localStorage.setItem(
+          HATIRLANAN_EMAIL_KEY,
+          email.trim().toLowerCase()
+        );
+      } else {
+        localStorage.removeItem(
+          HATIRLANAN_EMAIL_KEY
+        );
+      }
+
+      window.location.replace("/dashboard");
     } catch {
       turnstileSifirla();
 
@@ -300,16 +340,30 @@ export default function GirisPage() {
     setHata("");
     setGoogleYukleniyor(true);
 
-    // Google OAuth akışında da "Beni hatırla" tercihini kullan.
     beniHatirlaAyarla(beniHatirla);
 
+    if (!beniHatirla) {
+      localStorage.removeItem(
+        HATIRLANAN_EMAIL_KEY
+      );
+    }
+
     try {
+      const production =
+        window.location.hostname ===
+          "www.garajdefterim.com" ||
+        window.location.hostname ===
+          "garajdefterim.com";
+
+      const redirectTo = production
+        ? "https://www.garajdefterim.com/google-dogrula"
+        : `${window.location.origin}/google-dogrula`;
+
       const { error } =
         await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
-            redirectTo:
-              `${window.location.origin}/google-dogrula`,
+            redirectTo,
           },
         });
 

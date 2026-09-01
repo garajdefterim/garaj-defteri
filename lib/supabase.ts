@@ -1,13 +1,25 @@
-import { createClient, type SupportedStorage } from "@supabase/supabase-js";
+import {
+  createClient,
+  type SupportedStorage,
+} from "@supabase/supabase-js";
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+const supabaseUrl =
+  process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+const supabaseKey =
+  process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error("Supabase ortam değişkenleri bulunamadı.");
+  throw new Error(
+    "Supabase ortam değişkenleri bulunamadı."
+  );
 }
 
-const BENI_HATIRLA_KEY = "garaj-defteri-beni-hatirla";
+const BENI_HATIRLA_KEY =
+  "garaj-defteri-beni-hatirla";
+
+export const HATIRLANAN_EMAIL_KEY =
+  "garaj-defteri-hatirlanan-email";
 
 function tarayiciHazirMi() {
   return typeof window !== "undefined";
@@ -18,10 +30,15 @@ export function beniHatirlaTercihiniOku() {
     return false;
   }
 
-  return localStorage.getItem(BENI_HATIRLA_KEY) === "true";
+  return (
+    localStorage.getItem(BENI_HATIRLA_KEY) ===
+    "true"
+  );
 }
 
-export function beniHatirlaAyarla(beniHatirla: boolean) {
+export function beniHatirlaAyarla(
+  beniHatirla: boolean
+) {
   if (!tarayiciHazirMi()) {
     return;
   }
@@ -32,15 +49,32 @@ export function beniHatirlaAyarla(beniHatirla: boolean) {
   );
 }
 
+/*
+ * Supabase auth verisi için storage seçimi:
+ * - Beni hatırla açık  -> localStorage
+ * - Beni hatırla kapalı -> sessionStorage
+ *
+ * getItem iki depoyu da okuyabilir. Böylece kullanıcı tercihi
+ * değiştiğinde veya önceki sürümden kalan session olduğunda
+ * oturum aniden kaybolmaz.
+ */
 const authStorage: SupportedStorage = {
   getItem(key) {
     if (!tarayiciHazirMi()) {
       return null;
     }
 
-    return beniHatirlaTercihiniOku()
-      ? localStorage.getItem(key)
-      : sessionStorage.getItem(key);
+    const kalici =
+      localStorage.getItem(key);
+
+    const oturumluk =
+      sessionStorage.getItem(key);
+
+    if (beniHatirlaTercihiniOku()) {
+      return kalici ?? oturumluk;
+    }
+
+    return oturumluk ?? kalici;
   },
 
   setItem(key, value) {
@@ -51,10 +85,11 @@ const authStorage: SupportedStorage = {
     if (beniHatirlaTercihiniOku()) {
       localStorage.setItem(key, value);
       sessionStorage.removeItem(key);
-    } else {
-      sessionStorage.setItem(key, value);
-      localStorage.removeItem(key);
+      return;
     }
+
+    sessionStorage.setItem(key, value);
+    localStorage.removeItem(key);
   },
 
   removeItem(key) {

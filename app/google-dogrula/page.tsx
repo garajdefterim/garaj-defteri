@@ -62,12 +62,32 @@ export default function GoogleDogrulaPage() {
     let iptalEdildi = false;
     let yonlendirildi = false;
 
+    /*
+     * OAuth dahil bütün auth akışını tek production origin üzerinde
+     * tutuyoruz. Bu; session, Beni Hatırla ve tema verilerinin
+     * www/non-www arasında ikiye bölünmesini engeller.
+     */
+    if (
+      window.location.hostname ===
+      "garajdefterim.com"
+    ) {
+      window.location.replace(
+        `https://www.garajdefterim.com${window.location.pathname}${window.location.search}${window.location.hash}`
+      );
+      return;
+    }
+
     function temayiUygula(
-      metadata: Record<string, unknown> | undefined
+      metadata:
+        | Record<string, unknown>
+        | undefined
     ) {
       const tema = metadata?.tema;
 
-      if (tema !== "acik" && tema !== "koyu") {
+      if (
+        tema !== "acik" &&
+        tema !== "koyu"
+      ) {
         return;
       }
 
@@ -84,42 +104,59 @@ export default function GoogleDogrulaPage() {
 
     function dashboardaGit(
       user: {
-        user_metadata?: Record<string, unknown>;
+        user_metadata?: Record<
+          string,
+          unknown
+        >;
       }
     ) {
-      if (iptalEdildi || yonlendirildi) {
+      if (
+        iptalEdildi ||
+        yonlendirildi
+      ) {
         return;
       }
 
       yonlendirildi = true;
-      temayiUygula(user.user_metadata);
 
-      /*
-       * Next router yerine gerçek sayfa geçişi kullanıyoruz.
-       * Böylece dashboard yeni sayfada, Supabase oturumu storage'a
-       * tamamen yazıldıktan sonra açılıyor.
-       */
-      window.location.replace("/dashboard");
-    }
-
-    async function oturumuBekle() {
-      setHata("");
-
-      const url = new URL(window.location.href);
-
-      const oauthHatasi =
-        url.searchParams.get("error_description") ||
-        url.searchParams.get("error");
-
-      const hashParams = new URLSearchParams(
-        window.location.hash.replace(/^#/, "")
+      temayiUygula(
+        user.user_metadata
       );
 
-      const hashHatasi =
-        hashParams.get("error_description") ||
-        hashParams.get("error");
+      /*
+       * Auth state'in storage'a tamamen yazılmasını bekledikten sonra
+       * gerçek sayfa geçişi yapıyoruz.
+       */
+      window.setTimeout(() => {
+        window.location.replace(
+          "/dashboard"
+        );
+      }, 80);
+    }
 
-      if (oauthHatasi || hashHatasi) {
+    async function oturumuBul() {
+      setHata("");
+
+      const url =
+        new URL(window.location.href);
+
+      const hash =
+        new URLSearchParams(
+          window.location.hash.replace(
+            /^#/,
+            ""
+          )
+        );
+
+      const oauthHatasi =
+        url.searchParams.get(
+          "error_description"
+        ) ||
+        url.searchParams.get("error") ||
+        hash.get("error_description") ||
+        hash.get("error");
+
+      if (oauthHatasi) {
         setHata(
           "Google ile giriş tamamlanamadı. Lütfen tekrar deneyin."
         );
@@ -127,57 +164,68 @@ export default function GoogleDogrulaPage() {
       }
 
       /*
-       * Supabase implicit OAuth dönüşündeki access_token bilgisini
-       * detectSessionInUrl ile işler. Burada session oluşana kadar
-       * kontrollü şekilde bekliyoruz.
+       * detectSessionInUrl callback hash'ini işlerken auth event'i
+       * veya getSession sonucu gelebilir. İkisini de kabul ediyoruz.
        */
-      for (let deneme = 0; deneme < 50; deneme += 1) {
-        if (iptalEdildi || yonlendirildi) {
+      for (
+        let deneme = 0;
+        deneme < 60;
+        deneme += 1
+      ) {
+        if (
+          iptalEdildi ||
+          yonlendirildi
+        ) {
           return;
         }
 
         const {
           data: { session },
           error,
-        } = await supabase.auth.getSession();
+        } =
+          await supabase.auth.getSession();
+
+        if (session?.user) {
+          dashboardaGit(
+            session.user
+          );
+          return;
+        }
 
         if (error) {
           console.error(
-            "Google session kontrolü:",
+            "Google oturum kontrolü:",
             error
           );
-        }
-
-        if (session?.user) {
-          dashboardaGit(session.user);
-          return;
         }
 
         await bekle(150);
       }
 
-      if (!iptalEdildi && !yonlendirildi) {
+      if (
+        !iptalEdildi &&
+        !yonlendirildi
+      ) {
         setHata(
-          "Google oturumu oluşturulamadı. Giriş sayfasına dönüp tekrar deneyin."
+          "Google oturumu oluşturulamadı. Lütfen giriş sayfasına dönüp tekrar deneyin."
         );
       }
     }
 
-    /*
-     * Auth event'i session kontrolünden önce gelirse kullanıcıyı
-     * anında dashboard'a geçirir.
-     */
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        if (session?.user) {
-          dashboardaGit(session.user);
+    } =
+      supabase.auth.onAuthStateChange(
+        (_event, session) => {
+          if (session?.user) {
+            dashboardaGit(
+              session.user
+            );
+          }
         }
-      }
-    );
+      );
 
-    oturumuBekle();
+    oturumuBul();
 
     return () => {
       iptalEdildi = true;
@@ -218,7 +266,8 @@ export default function GoogleDogrulaPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "24px 24px 72px",
+          padding:
+            "24px 24px 72px",
         }}
       >
         <section
@@ -233,7 +282,8 @@ export default function GoogleDogrulaPage() {
             style={{
               padding: "28px",
               backgroundColor: "#FFFFFF",
-              border: "1px solid #E3E7EC",
+              border:
+                "1px solid #E3E7EC",
               borderRadius: "14px",
               boxShadow:
                 "0 1px 2px rgba(15, 23, 42, 0.03)",
@@ -247,7 +297,8 @@ export default function GoogleDogrulaPage() {
                 fontSize: "28px",
                 lineHeight: 1.2,
                 fontWeight: 750,
-                letterSpacing: "-0.7px",
+                letterSpacing:
+                  "-0.7px",
               }}
             >
               {hata
@@ -274,9 +325,12 @@ export default function GoogleDogrulaPage() {
                 style={{
                   width: "28px",
                   height: "28px",
-                  margin: "24px auto 0",
-                  border: "3px solid #DDE3EA",
-                  borderTopColor: "#1D4ED8",
+                  margin:
+                    "24px auto 0",
+                  border:
+                    "3px solid #DDE3EA",
+                  borderTopColor:
+                    "#1D4ED8",
                   borderRadius: "50%",
                   animation:
                     "google-dogrula-spin 0.8s linear infinite",
@@ -290,16 +344,22 @@ export default function GoogleDogrulaPage() {
                 style={{
                   minHeight: "46px",
                   marginTop: "22px",
-                  padding: "0 18px",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  padding:
+                    "0 18px",
+                  display:
+                    "inline-flex",
+                  alignItems:
+                    "center",
+                  justifyContent:
+                    "center",
                   borderRadius: "9px",
-                  backgroundColor: "#1D4ED8",
+                  backgroundColor:
+                    "#1D4ED8",
                   color: "#FFFFFF",
                   fontSize: "14px",
                   fontWeight: 700,
-                  textDecoration: "none",
+                  textDecoration:
+                    "none",
                 }}
               >
                 Giriş sayfasına dön

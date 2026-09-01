@@ -43,14 +43,36 @@ const temaScripti = `
 (function () {
   var TEMA_KEY = "garaj-defteri-tema";
 
+  /*
+   * Production'da bütün oturum ve tema verilerini tek origin'de tut.
+   * localStorage origin bazlı olduğu için www ve non-www birlikte
+   * kullanılırsa tema / auth iki farklı depoya ayrılır.
+   */
+  if (
+    window.location.hostname ===
+    "garajdefterim.com"
+  ) {
+    window.location.replace(
+      "https://www.garajdefterim.com" +
+        window.location.pathname +
+        window.location.search +
+        window.location.hash
+    );
+    return;
+  }
+
   function temaGecerliMi(tema) {
     return tema === "acik" || tema === "koyu";
   }
 
-  function supabaseOturumTemasiniBul() {
+  function storageTemasiniBul(storage) {
     try {
-      for (var i = 0; i < localStorage.length; i++) {
-        var key = localStorage.key(i);
+      for (
+        var i = 0;
+        i < storage.length;
+        i++
+      ) {
+        var key = storage.key(i);
 
         if (!key) continue;
 
@@ -61,11 +83,11 @@ const temaScripti = `
           continue;
         }
 
-        if (/\.\d+$/.test(key)) {
+        if (/\\.\\d+$/.test(key)) {
           continue;
         }
 
-        var raw = localStorage.getItem(key);
+        var raw = storage.getItem(key);
 
         if (!raw) continue;
 
@@ -77,30 +99,54 @@ const temaScripti = `
             session.user &&
             session.user.user_metadata
           ) {
-            var tema = session.user.user_metadata.tema;
+            var tema =
+              session.user.user_metadata.tema;
 
             if (temaGecerliMi(tema)) {
               return tema;
             }
           }
         } catch (parseError) {
-          // Bu kayıt beklenen JSON biçiminde değilse devam et.
+          // Beklenen session kaydı değilse devam et.
         }
       }
     } catch (e) {
-      // localStorage erişilemezse sessizce devam et.
+      // Storage erişilemiyorsa sessizce devam et.
     }
 
     return null;
   }
 
-  function temayiUygula(tema, lokaleKaydet) {
+  function supabaseOturumTemasiniBul() {
+    var sessionTema =
+      storageTemasiniBul(sessionStorage);
+
+    if (temaGecerliMi(sessionTema)) {
+      return sessionTema;
+    }
+
+    var localTema =
+      storageTemasiniBul(localStorage);
+
+    if (temaGecerliMi(localTema)) {
+      return localTema;
+    }
+
+    return null;
+  }
+
+  function temayiUygula(
+    tema,
+    lokaleKaydet
+  ) {
     if (!temaGecerliMi(tema)) {
       tema = "acik";
     }
 
     var mevcutTema =
-      document.documentElement.getAttribute("data-theme");
+      document.documentElement.getAttribute(
+        "data-theme"
+      );
 
     if (mevcutTema !== tema) {
       document.documentElement.setAttribute(
@@ -114,10 +160,14 @@ const temaScripti = `
     }
 
     try {
-      var kayitliTema = localStorage.getItem(TEMA_KEY);
+      var kayitliTema =
+        localStorage.getItem(TEMA_KEY);
 
       if (kayitliTema !== tema) {
-        localStorage.setItem(TEMA_KEY, tema);
+        localStorage.setItem(
+          TEMA_KEY,
+          tema
+        );
       }
     } catch (e) {
       // Tema HTML üzerinde uygulanmış olur.
@@ -127,18 +177,19 @@ const temaScripti = `
   function ilkTemayiBul() {
     try {
       /*
-       * Giriş yapılmışsa hesapta kayıtlı tema ana kaynaktır.
-       * Böylece kullanıcı siteye ilk girdiği anda profilindeki
-       * tercih uygulanır ve Profil sayfasına geçince tema değişmez.
-       * Oturum yoksa bu cihazdaki son tema tercihi kullanılır.
+       * Giriş yapılmışsa hesap temasını kullan.
+       * Beni Hatırla kapalıysa auth sessionStorage'da olabileceği
+       * için iki storage da kontrol edilir.
        */
-      var supabaseTema = supabaseOturumTemasiniBul();
+      var supabaseTema =
+        supabaseOturumTemasiniBul();
 
       if (temaGecerliMi(supabaseTema)) {
         return supabaseTema;
       }
 
-      var localTema = localStorage.getItem(TEMA_KEY);
+      var localTema =
+        localStorage.getItem(TEMA_KEY);
 
       if (temaGecerliMi(localTema)) {
         return localTema;
@@ -155,48 +206,46 @@ const temaScripti = `
     temayiUygula(tema, true);
   }
 
-  /*
-   * İlk HTML çizilmeden önce tek seferde doğru temayı uygula.
-   */
   temayiSenkronizeEt();
 
-  /*
-   * İlk sayfa çizimi tamamlanana kadar CSS geçişlerini kapalı tut.
-   * Böylece açılışta açık/koyu renklerin kısa süre birbirine
-   * karışması engellenir.
-   */
-  document.addEventListener("DOMContentLoaded", function () {
-    window.requestAnimationFrame(function () {
-      document.documentElement.setAttribute(
-        "data-theme-ready",
-        "true"
+  document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+      window.requestAnimationFrame(
+        function () {
+          document.documentElement.setAttribute(
+            "data-theme-ready",
+            "true"
+          );
+        }
       );
-    });
-  });
+    }
+  );
 
-  /*
-   * Başka sekmede tema değişirse bu sekmeyi de güncelle.
-   */
-  window.addEventListener("storage", function (event) {
-    if (
-      event.key === TEMA_KEY ||
-      (event.key &&
-        event.key.indexOf("sb-") === 0 &&
-        event.key.indexOf("-auth-token") !== -1)
-    ) {
+  window.addEventListener(
+    "storage",
+    function (event) {
+      if (
+        event.key === TEMA_KEY ||
+        (event.key &&
+          event.key.indexOf("sb-") === 0 &&
+          event.key.indexOf(
+            "-auth-token"
+          ) !== -1)
+      ) {
+        temayiSenkronizeEt();
+      }
+    }
+  );
+
+  window.addEventListener(
+    "pageshow",
+    function () {
       temayiSenkronizeEt();
     }
-  });
-
-  /*
-   * Tarayıcı geri/ileri önbelleğinden döndüğünde mevcut
-   * local tercihi yeniden uygula.
-   */
-  window.addEventListener("pageshow", function () {
-    temayiSenkronizeEt();
-  });
+  );
 })();
-`;
+`
 const whatsappLinki =
   "https://wa.me/905338622510?text=Merhaba%2C%20Garaj%20Defteri%20i%C3%A7in%20destek%20almak%20istiyorum.";
 
