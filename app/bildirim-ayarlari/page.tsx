@@ -303,7 +303,7 @@ export default function BildirimAyarlariPage() {
         >
           {[
             ["Kayıtlı araç", String(kayitliAracSayisi)],
-            ["Muayene hatırlatması", `${hatirlatmaGunu} gün önce`],
+            ["Genel hatırlatma", `${hatirlatmaGunu} gün önce`],
             ["Son gönderim", tarihSaatFormatla(sonGonderimTarihi)],
           ].map(([baslik, deger]) => (
             <div
@@ -375,9 +375,9 @@ export default function BildirimAyarlariPage() {
           >
             {[
               ["Muayene", `${hatirlatmaGunu} gün önce`],
-              ["Sigorta", "7 gün önce"],
-              ["Seyrüsefer", "14 gün önce"],
-              ["Bakım", "14 gün önce"],
+              ["Sigorta", `${hatirlatmaGunu} gün önce`],
+              ["Seyrüsefer", `${hatirlatmaGunu} gün önce`],
+              ["Bakım", `${hatirlatmaGunu} gün önce`],
             ].map(([baslik, zaman]) => (
               <div
                 key={baslik}
@@ -561,7 +561,7 @@ export default function BildirimAyarlariPage() {
                 fontWeight: 600,
               }}
             >
-              Muayene hatırlatma süresi
+              Genel hatırlatma süresi
               <select
                 value={hatirlatmaGunu}
                 onChange={(event) => setHatirlatmaGunu(event.target.value)}
@@ -581,7 +581,7 @@ export default function BildirimAyarlariPage() {
                   lineHeight: 1.5,
                 }}
               >
-                Bu ayar yalnızca muayene hatırlatmasını değiştirir.
+                Bu süre muayene, sigorta, seyrüsefer ve bakım hatırlatmalarının tamamında kullanılır.
               </span>
             </label>
 
