@@ -86,25 +86,142 @@ export default function GoogleDogrulaPage() {
     process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
   useEffect(() => {
+    let iptalEdildi = false;
+
+    function googleGirisAkisiMi() {
+      try {
+        const raw = localStorage.getItem("garaj-google-akis");
+
+        if (!raw) {
+          return false;
+        }
+
+        const veri = JSON.parse(raw);
+        const zaman = Number(veri?.zaman ?? 0);
+        const gecerliSure =
+          Number.isFinite(zaman) && Date.now() - zaman < 5 * 60 * 1000;
+
+        if (veri?.tip === "giris" && gecerliSure) {
+          return true;
+        }
+
+        localStorage.removeItem("garaj-google-akis");
+      } catch {
+        localStorage.removeItem("garaj-google-akis");
+      }
+
+      return false;
+    }
+
+    function kullaniciTemasiniUygula(
+      metadata: Record<string, unknown> | undefined
+    ) {
+      const kullaniciTemasi = metadata?.tema;
+
+      if (kullaniciTemasi !== "acik" && kullaniciTemasi !== "koyu") {
+        return;
+      }
+
+      localStorage.setItem(
+        "garaj-defteri-tema",
+        kullaniciTemasi
+      );
+
+      document.documentElement.setAttribute(
+        "data-theme",
+        kullaniciTemasi
+      );
+    }
+
+    async function oturumuBekle() {
+      const url = new URL(window.location.href);
+      const code = url.searchParams.get("code");
+
+      const ilkOturum = await supabase.auth.getSession();
+
+      if (ilkOturum.data.session?.user) {
+        return ilkOturum.data.session.user;
+      }
+
+      if (code) {
+        try {
+          const { data, error } =
+            await supabase.auth.exchangeCodeForSession(code);
+
+          if (!error && data.session?.user) {
+            return data.session.user;
+          }
+        } catch (error) {
+          console.error(
+            "Google kod değişimi hatası:",
+            error
+          );
+        }
+      }
+
+      for (let deneme = 0; deneme < 12; deneme += 1) {
+        await new Promise((resolve) =>
+          window.setTimeout(resolve, 250)
+        );
+
+        if (iptalEdildi) {
+          return null;
+        }
+
+        const { data } = await supabase.auth.getSession();
+
+        if (data.session?.user) {
+          return data.session.user;
+        }
+      }
+
+      return null;
+    }
+
     async function googleKullanicisiniHazirla() {
+      const girisAkisi = googleGirisAkisiMi();
+
       try {
         setHata("");
         setMesaj("");
 
-        const {
-          data: { user },
-          error,
-        } = await supabase.auth.getUser();
+        const user = await oturumuBekle();
 
-        if (error || !user) {
+        if (iptalEdildi) {
+          return;
+        }
+
+        if (!user) {
+          localStorage.removeItem("garaj-google-akis");
+
           setHata(
-            "Google oturumu bulunamadı. Lütfen tekrar Google ile devam edin."
+            "Google oturumu tamamlanamadı. Lütfen tekrar Google ile devam edin."
           );
 
           setTimeout(() => {
-            router.replace("/kayit");
+            if (!iptalEdildi) {
+              router.replace(girisAkisi ? "/giris" : "/kayit");
+            }
           }, 2000);
 
+          return;
+        }
+
+        kullaniciTemasiniUygula(
+          user.user_metadata as Record<string, unknown> | undefined
+        );
+
+        if (girisAkisi) {
+          localStorage.removeItem("garaj-google-akis");
+
+          window.history.replaceState(
+            {},
+            document.title,
+            "/google-dogrula"
+          );
+
+          router.replace("/dashboard");
+          router.refresh();
           return;
         }
 
@@ -129,11 +246,17 @@ export default function GoogleDogrulaPage() {
           "Google hesabınız kontrol edilirken bir hata oluştu."
         );
       } finally {
-        setSayfaYukleniyor(false);
+        if (!iptalEdildi) {
+          setSayfaYukleniyor(false);
+        }
       }
     }
 
     googleKullanicisiniHazirla();
+
+    return () => {
+      iptalEdildi = true;
+    };
   }, [router]);
 
   useEffect(() => {

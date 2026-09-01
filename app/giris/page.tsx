@@ -293,22 +293,37 @@ export default function GirisPage() {
     setGoogleYukleniyor(true);
 
     try {
+      /*
+       * Google dönüşünü doğrudan dashboard'a vermiyoruz.
+       * Önce /google-dogrula oturumun tarayıcıya tamamen
+       * yerleşmesini bekleyecek, ardından dashboard'a geçecek.
+       */
+      localStorage.setItem(
+        "garaj-google-akis",
+        JSON.stringify({
+          tip: "giris",
+          zaman: Date.now(),
+        })
+      );
+
       const { error } =
         await supabase.auth.signInWithOAuth({
           provider: "google",
           options: {
             redirectTo:
-              `${window.location.origin}/dashboard`,
+              `${window.location.origin}/google-dogrula`,
           },
         });
 
       if (error) {
+        localStorage.removeItem("garaj-google-akis");
         setHata(
           `Google ile giriş başlatılamadı: ${error.message}`
         );
         setGoogleYukleniyor(false);
       }
     } catch {
+      localStorage.removeItem("garaj-google-akis");
       setHata(
         "Google ile giriş başlatılırken bir hata oluştu."
       );

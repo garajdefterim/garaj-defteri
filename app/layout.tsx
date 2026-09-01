@@ -127,20 +127,21 @@ const temaScripti = `
   function ilkTemayiBul() {
     try {
       /*
-       * İlk çizimde local tema önceliklidir.
-       * Böylece daha önce seçilmiş tema, eski bir auth metadata
-       * değeri tarafından tekrar tekrar ezilmez.
+       * Giriş yapılmışsa hesapta kayıtlı tema ana kaynaktır.
+       * Böylece kullanıcı siteye ilk girdiği anda profilindeki
+       * tercih uygulanır ve Profil sayfasına geçince tema değişmez.
+       * Oturum yoksa bu cihazdaki son tema tercihi kullanılır.
        */
-      var localTema = localStorage.getItem(TEMA_KEY);
-
-      if (temaGecerliMi(localTema)) {
-        return localTema;
-      }
-
       var supabaseTema = supabaseOturumTemasiniBul();
 
       if (temaGecerliMi(supabaseTema)) {
         return supabaseTema;
+      }
+
+      var localTema = localStorage.getItem(TEMA_KEY);
+
+      if (temaGecerliMi(localTema)) {
+        return localTema;
       }
     } catch (e) {
       // Varsayılan açık temaya düş.

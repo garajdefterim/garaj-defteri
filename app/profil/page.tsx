@@ -365,8 +365,8 @@ export default function ProfilPage() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: "#F7F8FA",
-          color: "#111827",
+          backgroundColor: "var(--background)",
+          color: "var(--foreground)",
           fontFamily:
             'Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
         }}
