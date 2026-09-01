@@ -343,7 +343,6 @@ export default function RootLayout({
                     className="site-footer-support-primary"
                     aria-label="Destek talebi oluştur"
                   >
-                    <span aria-hidden="true">✉️</span>
                     Destek Talebi Oluştur
                   </a>
 
@@ -354,7 +353,6 @@ export default function RootLayout({
                     className="site-footer-whatsapp"
                     aria-label="WhatsApp üzerinden destek al"
                   >
-                    <span aria-hidden="true">💬</span>
                     WhatsApp&apos;tan Yaz
                   </a>
                 </div>

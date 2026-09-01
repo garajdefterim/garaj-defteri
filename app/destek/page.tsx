@@ -96,9 +96,6 @@ export default function DestekPage() {
             </p>
 
             <div className="destek-info-card">
-              <div className="destek-info-icon" aria-hidden="true">
-                ✓
-              </div>
               <div>
                 <strong>Destek talebiniz bize iletilir</strong>
                 <span>
@@ -320,24 +317,6 @@ export default function DestekPage() {
           border: 1px solid var(--border);
           border-radius: 8px;
           background: var(--card-soft);
-        }
-
-        .destek-info-icon {
-          width: 32px;
-          height: 32px;
-          flex: 0 0 32px;
-          border-radius: 6px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: #dbeafe;
-          color: #1d4ed8;
-          font-weight: 900;
-        }
-
-        html[data-theme="koyu"] .destek-info-icon {
-          background: rgba(37, 99, 235, 0.2);
-          color: #93c5fd;
         }
 
         .destek-info-card strong,
