@@ -11,9 +11,7 @@ type VehicleCategory =
   | "C"
   | "D"
   | "E"
-  | "F"
-  | "G"
-  | "H";
+  | "F";
 
 const aracKategorileri: {
   value: VehicleCategory;
@@ -35,7 +33,7 @@ const aracKategorileri: {
   {
     value: "B",
     baslik: "Römork",
-    aciklama: "Römork kategorisindeki araç",
+    aciklama: "001 R - 3945 R dahil, yıllık muayeneye tabi römork",
   },
   {
     value: "C",
@@ -44,23 +42,13 @@ const aracKategorileri: {
   },
   {
     value: "E",
-    baslik: "Sürücü okulu veya ralli aracı",
-    aciklama: "Sürücü yetiştirme maksadıyla kullanılan araç",
+    baslik: "Sürücü okulu aracı",
+    aciklama: "Sürücü yetiştirme maksadıyla kullanılan, yıllık muayeneye tabi araç",
   },
   {
     value: "F",
     baslik: "Kiralık araç",
     aciklama: "Z plakalı kiralık motorlu araç",
-  },
-  {
-    value: "G",
-    baslik: "Tarımsal araç",
-    aciklama: "Traktör veya biçerdöver",
-  },
-  {
-    value: "H",
-    baslik: "Resmî hizmet aracı",
-    aciklama: "RHA plakalı resmî hizmet aracı",
   },
 ];
 
@@ -671,39 +659,6 @@ export default function AracDuzenlePage() {
       </div>
 
       <style jsx global>{`
-        .arac-duzenle-page,
-        .arac-duzenle-page * {
-          min-width: 0;
-        }
-
-        .arac-duzenle-page input,
-        .arac-duzenle-page select,
-        .arac-duzenle-page button,
-        .arac-duzenle-page a {
-          max-width: 100%;
-        }
-
-        @media (max-width: 900px) {
-          .arac-duzenle-page {
-            padding: 28px 20px 54px !important;
-          }
-
-          .arac-duzenle-container {
-            max-width: 820px !important;
-          }
-
-          .arac-duzenle-form {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 18px !important;
-          }
-
-          .arac-duzenle-full,
-          .arac-duzenle-feedback,
-          .arac-duzenle-actions {
-            grid-column: 1 / -1 !important;
-          }
-        }
-
         @media (max-width: 700px) {
           .arac-duzenle-page {
             padding: 22px 14px 42px !important;
@@ -711,7 +666,6 @@ export default function AracDuzenlePage() {
           }
 
           .arac-duzenle-container {
-            width: 100% !important;
             max-width: 100% !important;
           }
 
@@ -736,29 +690,21 @@ export default function AracDuzenlePage() {
           }
 
           .arac-duzenle-form {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 15px 12px !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 16px !important;
           }
 
           .arac-duzenle-form > * {
             min-width: 0;
           }
 
-          .arac-duzenle-form input,
-          .arac-duzenle-form select {
-            width: 100% !important;
-            min-width: 0 !important;
-            font-size: 16px !important;
-          }
-
           .arac-duzenle-full,
           .arac-duzenle-feedback {
-            grid-column: 1 / -1 !important;
+            grid-column: auto !important;
           }
 
           .arac-duzenle-info {
             padding: 13px !important;
-            overflow-wrap: anywhere;
           }
 
           .arac-duzenle-maintenance-info {
@@ -766,7 +712,7 @@ export default function AracDuzenlePage() {
           }
 
           .arac-duzenle-actions {
-            grid-column: 1 / -1 !important;
+            grid-column: auto !important;
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 9px !important;
@@ -783,52 +729,14 @@ export default function AracDuzenlePage() {
           }
         }
 
-        @media (max-width: 480px) {
-          .arac-duzenle-page {
-            padding: 18px 12px 38px !important;
-          }
-
-          .arac-duzenle-header h1 {
-            font-size: 28px !important;
-          }
-
-          .arac-duzenle-card {
-            padding: 16px !important;
-          }
-
-          .arac-duzenle-form {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 14px 10px !important;
-          }
-
-          .arac-duzenle-form label {
-            font-size: 13px !important;
-          }
-
-          .arac-duzenle-info {
-            grid-column: 1 / -1 !important;
-          }
-        }
-
-        @media (max-width: 360px) {
+        @media (max-width: 380px) {
           .arac-duzenle-page {
             padding-left: 10px !important;
             padding-right: 10px !important;
           }
 
           .arac-duzenle-card {
-            padding: 14px !important;
-          }
-
-          .arac-duzenle-form {
-            grid-template-columns: 1fr !important;
-          }
-
-          .arac-duzenle-full,
-          .arac-duzenle-info,
-          .arac-duzenle-feedback,
-          .arac-duzenle-actions {
-            grid-column: auto !important;
+            padding: 15px !important;
           }
 
           .arac-duzenle-actions {

@@ -54,10 +54,8 @@ const kategoriAdlari: Record<string, string> = {
   B: "Römork",
   C: "Geçici kayıtlı araç",
   D: "Özel şahsi araç",
-  E: "Sürücü okulu veya ralli aracı",
+  E: "Sürücü okulu aracı",
   F: "Kiralık araç",
-  G: "Tarımsal araç",
-  H: "Resmî hizmet aracı",
 };
 
 const kartStili = {
@@ -183,22 +181,31 @@ export default function AracDetayPage() {
 
   function plakaParcala(plaka: string) {
     const temizPlaka = plakaNormalize(plaka);
-    const eslesme = temizPlaka.match(/^([A-Z]+)(\d+)([A-Z]*)$/);
 
-    if (!eslesme) {
+    // Normal KKTC plakaları: UM590, ZT001 vb.
+    const harfOnce = temizPlaka.match(/^([A-Z]+)(\d+)([A-Z]*)$/);
+    if (harfOnce) {
       return {
-        temizPlaka,
-        prefix: temizPlaka.match(/^[A-Z]+/)?.[0] ?? "",
-        sayi: null as number | null,
-        suffix: "",
+        temizPlaka, prefix: harfOnce[1],
+        sayi: Number(harfOnce[2]),
+        suffix: harfOnce[3] ?? "",
+      };
+    }
+
+    // Römork plakaları: 001R, 3945R vb.
+    const sayiOnce = temizPlaka.match(/^(\d+)([A-Z]+)$/);
+    if (sayiOnce) {
+      return {
+        temizPlaka, prefix: "",
+        sayi: Number(sayiOnce[1]),
+        suffix: sayiOnce[2],
       };
     }
 
     return {
-      temizPlaka,
-      prefix: eslesme[1],
-      sayi: Number(eslesme[2]),
-      suffix: eslesme[3] ?? "",
+      temizPlaka, prefix: temizPlaka.match(/^[A-Z]+/)?.[0] ?? "",
+      sayi: null as number | null,
+      suffix: temizPlaka.match(/[A-Z]+$/)?.[0] ?? "",
     };
   }
 
@@ -1240,34 +1247,6 @@ export default function AracDetayPage() {
       </div>
 
       <style jsx global>{`
-        .arac-detay-page,
-        .arac-detay-page * {
-          min-width: 0;
-        }
-
-        .arac-detay-page a,
-        .arac-detay-page button {
-          max-width: 100%;
-        }
-
-        @media (max-width: 900px) {
-          .arac-detay-page {
-            padding: 28px 20px 54px !important;
-          }
-
-          .arac-detay-container {
-            max-width: 900px !important;
-          }
-
-          .arac-detay-dates {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-          }
-
-          .arac-detay-summary {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-          }
-        }
-
         @media (max-width: 700px) {
           .arac-detay-page {
             padding: 22px 14px 44px !important;
@@ -1275,15 +1254,12 @@ export default function AracDetayPage() {
           }
 
           .arac-detay-container {
-            width: 100% !important;
             max-width: 100% !important;
           }
 
           .arac-detay-topbar {
-            display: grid !important;
-            grid-template-columns: 1fr !important;
             align-items: stretch !important;
-            gap: 12px !important;
+            gap: 14px !important;
             margin-bottom: 20px !important;
           }
 
@@ -1297,7 +1273,6 @@ export default function AracDetayPage() {
           .arac-detay-actions > a {
             width: 100% !important;
             min-width: 0 !important;
-            min-height: 46px !important;
             padding: 0 10px !important;
           }
 
@@ -1306,7 +1281,7 @@ export default function AracDetayPage() {
           }
 
           .arac-detay-hero > div {
-            gap: 16px !important;
+            gap: 18px !important;
           }
 
           .arac-detay-hero h1 {
@@ -1325,43 +1300,15 @@ export default function AracDetayPage() {
             padding: 12px !important;
           }
 
-          .arac-detay-dates {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 10px !important;
-            margin-top: 14px !important;
-          }
-
-          .arac-detay-dates > div {
-            min-width: 0;
-            padding: 14px !important;
-          }
-
-          .arac-detay-dates > div > div {
-            gap: 10px !important;
-          }
-
-          .arac-detay-dates strong {
-            font-size: 15px !important;
-          }
-
-          .arac-detay-dates span {
-            overflow-wrap: anywhere;
-          }
-
+          .arac-detay-dates,
           .arac-detay-summary {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 10px !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 12px !important;
             margin-top: 14px !important;
           }
 
           .arac-detay-summary > div {
-            min-width: 0;
-            padding: 15px !important;
-          }
-
-          .arac-detay-summary strong {
-            font-size: 20px !important;
-            overflow-wrap: anywhere;
+            padding: 16px !important;
           }
 
           .arac-detay-maintenance {
@@ -1373,82 +1320,19 @@ export default function AracDetayPage() {
             align-items: flex-start !important;
           }
 
-          .arac-detay-maintenance > div:first-child > a {
-            min-height: 44px;
-            display: inline-flex !important;
-            align-items: center;
-          }
-
           .arac-detay-maintenance-item {
             padding: 14px !important;
           }
 
           .arac-detay-maintenance-item > div {
-            display: grid !important;
-            grid-template-columns: minmax(0, 1fr) auto !important;
             gap: 12px !important;
-            align-items: start;
           }
 
           .arac-detay-maintenance-item > div > div:last-child {
-            text-align: right !important;
-            min-width: 0;
+            text-align: left !important;
           }
         }
 
-        @media (max-width: 480px) {
-          .arac-detay-page {
-            padding: 18px 12px 38px !important;
-          }
-
-          .arac-detay-hero {
-            padding: 16px !important;
-          }
-
-          .arac-detay-hero h1 {
-            font-size: 28px !important;
-          }
-
-          .arac-detay-dates {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 9px !important;
-          }
-
-          .arac-detay-dates > div {
-            padding: 12px !important;
-          }
-
-          .arac-detay-dates > div > div {
-            display: grid !important;
-            grid-template-columns: minmax(0, 1fr) !important;
-          }
-
-          .arac-detay-dates > div > div > span:last-child {
-            justify-self: start;
-            white-space: normal !important;
-          }
-
-          .arac-detay-summary {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 9px !important;
-          }
-
-          .arac-detay-summary > div {
-            padding: 14px !important;
-          }
-
-          .arac-detay-summary strong {
-            font-size: 18px !important;
-          }
-
-          .arac-detay-maintenance {
-            padding: 16px !important;
-          }
-
-          .arac-detay-maintenance-item > div {
-            grid-template-columns: minmax(0, 1fr) auto !important;
-          }
-        }
 
         /* Araç detay sayfası — koyu tema */
         html[data-theme="koyu"] .arac-detay-page {
@@ -1500,7 +1384,7 @@ export default function AracDetayPage() {
           color: #7db4ff !important;
         }
 
-        @media (max-width: 360px) {
+        @media (max-width: 380px) {
           .arac-detay-page {
             padding-left: 10px !important;
             padding-right: 10px !important;
@@ -1508,25 +1392,12 @@ export default function AracDetayPage() {
 
           .arac-detay-actions,
           .arac-detay-mini-stats {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-          }
-
-          .arac-detay-dates,
-          .arac-detay-summary {
             grid-template-columns: 1fr !important;
           }
 
           .arac-detay-hero,
           .arac-detay-maintenance {
-            padding: 14px !important;
-          }
-
-          .arac-detay-maintenance-item > div {
-            grid-template-columns: 1fr !important;
-          }
-
-          .arac-detay-maintenance-item > div > div:last-child {
-            text-align: left !important;
+            padding: 15px !important;
           }
         }
       `}</style>

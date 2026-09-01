@@ -11,9 +11,7 @@ type VehicleCategory =
   | "C"
   | "D"
   | "E"
-  | "F"
-  | "G"
-  | "H";
+  | "F";
 
 const aracKategorileri: {
   value: VehicleCategory;
@@ -35,7 +33,7 @@ const aracKategorileri: {
   {
     value: "B",
     baslik: "Römork",
-    aciklama: "Römork kategorisindeki araç",
+    aciklama: "001 R - 3945 R dahil, yıllık muayeneye tabi römork",
   },
   {
     value: "C",
@@ -44,23 +42,13 @@ const aracKategorileri: {
   },
   {
     value: "E",
-    baslik: "Sürücü okulu veya ralli aracı",
-    aciklama: "Sürücü yetiştirme maksadıyla kullanılan araç",
+    baslik: "Sürücü okulu aracı",
+    aciklama: "Sürücü yetiştirme maksadıyla kullanılan, yıllık muayeneye tabi araç",
   },
   {
     value: "F",
     baslik: "Kiralık araç",
     aciklama: "Z plakalı kiralık motorlu araç",
-  },
-  {
-    value: "G",
-    baslik: "Tarımsal araç",
-    aciklama: "Traktör veya biçerdöver",
-  },
-  {
-    value: "H",
-    baslik: "Resmî hizmet aracı",
-    aciklama: "RHA plakalı resmî hizmet aracı",
   },
 ];
 
@@ -611,39 +599,6 @@ export default function AracEklePage() {
       </div>
 
       <style jsx global>{`
-        .arac-ekle-page,
-        .arac-ekle-page * {
-          min-width: 0;
-        }
-
-        .arac-ekle-page input,
-        .arac-ekle-page select,
-        .arac-ekle-page button,
-        .arac-ekle-page a {
-          max-width: 100%;
-        }
-
-        @media (max-width: 900px) {
-          .arac-ekle-page {
-            padding: 28px 20px 54px !important;
-          }
-
-          .arac-ekle-container {
-            max-width: 820px !important;
-          }
-
-          .arac-ekle-form {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 18px !important;
-          }
-
-          .arac-ekle-full,
-          .arac-ekle-error,
-          .arac-ekle-actions {
-            grid-column: 1 / -1 !important;
-          }
-        }
-
         @media (max-width: 700px) {
           .arac-ekle-page {
             padding: 22px 14px 42px !important;
@@ -651,18 +606,12 @@ export default function AracEklePage() {
           }
 
           .arac-ekle-container {
-            width: 100% !important;
             max-width: 100% !important;
           }
 
           .arac-ekle-header {
             margin-bottom: 22px !important;
             gap: 10px !important;
-            align-items: flex-start !important;
-          }
-
-          .arac-ekle-header > div {
-            width: 100%;
           }
 
           .arac-ekle-header h1 {
@@ -682,29 +631,21 @@ export default function AracEklePage() {
           }
 
           .arac-ekle-form {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 15px 12px !important;
+            grid-template-columns: minmax(0, 1fr) !important;
+            gap: 16px !important;
           }
 
           .arac-ekle-form > * {
             min-width: 0;
           }
 
-          .arac-ekle-form input,
-          .arac-ekle-form select {
-            width: 100% !important;
-            min-width: 0 !important;
-            font-size: 16px !important;
-          }
-
           .arac-ekle-full,
           .arac-ekle-error {
-            grid-column: 1 / -1 !important;
+            grid-column: auto !important;
           }
 
           .arac-ekle-info {
             padding: 13px !important;
-            overflow-wrap: anywhere;
           }
 
           .arac-ekle-maintenance-info {
@@ -712,7 +653,7 @@ export default function AracEklePage() {
           }
 
           .arac-ekle-actions {
-            grid-column: 1 / -1 !important;
+            grid-column: auto !important;
             display: grid !important;
             grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 9px !important;
@@ -729,52 +670,14 @@ export default function AracEklePage() {
           }
         }
 
-        @media (max-width: 480px) {
-          .arac-ekle-page {
-            padding: 18px 12px 38px !important;
-          }
-
-          .arac-ekle-header h1 {
-            font-size: 28px !important;
-          }
-
-          .arac-ekle-card {
-            padding: 16px !important;
-          }
-
-          .arac-ekle-form {
-            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-            gap: 14px 10px !important;
-          }
-
-          .arac-ekle-form label {
-            font-size: 13px !important;
-          }
-
-          .arac-ekle-info {
-            grid-column: 1 / -1 !important;
-          }
-        }
-
-        @media (max-width: 360px) {
+        @media (max-width: 380px) {
           .arac-ekle-page {
             padding-left: 10px !important;
             padding-right: 10px !important;
           }
 
           .arac-ekle-card {
-            padding: 14px !important;
-          }
-
-          .arac-ekle-form {
-            grid-template-columns: 1fr !important;
-          }
-
-          .arac-ekle-full,
-          .arac-ekle-info,
-          .arac-ekle-error,
-          .arac-ekle-actions {
-            grid-column: auto !important;
+            padding: 15px !important;
           }
 
           .arac-ekle-actions {
