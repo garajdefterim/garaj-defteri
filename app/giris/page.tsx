@@ -581,9 +581,17 @@ export default function GirisPage() {
                   required
                   autoComplete="email"
                   value={email}
-                  onChange={(event) =>
-                    setEmail(event.target.value)
-                  }
+                  onChange={(event) => {
+                    const yeniEmail = event.target.value;
+                    setEmail(yeniEmail);
+
+                    if (beniHatirla) {
+                      localStorage.setItem(
+                        HATIRLANAN_EMAIL_KEY,
+                        yeniEmail.trim().toLowerCase()
+                      );
+                    }
+                  }}
                   placeholder="ornek@email.com"
                   style={inputStyle}
                 />
@@ -688,9 +696,15 @@ export default function GirisPage() {
                   <input
                     type="checkbox"
                     checked={beniHatirla}
-                    onChange={(event) =>
-                      setBeniHatirla(event.target.checked)
-                    }
+                    onChange={(event) => {
+                      const secili = event.target.checked;
+                      setBeniHatirla(secili);
+                      beniHatirlaAyarla(secili);
+
+                      if (!secili) {
+                        localStorage.removeItem(HATIRLANAN_EMAIL_KEY);
+                      }
+                    }}
                     style={{
                       width: "18px",
                       height: "18px",
