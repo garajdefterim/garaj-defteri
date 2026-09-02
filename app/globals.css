@@ -2679,3 +2679,140 @@ html[data-theme="koyu"] .sifremi-unuttum-card a[href="/giris"]:hover {
   background-color: transparent !important;
   color: #bfdbfe !important;
 }
+
+/* =========================================================
+   GARAJ DEFTERİM — KURUMSAL / YASAL SAYFALAR
+   Hakkımızda, Gizlilik, Kullanım Koşulları, Çerez Politikası
+   ========================================================= */
+
+.legal-page {
+  width: 100%;
+  padding: 48px 20px 72px;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.legal-card {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 36px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+}
+
+.legal-kicker {
+  display: block;
+  margin-bottom: 10px;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.legal-card h1 {
+  margin: 0 0 8px;
+  color: var(--foreground);
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.7px;
+}
+
+.legal-date {
+  margin-bottom: 28px !important;
+  font-size: 13px !important;
+}
+
+.legal-card h2 {
+  margin: 30px 0 10px;
+  color: var(--foreground);
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+.legal-card p,
+.legal-card li {
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.legal-card p {
+  margin: 0 0 16px;
+}
+
+.legal-card ul {
+  padding-left: 22px;
+}
+
+.legal-card a {
+  color: #2563eb;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.legal-card a:hover {
+  text-decoration: underline;
+}
+
+html[data-theme="koyu"] .legal-page {
+  background: var(--background) !important;
+  color: var(--foreground) !important;
+}
+
+html[data-theme="koyu"] .legal-card {
+  background: var(--card) !important;
+  border-color: var(--border) !important;
+  color: var(--foreground) !important;
+}
+
+html[data-theme="koyu"] .legal-card h1,
+html[data-theme="koyu"] .legal-card h2 {
+  color: var(--foreground) !important;
+}
+
+html[data-theme="koyu"] .legal-card p,
+html[data-theme="koyu"] .legal-card li {
+  color: var(--muted) !important;
+}
+
+html[data-theme="koyu"] .legal-card a {
+  color: #93c5fd !important;
+}
+
+@media (max-width: 700px) {
+  .legal-page {
+    padding: 28px 14px 48px;
+  }
+
+  .legal-card {
+    padding: 24px 20px;
+    border-radius: 14px;
+  }
+
+  .legal-card h1 {
+    font-size: 28px;
+  }
+
+  .legal-card h2 {
+    font-size: 17px;
+  }
+
+  .legal-card p,
+  .legal-card li {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 380px) {
+  .legal-page {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .legal-card {
+    padding: 20px 16px;
+  }
+}
+

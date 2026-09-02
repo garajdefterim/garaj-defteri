@@ -247,7 +247,7 @@ const temaScripti = `
 })();
 `
 const whatsappLinki =
-  "https://wa.me/905338622510?text=Merhaba%2C%20Garaj%20Defteri%20i%C3%A7in%20destek%20almak%20istiyorum.";
+  "https://wa.me/905338622510?text=Merhaba%2C%20Garaj%20Defterim%20i%C3%A7in%20destek%20almak%20istiyorum.";
 
 export default function RootLayout({
   children,
@@ -409,27 +409,17 @@ export default function RootLayout({
               </div>
 
               <div className="site-footer-column">
-                <strong className="site-footer-title">Bilgilendirme</strong>
+                <strong className="site-footer-title">Kurumsal ve Yasal</strong>
 
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "10px",
-                  }}
+                <nav
+                  className="site-footer-links"
+                  aria-label="Kurumsal ve yasal bağlantılar"
                 >
-                  <span className="site-footer-info">
-                    Araç ve bakım kayıtlarınızı düzenli takip edin.
-                  </span>
-
-                  <span className="site-footer-info">
-                    Önemli tarihlerinizi tek panelde yönetin.
-                  </span>
-
-                  <span className="site-footer-info">
-                    Mobil ve masaüstü cihazlardan kullanın.
-                  </span>
-                </div>
+                  <a href="/hakkimizda">Hakkımızda</a>
+                  <a href="/gizlilik-politikasi">Gizlilik Politikası</a>
+                  <a href="/kullanim-kosullari">Kullanım Koşulları</a>
+                  <a href="/cerez-politikasi">Çerez Politikası</a>
+                </nav>
               </div>
             </div>
 
@@ -483,6 +473,26 @@ export default function RootLayout({
                 font-size: 13px;
                 line-height: 1.6;
                 overflow-wrap: anywhere;
+              }
+
+              .site-footer-links {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+              }
+
+              .site-footer-links a {
+                color: var(--muted);
+                font-size: 13px;
+                line-height: 1.6;
+                text-decoration: none;
+                overflow-wrap: anywhere;
+                transition: color 0.2s ease;
+              }
+
+              .site-footer-links a:hover {
+                color: #2563EB;
               }
 
               .site-footer-description,
@@ -657,7 +667,8 @@ export default function RootLayout({
                 }
 
                 .site-footer-info,
-                .site-footer-support-text {
+                .site-footer-support-text,
+                .site-footer-links a {
                   font-size: 12px !important;
                 }
 
