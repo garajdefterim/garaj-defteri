@@ -242,20 +242,31 @@ export default function DashboardPage() {
 
   function plakaParcala(plaka: string) {
     const temizPlaka = plakaNormalize(plaka);
-    const eslesme = temizPlaka.match(/^([A-Z]+)(\d+)([A-Z]*)$/);
 
-    if (!eslesme) {
+    const harfIleBaslayan = temizPlaka.match(/^([A-Z]+)(\d+)([A-Z]*)$/);
+
+    if (harfIleBaslayan) {
       return {
-        prefix: temizPlaka.match(/^[A-Z]+/)?.[0] ?? "",
-        sayi: null as number | null,
-        suffix: "",
+        prefix: harfIleBaslayan[1],
+        sayi: Number(harfIleBaslayan[2]),
+        suffix: harfIleBaslayan[3] ?? "",
+      };
+    }
+
+    const rakamIleBaslayan = temizPlaka.match(/^(\d+)([A-Z]+)$/);
+
+    if (rakamIleBaslayan) {
+      return {
+        prefix: "",
+        sayi: Number(rakamIleBaslayan[1]),
+        suffix: rakamIleBaslayan[2] ?? "",
       };
     }
 
     return {
-      prefix: eslesme[1],
-      sayi: Number(eslesme[2]),
-      suffix: eslesme[3] ?? "",
+      prefix: temizPlaka.match(/^[A-Z]+/)?.[0] ?? "",
+      sayi: null as number | null,
+      suffix: "",
     };
   }
 
