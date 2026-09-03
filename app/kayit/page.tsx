@@ -274,7 +274,32 @@ export default function KayitPage() {
   async function googleIleDevamEt() {
     setHata("");
     setMesaj("");
+
+    if (!turnstileSiteKey) {
+      setHata(
+        "Güvenlik doğrulaması yapılandırılmamış."
+      );
+      return;
+    }
+
+    if (!captchaToken) {
+      setHata(
+        "Google ile kayıt olmadan önce güvenlik doğrulamasını tamamlayın."
+      );
+      return;
+    }
+
     setGoogleYukleniyor(true);
+
+    sessionStorage.setItem(
+      "garaj-defteri-google-auth-akis",
+      "kayit"
+    );
+
+    sessionStorage.setItem(
+      "garaj-defteri-google-kayit-captcha",
+      captchaToken
+    );
 
     try {
       const { error } =
@@ -290,12 +315,26 @@ export default function KayitPage() {
         });
 
       if (error) {
+        sessionStorage.removeItem(
+          "garaj-defteri-google-auth-akis"
+        );
+        sessionStorage.removeItem(
+          "garaj-defteri-google-kayit-captcha"
+        );
+
         setHata(
           `Google ile devam edilemedi: ${error.message}`
         );
         setGoogleYukleniyor(false);
       }
     } catch {
+      sessionStorage.removeItem(
+        "garaj-defteri-google-auth-akis"
+      );
+      sessionStorage.removeItem(
+        "garaj-defteri-google-kayit-captcha"
+      );
+
       setHata(
         "Google ile devam edilirken bir hata oluştu."
       );

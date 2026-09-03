@@ -167,6 +167,7 @@ export default function GoogleDogrulaPage() {
       session: {
         access_token: string;
         user: {
+          email?: string;
           created_at?: string;
           last_sign_in_at?: string;
           identities?: Array<{
@@ -190,6 +191,67 @@ export default function GoogleDogrulaPage() {
       oturumIsleniyor = true;
 
       try {
+        /*
+         * KAYIT sayfasından Google ile devam edildiğinde Google hesabının
+         * e-posta adresine Supabase üzerinden 6 haneli OTP gönderilir.
+         * Ayrı API route kullanılmaz.
+         */
+        if (googleAkisi === "kayit") {
+          const googleEmail =
+            session.user.email
+              ?.trim()
+              .toLowerCase() ?? "";
+
+          const captchaToken =
+            sessionStorage.getItem(
+              "garaj-defteri-google-kayit-captcha"
+            ) ?? "";
+
+          if (!googleEmail) {
+            throw new Error(
+              "Google hesabının e-posta adresi alınamadı."
+            );
+          }
+
+          if (!captchaToken) {
+            throw new Error(
+              "Google kayıt güvenlik doğrulaması bulunamadı."
+            );
+          }
+
+          await supabase.auth.signOut();
+
+          const { error: otpError } =
+            await supabase.auth.signInWithOtp({
+              email: googleEmail,
+              options: {
+                shouldCreateUser: false,
+                captchaToken,
+              },
+            });
+
+          sessionStorage.removeItem(
+            "garaj-defteri-google-kayit-captcha"
+          );
+
+          if (otpError) {
+            throw otpError;
+          }
+
+          sessionStorage.removeItem(
+            "garaj-defteri-google-auth-akis"
+          );
+
+          yonlendirildi = true;
+
+          window.location.replace(
+            `/dogrula?email=${encodeURIComponent(
+              googleEmail
+            )}&google=1`
+          );
+          return;
+        }
+
         /*
          * API route YOK.
          *
@@ -245,6 +307,10 @@ export default function GoogleDogrulaPage() {
           session.user
         );
       } catch (error) {
+        sessionStorage.removeItem(
+          "garaj-defteri-google-kayit-captcha"
+        );
+
         console.error(
           "Google oturum işleme:",
           error
@@ -255,7 +321,9 @@ export default function GoogleDogrulaPage() {
           !yonlendirildi
         ) {
           setHata(
-            "Google girişi tamamlanamadı. Lütfen tekrar deneyin."
+            googleAkisi === "kayit"
+              ? "Google kayıt doğrulama kodu gönderilemedi. Kayıt sayfasına dönüp tekrar deneyin."
+              : "Google girişi tamamlanamadı. Lütfen tekrar deneyin."
           );
         }
       } finally {

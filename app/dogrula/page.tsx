@@ -59,6 +59,8 @@ export default function DogrulaPage() {
 
   const [email, setEmail] = useState("");
   const [kod, setKod] = useState("");
+  const [googleKaydi, setGoogleKaydi] =
+    useState(false);
 
   const [hata, setHata] = useState("");
   const [mesaj, setMesaj] = useState("");
@@ -80,7 +82,11 @@ export default function DogrulaPage() {
     const emailParam =
       params.get("email")?.trim().toLowerCase() ?? "";
 
+    const googleParam =
+      params.get("google") === "1";
+
     setEmail(emailParam);
+    setGoogleKaydi(googleParam);
   }, []);
 
   useEffect(() => {
@@ -216,11 +222,17 @@ export default function DogrulaPage() {
     setTekrarGonderiliyor(true);
 
     try {
-      const { error } =
-        await supabase.auth.resend({
-          type: "signup",
-          email: temizEmail,
-        });
+      const { error } = googleKaydi
+        ? await supabase.auth.signInWithOtp({
+            email: temizEmail,
+            options: {
+              shouldCreateUser: false,
+            },
+          })
+        : await supabase.auth.resend({
+            type: "signup",
+            email: temizEmail,
+          });
 
       if (error) {
         console.error(
@@ -238,6 +250,13 @@ export default function DogrulaPage() {
         ) {
           setHata(
             "Yeni kod istemek için biraz beklemeniz gerekiyor."
+          );
+        } else if (
+          googleKaydi &&
+          hataMesaji.includes("captcha")
+        ) {
+          setHata(
+            "Google kayıt kodunu tekrar almak için kayıt sayfasına dönüp güvenlik doğrulamasını yeniden tamamlayın."
           );
         } else {
           setHata(
@@ -342,9 +361,9 @@ export default function DogrulaPage() {
                 lineHeight: 1.6,
               }}
             >
-              Hesabınızı etkinleştirmek için
-              e-postanıza gönderilen 6 haneli kodu
-              girin.
+              {googleKaydi
+                ? "Google hesabınızın e-posta adresine gönderilen 6 haneli doğrulama kodunu girin."
+                : "Hesabınızı etkinleştirmek için e-postanıza gönderilen 6 haneli kodu girin."}
             </p>
           </div>
 
