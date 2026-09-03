@@ -340,6 +340,12 @@ export default function GirisPage() {
     setHata("");
     setGoogleYukleniyor(true);
 
+    // Google OAuth'un GİRİŞ sayfasından başlatıldığını callback'e bildir.
+    sessionStorage.setItem(
+      "garaj-defteri-google-auth-akis",
+      "giris"
+    );
+
     beniHatirlaAyarla(beniHatirla);
 
     if (!beniHatirla) {
@@ -368,12 +374,18 @@ export default function GirisPage() {
         });
 
       if (error) {
+        sessionStorage.removeItem(
+          "garaj-defteri-google-auth-akis"
+        );
         setHata(
           `Google ile giriş başlatılamadı: ${error.message}`
         );
         setGoogleYukleniyor(false);
       }
     } catch {
+      sessionStorage.removeItem(
+        "garaj-defteri-google-auth-akis"
+      );
       setHata(
         "Google ile giriş başlatılırken bir hata oluştu."
       );

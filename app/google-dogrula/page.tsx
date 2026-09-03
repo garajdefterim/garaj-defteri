@@ -61,6 +61,12 @@ export default function GoogleDogrulaPage() {
   useEffect(() => {
     let iptalEdildi = false;
     let yonlendirildi = false;
+    let oturumIsleniyor = false;
+
+    const googleAkisi =
+      sessionStorage.getItem(
+        "garaj-defteri-google-auth-akis"
+      );
 
     /*
      * OAuth dahil bütün auth akışını tek production origin üzerinde
@@ -102,6 +108,25 @@ export default function GoogleDogrulaPage() {
       );
     }
 
+    function kayitSayfasinaGit() {
+      if (
+        iptalEdildi ||
+        yonlendirildi
+      ) {
+        return;
+      }
+
+      yonlendirildi = true;
+
+      sessionStorage.removeItem(
+        "garaj-defteri-google-auth-akis"
+      );
+
+      window.location.replace(
+        "/kayit?google=giris"
+      );
+    }
+
     function dashboardaGit(
       user: {
         user_metadata?: Record<
@@ -119,6 +144,10 @@ export default function GoogleDogrulaPage() {
 
       yonlendirildi = true;
 
+      sessionStorage.removeItem(
+        "garaj-defteri-google-auth-akis"
+      );
+
       temayiUygula(
         user.user_metadata
       );
@@ -132,6 +161,106 @@ export default function GoogleDogrulaPage() {
           "/dashboard"
         );
       }, 80);
+    }
+
+    async function oturumuIsle(
+      session: {
+        access_token: string;
+        user: {
+          created_at?: string;
+          last_sign_in_at?: string;
+          identities?: Array<{
+            provider?: string;
+          }>;
+          user_metadata?: Record<
+            string,
+            unknown
+          >;
+        };
+      }
+    ) {
+      if (
+        iptalEdildi ||
+        yonlendirildi ||
+        oturumIsleniyor
+      ) {
+        return;
+      }
+
+      oturumIsleniyor = true;
+
+      try {
+        /*
+         * API route YOK.
+         *
+         * Supabase yeni Google kullanıcısını ilk OAuth dönüşünde zaten
+         * Auth içine oluşturur. Giriş sayfasından gelen akışta:
+         * - created_at ile last_sign_in_at birbirine çok yakınsa
+         * - kimlik Google ise
+         * bunu ilk kez oluşan Google hesabı kabul edip oturumu kapatır
+         * ve kayıt sayfasına yollarız.
+         *
+         * Kayıt sayfasından başlatılan Google akışına dokunulmaz.
+         */
+        if (googleAkisi === "giris") {
+          const createdAt =
+            session.user.created_at
+              ? new Date(
+                  session.user.created_at
+                ).getTime()
+              : NaN;
+
+          const lastSignInAt =
+            session.user.last_sign_in_at
+              ? new Date(
+                  session.user.last_sign_in_at
+                ).getTime()
+              : NaN;
+
+          const sadeceGoogle =
+            (session.user.identities ?? [])
+              .length > 0 &&
+            (session.user.identities ?? [])
+              .every(
+                (identity) =>
+                  identity.provider === "google"
+              );
+
+          const ilkGoogleGirisi =
+            Number.isFinite(createdAt) &&
+            Number.isFinite(lastSignInAt) &&
+            Math.abs(
+              lastSignInAt - createdAt
+            ) <= 60_000 &&
+            sadeceGoogle;
+
+          if (ilkGoogleGirisi) {
+            await supabase.auth.signOut();
+            kayitSayfasinaGit();
+            return;
+          }
+        }
+
+        dashboardaGit(
+          session.user
+        );
+      } catch (error) {
+        console.error(
+          "Google oturum işleme:",
+          error
+        );
+
+        if (
+          !iptalEdildi &&
+          !yonlendirildi
+        ) {
+          setHata(
+            "Google girişi tamamlanamadı. Lütfen tekrar deneyin."
+          );
+        }
+      } finally {
+        oturumIsleniyor = false;
+      }
     }
 
     async function oturumuBul() {
@@ -186,9 +315,7 @@ export default function GoogleDogrulaPage() {
           await supabase.auth.getSession();
 
         if (session?.user) {
-          dashboardaGit(
-            session.user
-          );
+          await oturumuIsle(session);
           return;
         }
 
@@ -218,9 +345,7 @@ export default function GoogleDogrulaPage() {
       supabase.auth.onAuthStateChange(
         (_event, session) => {
           if (session?.user) {
-            dashboardaGit(
-              session.user
-            );
+            void oturumuIsle(session);
           }
         }
       );
