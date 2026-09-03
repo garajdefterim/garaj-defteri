@@ -171,73 +171,86 @@ export default function KayitPage() {
       await supabase.auth.signOut();
 
       const { data, error } =
-        await supabase.functions.invoke("kayit-kodu", {
-          body: {
-            action: "signup",
-            email: temizEmail,
-            password: sifre,
-            username: temizKullaniciAdi,
+        await supabase.auth.signUp({
+          email: temizEmail,
+          password: sifre,
+          options: {
             captchaToken,
+            data: {
+              username: temizKullaniciAdi,
+            },
           },
         });
 
-      setCaptchaToken("");
-      setTurnstileKey((onceki) => onceki + 1);
-
       if (error) {
+        setCaptchaToken("");
+        setTurnstileKey((onceki) => onceki + 1);
         console.error(
-          "Kayıt kodu fonksiyon hatası:",
+          "Kayıt hatası:",
           error
         );
 
-        setHata(
-          "Kayıt işlemi tamamlanamadı. Lütfen tekrar deneyin."
-        );
-        return;
-      }
-
-      if (!data?.success) {
-        const apiMesaji =
-          typeof data?.error === "string"
-            ? data.error
-            : "Kayıt oluşturulamadı. Lütfen tekrar deneyin.";
-
         const hataMesaji =
-          apiMesaji.toLowerCase();
+          error.message.toLowerCase();
 
-        if (hataMesaji.includes("captcha")) {
+        if (
+          hataMesaji.includes("captcha")
+        ) {
           setHata(
             "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
           );
         } else if (
-          hataMesaji.includes("password") ||
-          hataMesaji.includes("şifre")
+          hataMesaji.includes("password")
         ) {
           setHata(
             "Şifre güvenlik şartlarını karşılamıyor."
           );
         } else if (
-          hataMesaji.includes("already") ||
-          hataMesaji.includes("registered") ||
-          hataMesaji.includes("zaten")
-        ) {
-          setHata(
-            "Bu e-posta adresiyle daha önce hesap oluşturulmuş olabilir."
-          );
-        } else if (
           hataMesaji.includes("rate") ||
-          hataMesaji.includes("limit") ||
-          hataMesaji.includes("çok fazla")
+          hataMesaji.includes("limit")
         ) {
           setHata(
             "Çok fazla kayıt denemesi yapıldı. Lütfen biraz bekleyip tekrar deneyin."
           );
+        } else if (
+          hataMesaji.includes("email") &&
+          hataMesaji.includes("send")
+        ) {
+          setHata(
+            "Doğrulama e-postası gönderilemedi. Lütfen tekrar deneyin."
+          );
+        } else if (
+          hataMesaji.includes("already") ||
+          hataMesaji.includes("registered")
+        ) {
+          setHata(
+            "Bu e-posta adresiyle daha önce hesap oluşturulmuş olabilir."
+          );
         } else {
-          setHata(apiMesaji);
+          setHata(
+            `Kayıt oluşturulamadı: ${error.message}`
+          );
         }
 
         return;
       }
+
+      if (!data.user) {
+        setHata(
+          "Hesap oluşturulamadı. Lütfen tekrar deneyin."
+        );
+        return;
+      }
+
+      if (data.session) {
+        await supabase.auth.signOut();
+      }
+
+      // signUp işlemi mevcut Turnstile tokenını tüketir.
+      // Doğrulama kodunu kesin olarak yeniden gönderebilmek için
+      // yeni bir Turnstile tokenı oluşturup resend çağrısını onunla yapıyoruz.
+      setCaptchaToken("");
+      setTurnstileKey((onceki) => onceki + 1);
 
       router.replace(
         `/dogrula?email=${encodeURIComponent(

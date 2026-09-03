@@ -246,59 +246,38 @@ export default function DogrulaPage() {
     setTekrarGonderiliyor(true);
 
     try {
-      let gonderimHatasi = "";
-
-      if (googleKaydi) {
-        const { error } =
-          await supabase.auth.signInWithOtp({
+      const { error } = googleKaydi
+        ? await supabase.auth.signInWithOtp({
             email: temizEmail,
             options: {
               shouldCreateUser: false,
               captchaToken,
             },
-          });
-
-        if (error) {
-          gonderimHatasi = error.message;
-        }
-      } else {
-        const { data, error } =
-          await supabase.functions.invoke("kayit-kodu", {
-            body: {
-              action: "resend",
-              email: temizEmail,
+          })
+        : await supabase.auth.resend({
+            type: "signup",
+            email: temizEmail,
+            options: {
               captchaToken,
             },
           });
 
-        if (error) {
-          gonderimHatasi =
-            "Doğrulama kodu gönderme servisine ulaşılamadı.";
-        } else if (!data?.success) {
-          gonderimHatasi =
-            typeof data?.error === "string"
-              ? data.error
-              : "Doğrulama kodu tekrar gönderilemedi.";
-        }
-      }
-
       setCaptchaToken("");
       setTurnstileKey((onceki) => onceki + 1);
 
-      if (gonderimHatasi) {
+      if (error) {
         console.error(
           "Kod tekrar gönderme hatası:",
-          gonderimHatasi
+          error
         );
 
         const hataMesaji =
-          gonderimHatasi.toLowerCase();
+          error.message.toLowerCase();
 
         if (
           hataMesaji.includes("rate") ||
           hataMesaji.includes("limit") ||
-          hataMesaji.includes("seconds") ||
-          hataMesaji.includes("çok fazla")
+          hataMesaji.includes("seconds")
         ) {
           setHata(
             "Yeni kod istemek için biraz beklemeniz gerekiyor."
@@ -311,7 +290,7 @@ export default function DogrulaPage() {
           );
         } else {
           setHata(
-            `Doğrulama kodu tekrar gönderilemedi: ${gonderimHatasi}`
+            `Doğrulama kodu tekrar gönderilemedi: ${error.message}`
           );
         }
 
