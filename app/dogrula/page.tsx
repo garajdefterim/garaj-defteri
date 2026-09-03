@@ -7,6 +7,7 @@ import {
   useState,
   type FormEvent,
 } from "react";
+import Turnstile from "react-turnstile";
 import { supabase } from "../../lib/supabase";
 
 function Brand() {
@@ -73,6 +74,15 @@ export default function DogrulaPage() {
 
   const [beklemeSuresi, setBeklemeSuresi] =
     useState(0);
+
+  const [captchaToken, setCaptchaToken] =
+    useState("");
+
+  const [turnstileKey, setTurnstileKey] =
+    useState(0);
+
+  const turnstileSiteKey =
+    process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
 
   useEffect(() => {
     const params = new URLSearchParams(
@@ -219,6 +229,20 @@ export default function DogrulaPage() {
       return;
     }
 
+    if (!turnstileSiteKey) {
+      setHata(
+        "Güvenlik doğrulaması yapılandırılmamış."
+      );
+      return;
+    }
+
+    if (!captchaToken) {
+      setHata(
+        "Yeni doğrulama kodu istemeden önce güvenlik doğrulamasını tamamlayın."
+      );
+      return;
+    }
+
     setTekrarGonderiliyor(true);
 
     try {
@@ -227,12 +251,19 @@ export default function DogrulaPage() {
             email: temizEmail,
             options: {
               shouldCreateUser: false,
+              captchaToken,
             },
           })
         : await supabase.auth.resend({
             type: "signup",
             email: temizEmail,
+            options: {
+              captchaToken,
+            },
           });
+
+      setCaptchaToken("");
+      setTurnstileKey((onceki) => onceki + 1);
 
       if (error) {
         console.error(
@@ -252,11 +283,10 @@ export default function DogrulaPage() {
             "Yeni kod istemek için biraz beklemeniz gerekiyor."
           );
         } else if (
-          googleKaydi &&
           hataMesaji.includes("captcha")
         ) {
           setHata(
-            "Google kayıt kodunu tekrar almak için kayıt sayfasına dönüp güvenlik doğrulamasını yeniden tamamlayın."
+            "Güvenlik doğrulaması kabul edilmedi. Lütfen doğrulamayı tekrar tamamlayıp yeniden deneyin."
           );
         } else {
           setHata(
@@ -565,6 +595,36 @@ export default function DogrulaPage() {
               }}
             />
 
+            {turnstileSiteKey && (
+              <div
+                className="dogrula-captcha"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  marginBottom: "16px",
+                  overflow: "hidden",
+                }}
+              >
+                <Turnstile
+                  key={turnstileKey}
+                  sitekey={turnstileSiteKey}
+                  onVerify={(token) => {
+                    setCaptchaToken(token);
+                    setHata("");
+                  }}
+                  onExpire={() => {
+                    setCaptchaToken("");
+                  }}
+                  onError={() => {
+                    setCaptchaToken("");
+                    setHata(
+                      "Güvenlik doğrulaması yüklenemedi. Lütfen tekrar deneyin."
+                    );
+                  }}
+                />
+              </div>
+            )}
+
             <div
               style={{
                 textAlign: "center",
@@ -587,7 +647,8 @@ export default function DogrulaPage() {
                   !email ||
                   yukleniyor ||
                   tekrarGonderiliyor ||
-                  beklemeSuresi > 0
+                  beklemeSuresi > 0 ||
+                  !captchaToken
                 }
                 style={{
                   border: "none",
@@ -596,7 +657,8 @@ export default function DogrulaPage() {
                   color:
                     !email ||
                     tekrarGonderiliyor ||
-                    beklemeSuresi > 0
+                    beklemeSuresi > 0 ||
+                    !captchaToken
                       ? "#9CA3AF"
                       : "#1D4ED8",
                   fontSize: "13px",
@@ -604,7 +666,8 @@ export default function DogrulaPage() {
                   cursor:
                     !email ||
                     tekrarGonderiliyor ||
-                    beklemeSuresi > 0
+                    beklemeSuresi > 0 ||
+                    !captchaToken
                       ? "not-allowed"
                       : "pointer",
                 }}
@@ -716,6 +779,11 @@ export default function DogrulaPage() {
           .dogrula-form > button[type="submit"] {
             min-height: 46px !important;
           }
+
+          .dogrula-captcha {
+            width: 100% !important;
+            justify-content: center !important;
+          }
         }
 
         @media (max-width: 480px) {
@@ -768,6 +836,12 @@ export default function DogrulaPage() {
             font-size: 20px !important;
             letter-spacing: 6px !important;
           }
+
+          .dogrula-captcha {
+            transform: scale(0.92);
+            transform-origin: center top;
+            margin-bottom: 8px !important;
+          }
         }
 
         @media (max-width: 340px) {
@@ -778,6 +852,11 @@ export default function DogrulaPage() {
 
           .dogrula-code-input {
             letter-spacing: 5px !important;
+          }
+
+          .dogrula-captcha {
+            transform: scale(0.84);
+            margin-bottom: 2px !important;
           }
         }
       `}</style>

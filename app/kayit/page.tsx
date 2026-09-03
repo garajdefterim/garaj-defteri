@@ -247,6 +247,35 @@ export default function KayitPage() {
         await supabase.auth.signOut();
       }
 
+      // Confirm email açık olsa bile ilk signup e-postasının
+      // kullanıcıya ulaşmadığı durumlarda doğrulama kodunu
+      // açıkça yeniden tetikle.
+      const { error: resendError } =
+        await supabase.auth.resend({
+          type: "signup",
+          email: temizEmail,
+        });
+
+      if (resendError) {
+        console.error(
+          "Doğrulama kodu gönderme hatası:",
+          resendError
+        );
+
+        const resendHataMesaji =
+          resendError.message.toLowerCase();
+
+        if (
+          !resendHataMesaji.includes("rate") &&
+          !resendHataMesaji.includes("limit")
+        ) {
+          setHata(
+            `Hesap oluşturuldu ancak doğrulama kodu gönderilemedi: ${resendError.message}`
+          );
+          return;
+        }
+      }
+
       router.replace(
         `/dogrula?email=${encodeURIComponent(
           temizEmail
