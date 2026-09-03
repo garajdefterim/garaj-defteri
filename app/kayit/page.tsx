@@ -96,8 +96,6 @@ export default function KayitPage() {
   const [captchaToken, setCaptchaToken] =
     useState("");
   const [turnstileKey, setTurnstileKey] = useState(0);
-  const [bekleyenDogrulamaEmail, setBekleyenDogrulamaEmail] =
-    useState("");
 
   const [hata, setHata] = useState("");
   const [mesaj, setMesaj] = useState("");
@@ -110,78 +108,6 @@ export default function KayitPage() {
 
   const turnstileSiteKey =
     process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY ?? "";
-
-  async function dogrulamaKodunuGonder(
-    token: string,
-    hedefEmail: string
-  ) {
-    setKayitYukleniyor(true);
-    setHata("");
-
-    try {
-      const { error } = await supabase.auth.resend({
-        type: "signup",
-        email: hedefEmail,
-        options: {
-          captchaToken: token,
-        },
-      });
-
-      setCaptchaToken("");
-      setTurnstileKey((onceki) => onceki + 1);
-      setBekleyenDogrulamaEmail("");
-
-      if (error) {
-        console.error(
-          "Doğrulama kodu gönderme hatası:",
-          error
-        );
-
-        const hataMesaji = error.message.toLowerCase();
-
-        if (hataMesaji.includes("captcha")) {
-          setHata(
-            "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
-          );
-        } else if (
-          hataMesaji.includes("rate") ||
-          hataMesaji.includes("limit")
-        ) {
-          setHata(
-            "Doğrulama kodu için çok fazla istek gönderildi. Lütfen biraz bekleyip tekrar deneyin."
-          );
-        } else {
-          setHata(
-            `Hesap oluşturuldu ancak doğrulama kodu gönderilemedi: ${error.message}`
-          );
-        }
-
-        return;
-      }
-
-      router.replace(
-        `/dogrula?email=${encodeURIComponent(
-          hedefEmail
-        )}`
-      );
-      router.refresh();
-    } catch (error) {
-      console.error(
-        "Doğrulama kodu gönderilirken beklenmeyen hata:",
-        error
-      );
-
-      setCaptchaToken("");
-      setTurnstileKey((onceki) => onceki + 1);
-      setBekleyenDogrulamaEmail("");
-
-      setHata(
-        "Hesap oluşturuldu ancak doğrulama kodu gönderilirken beklenmeyen bir hata oluştu."
-      );
-    } finally {
-      setKayitYukleniyor(false);
-    }
-  }
 
   async function emailIleKayitOl(
     event: FormEvent<HTMLFormElement>
@@ -245,87 +171,80 @@ export default function KayitPage() {
       await supabase.auth.signOut();
 
       const { data, error } =
-        await supabase.auth.signUp({
-          email: temizEmail,
-          password: sifre,
-          options: {
+        await supabase.functions.invoke("kayit-kodu", {
+          body: {
+            action: "signup",
+            email: temizEmail,
+            password: sifre,
+            username: temizKullaniciAdi,
             captchaToken,
-            data: {
-              username: temizKullaniciAdi,
-            },
           },
         });
 
+      setCaptchaToken("");
+      setTurnstileKey((onceki) => onceki + 1);
+
       if (error) {
-        setCaptchaToken("");
-        setTurnstileKey((onceki) => onceki + 1);
         console.error(
-          "Kayıt hatası:",
+          "Kayıt kodu fonksiyon hatası:",
           error
         );
 
-        const hataMesaji =
-          error.message.toLowerCase();
+        setHata(
+          "Kayıt işlemi tamamlanamadı. Lütfen tekrar deneyin."
+        );
+        return;
+      }
 
-        if (
-          hataMesaji.includes("captcha")
-        ) {
+      if (!data?.success) {
+        const apiMesaji =
+          typeof data?.error === "string"
+            ? data.error
+            : "Kayıt oluşturulamadı. Lütfen tekrar deneyin.";
+
+        const hataMesaji =
+          apiMesaji.toLowerCase();
+
+        if (hataMesaji.includes("captcha")) {
           setHata(
             "Güvenlik doğrulaması başarısız oldu. Lütfen tekrar deneyin."
           );
         } else if (
-          hataMesaji.includes("password")
+          hataMesaji.includes("password") ||
+          hataMesaji.includes("şifre")
         ) {
           setHata(
             "Şifre güvenlik şartlarını karşılamıyor."
           );
         } else if (
-          hataMesaji.includes("rate") ||
-          hataMesaji.includes("limit")
-        ) {
-          setHata(
-            "Çok fazla kayıt denemesi yapıldı. Lütfen biraz bekleyip tekrar deneyin."
-          );
-        } else if (
-          hataMesaji.includes("email") &&
-          hataMesaji.includes("send")
-        ) {
-          setHata(
-            "Doğrulama e-postası gönderilemedi. Lütfen tekrar deneyin."
-          );
-        } else if (
           hataMesaji.includes("already") ||
-          hataMesaji.includes("registered")
+          hataMesaji.includes("registered") ||
+          hataMesaji.includes("zaten")
         ) {
           setHata(
             "Bu e-posta adresiyle daha önce hesap oluşturulmuş olabilir."
           );
-        } else {
+        } else if (
+          hataMesaji.includes("rate") ||
+          hataMesaji.includes("limit") ||
+          hataMesaji.includes("çok fazla")
+        ) {
           setHata(
-            `Kayıt oluşturulamadı: ${error.message}`
+            "Çok fazla kayıt denemesi yapıldı. Lütfen biraz bekleyip tekrar deneyin."
           );
+        } else {
+          setHata(apiMesaji);
         }
 
         return;
       }
 
-      if (!data.user) {
-        setHata(
-          "Hesap oluşturulamadı. Lütfen tekrar deneyin."
-        );
-        return;
-      }
-
-      if (data.session) {
-        await supabase.auth.signOut();
-      }
-
-      // signUp işlemi mevcut Turnstile tokenını tüketir.
-      // Doğrulama kodunu kesin olarak yeniden gönderebilmek için
-      // yeni bir Turnstile tokenı oluşturup resend çağrısını onunla yapıyoruz.
-      setBekleyenDogrulamaEmail(temizEmail);
-      setCaptchaToken("");
-      setTurnstileKey((onceki) => onceki + 1);
+      router.replace(
+        `/dogrula?email=${encodeURIComponent(
+          temizEmail
+        )}`
+      );
+      router.refresh();
     } catch (error) {
       console.error(
         "Beklenmeyen kayıt hatası:",
@@ -799,13 +718,6 @@ export default function KayitPage() {
                     onVerify={(token) => {
                       setCaptchaToken(token);
                       setHata("");
-
-                      if (bekleyenDogrulamaEmail) {
-                        void dogrulamaKodunuGonder(
-                          token,
-                          bekleyenDogrulamaEmail
-                        );
-                      }
                     }}
                     onExpire={() => {
                       setCaptchaToken("");
