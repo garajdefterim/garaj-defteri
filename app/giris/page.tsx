@@ -283,9 +283,39 @@ export default function GirisPage() {
     beniHatirlaAyarla(beniHatirla);
 
     try {
+      const girisDegeri =
+        email.trim().toLowerCase();
+
+      let girisEmaili = girisDegeri;
+
+      if (!girisDegeri.includes("@")) {
+        const { data, error: kullaniciAdiHatasi } =
+          await supabase.rpc(
+            "resolve_login_email",
+            {
+              p_username: girisDegeri,
+            }
+          );
+
+        if (
+          kullaniciAdiHatasi ||
+          !data ||
+          typeof data !== "string"
+        ) {
+          turnstileSifirla();
+
+          setHata(
+            "E-posta / kullanıcı adı veya şifre hatalı."
+          );
+          return;
+        }
+
+        girisEmaili = data.trim().toLowerCase();
+      }
+
       const { error } =
         await supabase.auth.signInWithPassword({
-          email: email.trim().toLowerCase(),
+          email: girisEmaili,
           password: sifre,
           options: {
             captchaToken,
@@ -306,7 +336,7 @@ export default function GirisPage() {
           );
         } else {
           setHata(
-            "E-posta adresi veya şifre hatalı."
+            "E-posta / kullanıcı adı veya şifre hatalı."
           );
         }
 
@@ -586,12 +616,12 @@ export default function GirisPage() {
               }}
             >
               <label style={labelStyle}>
-                E-posta adresi
+                E-posta veya Kullanıcı Adı
 
                 <input
-                  type="email"
+                  type="text"
                   required
-                  autoComplete="email"
+                  autoComplete="username"
                   value={email}
                   onChange={(event) => {
                     const yeniEmail = event.target.value;
@@ -604,7 +634,7 @@ export default function GirisPage() {
                       );
                     }
                   }}
-                  placeholder="ornek@email.com"
+                  placeholder="ornek@email.com veya kullaniciadi"
                   style={inputStyle}
                 />
               </label>
